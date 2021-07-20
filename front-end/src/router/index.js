@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-
 // route level code-splitting
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
-const Login = () => { return import("../views/Login.vue")}
-const Index = () => { return import("../views/Index.vue")}
+const Login = () => { return import("../views/Login.vue");}
+const Index = () => { return import("../views/Index.vue");}
+const Authority = () => { return import("../views/Authority.vue");}
 
 const routes = [
   {
@@ -18,6 +18,11 @@ const routes = [
     name: "Index",
     component: Index,
   },
+  {
+    path: "/authority",
+    name: "Authority",
+    component: Authority,
+  }
 ];
 
 const router = createRouter({

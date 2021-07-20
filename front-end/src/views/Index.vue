@@ -6,7 +6,7 @@
         <div class="container">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0"> Top Navigation <small>Example 3.0</small></h1>
+              <h1 class="m-0"> 메인페이지 <small>Example 3.0</small></h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -89,15 +89,9 @@
 </template>
 
 <script>
-// import Header from '@/components/header.vue';
-// import Footer from '@/components/footer.vue';
-
-
 export default {
   name: "Index",
   components: {
-    // Header,
-    // Footer,
   },
   mounted() {
     document.querySelector('.main-header').style.display = 'block';

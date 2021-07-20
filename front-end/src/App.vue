@@ -1,15 +1,11 @@
 <template>
-  <!--  <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>-->
   <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
       <div class="container">
-        <a href="" class="navbar-brand">
-          <!--            <img src="node_modules/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">-->
-          <span class="brand-text font-weight-light">AdminLTE 3</span>
+<!--        <span class="brand-text font-weight-light">AdminLTE 3</span>-->
+        <a href="./main2.html" class="navbar-brand">
+          <img src="@/assets/img/cmt_logo.svg" style="width: 200px; height: 26px;" title="">
         </a>
 
         <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,58 +15,46 @@
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
           <!-- Left navbar links -->
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a href="" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">Contact</a>
+            <li class="nav-item dropdown">
+              <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">기초정보</a>
+              <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                <li>
+                  <router-link :to="{ name : 'Authority'}" class="dropdown-item">권한정보관리</router-link>
+                </li>
+                <li>
+                  <a href="views/organization.html" class="dropdown-item">
+                    조직도 정보관리
+                  </a>
+                </li>
+                <li>
+                  <a href="./views/category.html" class="dropdown-item">
+                    카테고리 정보관리
+                  </a>
+                </li>
+                <li>
+                  <a href="./views/authority.html" class="dropdown-item">
+                    업체정보관리
+                  </a>
+                </li>
+
+              </ul>
             </li>
             <li class="nav-item dropdown">
-              <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
-              <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                <li><a href="#" class="dropdown-item">Some action </a></li>
-                <li><a href="#" class="dropdown-item">Some other action</a></li>
-
-                <li class="dropdown-divider"></li>
-
-                <!-- Level two dropdown-->
-                <li class="dropdown-submenu dropdown-hover">
-                  <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
-                  <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                    <li>
-                      <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
-                    </li>
-
-                    <!-- Level three dropdown-->
-                    <li class="dropdown-submenu">
-                      <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-                      <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                        <li><a href="#" class="dropdown-item">3rd level</a></li>
-                        <li><a href="#" class="dropdown-item">3rd level</a></li>
-                      </ul>
-                    </li>
-                    <!-- End Level three -->
-
-                    <li><a href="#" class="dropdown-item">level 2</a></li>
-                    <li><a href="#" class="dropdown-item">level 2</a></li>
-                  </ul>
+              <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">자산관리</a>
+              <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                <li>
+                  <a href="./views/asset.html" class="dropdown-item">
+                    자산정보관리
+                  </a>
                 </li>
-                <!-- End Level two -->
+                <li>
+                  <a href="./views/assetStatus.html" class="dropdown-item">
+                    자산할당현황 정보관리
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
-
-          <!-- SEARCH FORM -->
-          <form class="form-inline ml-0 ml-md-3">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </form>
         </div>
       </div>
     </nav>
@@ -82,14 +66,17 @@
 
     <!-- Main Footer -->
     <footer class="main-footer">
-      <!-- To the right -->
-      <div class="float-right d-none d-sm-inline">
-        Anything you want
+      <div class="container">
+        <address>
+          <small>(04798) 서울시 성동구 성수이로22길 37, 803호(성수동2가, 아크밸리)</small>
+          <span class="ft_line">|</span><small>Tel : 02-6011-1377</small>
+          <span class="ft_line">|</span><small>Fax : 02-463-1376</small>
+          <span class="ft_line">|</span><small>E-mail: adm@cmtinfo.co.kr</small>
+          <span class="ft_line">|</span><small>사업자번호 : 215-87-14581<br></small>
+          <small>COPYRIGHT © CMT정보통신 ALL RIGHTS RESERVED.</small>
+        </address>
       </div>
-      <!-- Default to the left -->
-      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
     </footer>
-
   </div>
 
 
