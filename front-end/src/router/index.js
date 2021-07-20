@@ -19,7 +19,7 @@ const routes = [
     component: Index,
   },
   {
-    path: "/authority",
+    path: "/authoritys",
     name: "Authority",
     component: Authority,
   }

@@ -154,7 +154,7 @@ export default {
   methods: {
     loadData() {
       const vm = this;
-      axios.get('http://localhost:8080/api/authority')
+      axios.get('http://localhost:8080/api/authoritys')
           .then(response => {
             console.log(response);
             if(response.status === 200) {

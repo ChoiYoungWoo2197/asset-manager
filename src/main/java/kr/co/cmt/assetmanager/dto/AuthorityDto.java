@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class AuthorityDto {
     /*
      *  DTO 할일

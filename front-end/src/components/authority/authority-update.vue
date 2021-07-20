@@ -80,7 +80,7 @@ export default {
         return false;
       }
 
-      axios.put('http://localhost:8080/api/authority/' + this.id, {
+      axios.put('http://localhost:8080/api/authoritys/' + this.id, {
         name : $( 'input#nameEdit' ).val(),
         code : $( 'input#codeEdit' ).val(),
         remark : $( 'textarea#remarkEdit' ).val(),
@@ -103,7 +103,7 @@ export default {
         return false;
       }
 
-      axios.delete('http://localhost:8080/api/authority/' + this.id)
+      axios.delete('http://localhost:8080/api/authoritys/' + this.id)
           .then(response => {
             console.log(response);
             if(response.status === 200) {

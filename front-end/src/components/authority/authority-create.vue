@@ -83,7 +83,7 @@ export default {
 
       console.log($( 'input#name' ).val(), $( 'input#code' ).val(),$( 'textarea#remark' ).val(), this.useYn);
 
-      axios.post('http://localhost:8080/api/authority', {
+      axios.post('http://localhost:8080/api/authoritys', {
         name : $( 'input#name' ).val(),
         code : $( 'input#code' ).val(),
         remark : $( 'textarea#remark' ).val(),

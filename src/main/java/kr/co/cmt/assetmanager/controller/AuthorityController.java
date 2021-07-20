@@ -6,6 +6,9 @@ import kr.co.cmt.assetmanager.repository.AuthorityRepository;
 import kr.co.cmt.assetmanager.service.AuthorityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -15,13 +18,38 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
-@RequestMapping(value = "/api/authority")
+@RequestMapping(value = "/api/authoritys")
 public class AuthorityController {
     @Autowired
     private AuthorityService authorityService;
 
     @Autowired
     private ModelMapper modelMapper;
+
+
+    @GetMapping(value = "/init")
+    public String init() {
+        for (int i = 0; i < 100; i++) {
+            Authority authority = new Authority(null, "이름-"+ i,"code-"+i , "비고",
+                    true,"1", LocalDate.now(),LocalDate.now());
+            authorityService.createAuthority(authority);
+        }
+        return "test";
+    }
+
+
+    /**
+     * GET
+     * 권한 목록(페이징)
+     */
+    @GetMapping(params = "page")
+    public Page<AuthorityDto> page(Pageable pageable) {
+        Page<Authority> authoritys = authorityService.findAllAuthority(pageable);
+        Page<AuthorityDto> authorityDtos = authoritys.map(
+                authority -> modelMapper.map(authority, AuthorityDto.class)
+        );
+        return authorityDtos;
+    }
 
     /**
     * GET
