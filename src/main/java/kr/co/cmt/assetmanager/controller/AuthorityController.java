@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping(value = "/api/authority")
 public class AuthorityController {
     @Autowired
@@ -38,6 +39,7 @@ public class AuthorityController {
     @PostMapping
     public Authority store(@RequestBody AuthorityDto authorityDto) {
         Authority authority = modelMapper.map(authorityDto, Authority.class);
+        authority.setRegister("1");
         return authorityService.createAuthority(authority);
     }
 

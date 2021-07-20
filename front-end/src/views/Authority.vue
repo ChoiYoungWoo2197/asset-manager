@@ -72,58 +72,28 @@
                 <div class="card-body table-responsive p-0 table-hover" style="height: 500px;">
                   <table class="table table-head-fixed text-nowrap">
                     <thead>
-                    <tr>
-                      <th>#</th>
-                      <!--                                            <th><input type="checkbox"></th>-->
-                      <th>권한명</th>
-                      <th>권한코드</th>
-                      <th>비고</th>
-                      <th>사용유무</th>
-                      <th>등록자</th>
-                      <th>등록일자</th>
-                    </tr>
+                      <tr>
+                        <th>#</th>
+                        <th>권한명</th>
+                        <th>권한코드</th>
+                        <th>비고</th>
+                        <th>사용유무</th>
+                        <th>등록일자</th>
+                        <th>수정일자</th>
+                        <th>등록자</th>
+                      </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>1</td>
-                      <!--                                            <td><input type="checkbox"></td>-->
-                      <td><a href="#" class="a-click text-dark">관리자</a></td>
-                      <td>admin</td>
-                      <td>비고</td>
-                      <td>Y</td>
-                      <td>최영우</td>
-                      <td>2021-06-25</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <!--                                            <td><input type="checkbox"></td>-->
-                      <td>자산담당자</td>
-                      <td>assetmanager</td>
-                      <td>자산관련된 권한</td>
-                      <td>Y</td>
-                      <td>최영우</td>
-                      <td>2021-06-25</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <!--                                            <td><input type="checkbox"></td>-->
-                      <td>일반사용자</td>
-                      <td>user</td>
-                      <td></td>
-                      <td>Y</td>
-                      <td>최영우</td>
-                      <td>2021-06-25</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <!--                                            <td><input type="checkbox"></td>-->
-                      <td>책임사용자</td>
-                      <td>deptmanager</td>
-                      <td>해당 부서내의 책임자</td>
-                      <td>Y</td>
-                      <td>최영우</td>
-                      <td>2021-06-25</td>
-                    </tr>
+                      <tr v-for="(data, index) in getDatas"  :key="index+1" @click="clickTrTag(data)">
+                        <td v-text="index+1" class=""></td>
+                        <td v-text="data.name" class=""></td>
+                        <td v-text="data.code" class=""></td>
+                        <td v-text="data.remark" class=""></td>
+                        <td v-text="data.useYn === true ? '활성화' : '비활성화'" class=""></td>
+                        <td v-text="data.registedDateAt" class=""></td>
+                        <td v-text="data.updatedDateAt" class=""></td>
+                        <td v-text="data.register" class=""></td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -147,8 +117,8 @@
     <!-- /.content -->
 
     <!-- 모달 컴포넌트  -->
-    <AuthorityCreate style="display: none"></AuthorityCreate>
-    <AuthorityUpdate style="display: none"></AuthorityUpdate>
+    <AuthorityCreate ref="authorityCreate" @updateData="handleUpdateData" style="display: none"></AuthorityCreate>
+    <AuthorityUpdate ref="authorityUpdate" @updateData="handleUpdateData" style="display: none"></AuthorityUpdate>
     <!-- /모달 컴포넌트  -->
   </div>
   <!-- /.content-wrapper -->
@@ -156,6 +126,7 @@
 
 <script>
 import $ from "jquery";
+import axios from 'axios';
 import AuthorityCreate from '@/components/authority/authority-create.vue';
 import AuthorityUpdate from '@/components/authority/authority-update.vue';
 
@@ -165,16 +136,50 @@ export default {
     AuthorityCreate,
     AuthorityUpdate,
   },
+  data() {
+    return {
+      data : null,
+    }
+  },
+  computed : {
+    getDatas() {
+      return this.data;
+    }
+  },
   mounted() {
     document.body.classList.remove('login-page');
     document.body.classList.add('layout-top-nav');
+    this.loadData();
   },
   methods: {
-    hideCreateModal() {
-      $('#authority-create-modal').modal("hide");
+    loadData() {
+      const vm = this;
+      axios.get('http://localhost:8080/api/authority')
+          .then(response => {
+            console.log(response);
+            if(response.status === 200) {
+              vm.data = [];
+              vm.data = response.data;
+              console.log(vm.data);
+            }
+          }).catch(e => {
+            alert(e);
+          })
     },
     showCreateModal() {
+      this.$refs.authorityCreate.clearData();
       $('#authority-create-modal').modal("show");
+    },
+    showUpdateModal() {
+      $('#authority-update-modal').modal("show");
+    },
+    handleUpdateData() {
+      this.loadData();
+    },
+    clickTrTag(data){
+      // console.log('tr data : ', data);
+      this.$refs.authorityUpdate.setData(data);
+      this.showUpdateModal();
     }
   }
 }

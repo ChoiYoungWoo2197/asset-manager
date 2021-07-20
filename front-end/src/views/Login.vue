@@ -3,10 +3,8 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-                    <a href="#" class="h4"><b>씨엠티정보통신</b></a>
         <a href="#" class="navbar-brand">
-<!--          <img src="src/assets/img/cmt_logo.svg" style="width: 240px; height: 26px;" title="">-->
-<!--          <img :src="require('@/assets/img/cmt_logo.svg') " style="width: 240px; height: 26px;" title="">-->
+          <img src="@/assets/img/cmt_logo.svg" style="width: 240px; height: 26px;" title="">
         </a>
       </div>
       <div class="card-body">
@@ -47,9 +45,7 @@
 </template>
 
 <script>
-//import 'admin-lte/plugins/fontawesome-free/css/all.min.css';
 import axios from 'axios';
-
 
 export default {
   name: "Login",

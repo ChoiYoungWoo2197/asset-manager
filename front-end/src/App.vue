@@ -3,7 +3,6 @@
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
       <div class="container">
-<!--        <span class="brand-text font-weight-light">AdminLTE 3</span>-->
         <a href="./main2.html" class="navbar-brand">
           <img src="@/assets/img/cmt_logo.svg" style="width: 200px; height: 26px;" title="">
         </a>
