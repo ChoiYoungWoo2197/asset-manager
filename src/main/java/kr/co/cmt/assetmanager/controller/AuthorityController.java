@@ -2,18 +2,17 @@ package kr.co.cmt.assetmanager.controller;
 
 import kr.co.cmt.assetmanager.dto.AuthorityDto;
 import kr.co.cmt.assetmanager.model.Authority;
-import kr.co.cmt.assetmanager.repository.AuthorityRepository;
 import kr.co.cmt.assetmanager.service.AuthorityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -42,9 +41,20 @@ public class AuthorityController {
      * GET
      * 권한 목록(페이징)
      */
-    @GetMapping(params = "page")
+/*    @GetMapping(params = "page")
     public Page<AuthorityDto> page(Pageable pageable) {
         Page<Authority> authoritys = authorityService.findAllAuthority(pageable);
+        Page<AuthorityDto> authorityDtos = authoritys.map(
+                authority -> modelMapper.map(authority, AuthorityDto.class)
+        );
+        return authorityDtos;
+    }*/
+    @GetMapping(params = "page")
+    public Page<AuthorityDto> page(AuthorityDto authorityDto, Pageable pageable) {
+
+//        Map<String, Object> searchRequest = authorityDto.stream()
+////        Page<Authority> authoritys = authorityService.findAllAuthority(AuthoritySpecification.seachWith(searchKeyword), pageable);
+        Page<Authority> authoritys = authorityService.findAllAuthority(null, pageable);
         Page<AuthorityDto> authorityDtos = authoritys.map(
                 authority -> modelMapper.map(authority, AuthorityDto.class)
         );

@@ -5,7 +5,9 @@ import kr.co.cmt.assetmanager.repository.AuthorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class AuthorityService {
     private final AuthorityRepository authorityRepository;
 
+    public Page<Authority> findAllAuthority(Specification<Authority> spec, Pageable pageable) {
+        return authorityRepository.findAll(spec, pageable);
+    }
     public Page<Authority> findAllAuthority(Pageable pageable) {
         return authorityRepository.findAll(pageable);
     }
