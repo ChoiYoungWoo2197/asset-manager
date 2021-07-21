@@ -3,9 +3,9 @@
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
       <div class="container">
-        <a href="./main2.html" class="navbar-brand">
+        <router-link :to="{ name : 'Index'}" class="navbar-brand">
           <img src="@/assets/img/cmt_logo.svg" style="width: 200px; height: 26px;" title="">
-        </a>
+        </router-link>
 
         <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

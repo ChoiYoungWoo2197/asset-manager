@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 //@NoArgsConstructor
 @Entity
+@Builder
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
