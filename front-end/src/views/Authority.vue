@@ -40,11 +40,11 @@
                     <div class="form-row">
                       <div class="col-3">
                         <div class="form-group">
-                          <label for="test8">사용유무</label>
-                          <select class="form-control " style="width: 100%;" id="test8">
-                            <option>해당없음</option>
-                            <option>비활성화</option>
-                            <option>활성화</option>
+                          <label for="useYn">사용유무</label>
+                          <select class="form-control " style="width: 100%;" id="useYn">
+                            <option value="">해당없음</option>
+                            <option value="false">비활성화</option>
+                            <option value="true">활성화</option>
                           </select>
                         </div>
                       </div>
@@ -58,9 +58,9 @@
                   </form>
                   <div class="form-group">
                     <div class="input-group">
-                      <input type="search" class="form-control " placeholder="Type your keywords here" value="키워드">
+                      <input id="search" type="search" class="form-control" placeholder="키워드">
                       <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" @click.prevent="clickSearchBtn">
                           <i class="fa fa-search"></i>
                         </button>
                       </div>
@@ -84,7 +84,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(data, index) in getDatas"  :key="index+1" @click="clickTrTag(data)">
+                      <tr v-for="(data, index) in getDatas"  :key="index" @click="clickTrTag(data)">
                         <td v-text="index+1" class=""></td>
                         <td v-text="data.name" class=""></td>
                         <td v-text="data.code" class=""></td>
@@ -99,7 +99,7 @@
                 </div>
               </div>
               <div class="card-footer clearfix">
-                <h4 class="card-title">Showing 1 to 4 of 12 entries</h4>
+                <h4 class="card-title">{{pageInfo}}</h4>
                 <ul class="pagination pagination-sm m-0 float-right">
                   <li class="page-item" :class="{disabled: isFirstPageGroup}">
                     <a class="page-link" href="#" aria-label="Previous" @click="clickPreviousPageBtn">&laquo;</a>
@@ -129,6 +129,17 @@
 </template>
 
 <script>
+String.format = function() {
+  let args = arguments;
+  return args[0].replace(/{(\d+)}/g, function(match, num) {
+    num = Number(num) + 1;
+    return typeof(args[num]) != undefined ? args[num] : match;
+  });
+}
+
+
+
+
 import $ from "jquery";
 import axios from 'axios';
 import AuthorityCreate from '@/components/authority/authority-create.vue';
@@ -145,10 +156,11 @@ export default {
       responseData : null,
       data : null,
       pageable : null,
-      currentPage : 0,
-      perPageNum : 10,
+      currentPage : 0, //현재 페이지
+      perPageNum : 10, //게시글의 수
       displayPageNum : 10, // 페이지 번호의 수
       pages : [],
+      pageInfo : null,
     }
   },
   computed : {
@@ -169,31 +181,34 @@ export default {
     document.body.classList.remove('login-page');
     document.body.classList.add('layout-top-nav');
     this.searchData();
-
-    // console.log(this.data);
   },
   watch: {
     currentPage() {
-      console.log('watch');
       this.searchData();
     }
   },
   methods: {
     searchData() {
       const vm = this;
-      axios.get('http://localhost:8080/api/authoritys?page='+ vm.currentPage + '&size=' + vm.perPageNum)
-          .then(response => {
-            console.log(response);
-            if(response.status === 200) {
-              vm.responseData = response;
-              vm.data = response.data.content;
-              vm.pageable = response.data.pageable;
-              vm.getStartAndEndPage();
-              // console.log(vm.responseData, vm.data, vm.pageable);
-            }
-          }).catch(e => {
-            alert(e);
-          })
+      axios.get('http://localhost:8080/api/authoritys', {
+        params: {
+          page : vm.currentPage,
+          size : vm.perPageNum,
+          useYn:$('#useYn').val(),
+          remark: $('#search').val()
+        }
+      }).then(response => {
+        // console.log(response);
+        if(response.status === 200) {
+          vm.responseData = response;
+          vm.data = response.data.content;
+          vm.pageable = response.data.pageable;
+          vm.getStartAndEndPage();
+          // console.log(vm.responseData, vm.data, vm.pageable);
+        }
+      }).catch(e => {
+        alert(e);
+      })
     },
     showCreateModal() {
       this.$refs.authorityCreate.clearData();
@@ -203,10 +218,9 @@ export default {
       $('#authority-update-modal').modal("show");
     },
     handleUpdateData() {
-      this.loadData();
+      this.searchData();
     },
     clickTrTag(data){
-      // console.log('tr data : ', data);
       this.$refs.authorityUpdate.setData(data);
       this.showUpdateModal();
     },
@@ -223,6 +237,10 @@ export default {
       for(var i=startPage; i<=endPage; i++) {
         this.pages.push(i);
       }
+
+      this.pageInfo = String.format("Showing {0} to {1} of {2} entries", (this.pageable.pageNumber * this.perPageNum)+1,
+          (this.pageable.pageNumber * this.perPageNum)+this.responseData.data.numberOfElements, this.responseData.data.totalElements);
+
     },
     clickPreviousPageBtn() {
       this.currentPage = this.pageable.pageNumber === 0 ? 0 : this.pageable.pageNumber-1;
@@ -235,6 +253,11 @@ export default {
     },
     clickPageBtn(page) {
       this.currentPage = page;
+    },
+    clickSearchBtn() {
+      this.currentPage = 0;
+      this.searchData();
+
     }
 
   }

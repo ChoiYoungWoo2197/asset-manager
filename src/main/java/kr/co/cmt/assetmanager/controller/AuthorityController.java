@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -59,6 +60,15 @@ public class AuthorityController {
     @GetMapping
     public List<Authority> index() {
         return authorityService.findAllAuthority();
+    }
+
+    /**
+     * GET
+     * 권한코드 중복검사
+     */
+    @GetMapping(value = "/{code}/exists")
+    public ResponseEntity<Boolean> isExistCode(@PathVariable("code") String code) {
+        return ResponseEntity.ok(authorityService.isExistByCode(code));
     }
 
     /**

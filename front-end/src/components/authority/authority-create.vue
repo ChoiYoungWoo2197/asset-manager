@@ -22,7 +22,7 @@
                   <input type="text" class="form-control " id="code" placeholder="">
                 </div>
                 <div class="col-sm">
-                  <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크">
+                  <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크" @click="clickCodeCheckBtn">
                 </div>
               </div>
             </div>
@@ -44,7 +44,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>
-          <button type="button" class="btn btn-primary" @click="createBtnClick"> <i class="far fa-edit pr-1"></i>등록</button>
+          <button id="createBtn" type="button" class="btn btn-secondary" @click="createBtnClick"> <i class="far fa-edit pr-1"></i>등록</button>
         </div>
       </div>
     </div>
@@ -59,6 +59,7 @@ export default {
   name: "authority-create",
   data() {
     return {
+      isExistCode : null,
       useYn : true,
     }
   },
@@ -67,6 +68,9 @@ export default {
       $( 'input#name' ).val("");
       $( 'input#code' ).val("");
       $( 'textarea#remark' ).val("");
+      $('button#createBtn').addClass('btn-primary');
+      $('button#createBtn').addClass('btn-secondary');
+      this.isExistCode = null,
       this.useYn = true;
     },
     createBtnClick() {
@@ -81,7 +85,7 @@ export default {
         }
       }
 
-      console.log($( 'input#name' ).val(), $( 'input#code' ).val(),$( 'textarea#remark' ).val(), this.useYn);
+      // console.log($( 'input#name' ).val(), $( 'input#code' ).val(),$( 'textarea#remark' ).val(), this.useYn);
 
       axios.post('http://localhost:8080/api/authoritys', {
         name : $( 'input#name' ).val(),
@@ -91,7 +95,6 @@ export default {
       }).then(response => {
         console.log(response);
         if(response.status === 200) {
-          // this.$router.push('Authority');
           vm.$emit("updateData", response.data);
           $('#authority-create-modal').modal("hide");
         }
@@ -101,6 +104,30 @@ export default {
     },
     clickRadioBtn(flag){
       this.useYn = flag;
+    },
+    clickCodeCheckBtn() {
+      const vm = this;
+      if($( 'input#code' ).val() === "") {
+        alert("코드를 입력해주세요.");
+        return false;
+      }
+
+      axios.get('http://localhost:8080/api/authoritys/' + $( 'input#code' ).val() + '/exists')
+      .then(response => {
+        if(response.status === 200) {
+          if(response.data === true) {
+            vm.isExistCode = true;
+            alert("중복된 코드입니다.");
+          } else {
+            vm.isExistCode = false;
+            $('button#createBtn').removeClass('btn-secondary');
+            $('button#createBtn').addClass('btn-primary');
+            alert("사용 가능한 코드입니다.");
+          }
+        }
+      }).catch(e => {
+        alert(e);
+      })
     }
   },
 }

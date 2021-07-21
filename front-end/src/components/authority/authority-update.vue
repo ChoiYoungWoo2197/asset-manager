@@ -105,7 +105,7 @@ export default {
 
       axios.delete('http://localhost:8080/api/authoritys/' + this.id)
           .then(response => {
-            console.log(response);
+            // console.log(response);
             if(response.status === 200) {
               // this.$router.push('Authority');
               vm.$emit("updateData", response.data);

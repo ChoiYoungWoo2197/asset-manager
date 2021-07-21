@@ -52,4 +52,8 @@ public class AuthorityService {
     public void deleteAuthority(Long id) {
         authorityRepository.deleteById(id);
     }
+
+    public boolean isExistByCode(String code) {
+        return authorityRepository.existsByCode(code);
+    }
 }
