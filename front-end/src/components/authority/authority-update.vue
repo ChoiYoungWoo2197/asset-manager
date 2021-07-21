@@ -70,6 +70,8 @@ export default {
 
       if(this.useYn === true) {
         $('#useYnTrueEdit').prop("checked", true);
+      } else {
+        $('#useYnFalseEdit').prop("checked", true);
       }
     },
     updateBtnClick() {

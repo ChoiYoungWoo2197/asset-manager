@@ -75,12 +75,15 @@ export default {
     },
     createBtnClick() {
       const vm = this;
-      if($( 'input#name' ).val() ==="" || $( 'input#code' ).val() === "") {
+      if($( 'input#name' ).val() ==="" || $( 'input#code' ).val() === "" || this.isExistCode !== false) {
         if($( 'input#name' ).val() === '') {
           alert("이름을 입력해주세요.");
           return false;
         } else if($( 'input#code' ).val() === "" ) {
           alert("코드를 입력해주세요.");
+          return false;
+        } else if( this.isExistCode !== false ) {
+          //제일 마지막에 추가해주자.
           return false;
         }
       }

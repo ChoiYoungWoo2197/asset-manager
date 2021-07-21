@@ -218,6 +218,7 @@ export default {
       $('#authority-update-modal').modal("show");
     },
     handleUpdateData() {
+      this.currentPage = 0;
       this.searchData();
     },
     clickTrTag(data){
