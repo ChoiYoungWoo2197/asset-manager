@@ -101,11 +101,15 @@
               <div class="card-footer clearfix">
                 <h4 class="card-title">Showing 1 to 4 of 12 entries</h4>
                 <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                  <li class="page-item" :class="{disabled: isFirstPageGroup}">
+                    <a class="page-link" href="#" aria-label="Previous" @click="clickPreviousPageBtn">&laquo;</a>
+                  </li>
+                  <li class="page-item" v-for="page in pages" :key="page" :class="{active: page-1 === currentPage}">
+                    <a class="page-link" v-text="page" href="#" @click="clickPageBtn(page-1)"></a>
+                  </li>
+                  <li class="page-item" :class="{disabled: isLastPageGroup}">
+                    <a class="page-link" href="#" aria-label="Next" @click="clickNextPageBtn">&raquo;</a>
+                  </li>
                 </ul>
               </div>
             </div><!-- /.card -->
@@ -138,29 +142,54 @@ export default {
   },
   data() {
     return {
+      responseData : null,
       data : null,
+      pageable : null,
+      currentPage : 0,
+      perPageNum : 10,
+      displayPageNum : 10, // 페이지 번호의 수
+      pages : [],
     }
   },
   computed : {
     getDatas() {
       return this.data;
-    }
+    },
+    isFirstPageGroup() {
+      if(this.responseData === null) return false;
+      return this.responseData.data.first;
+    },
+    isLastPageGroup() {
+      if(this.responseData === null) return false;
+      return this.responseData.data.last;
+    },
+
   },
   mounted() {
     document.body.classList.remove('login-page');
     document.body.classList.add('layout-top-nav');
-    this.loadData();
+    this.searchData();
+
+    // console.log(this.data);
+  },
+  watch: {
+    currentPage() {
+      console.log('watch');
+      this.searchData();
+    }
   },
   methods: {
-    loadData() {
+    searchData() {
       const vm = this;
-      axios.get('http://localhost:8080/api/authoritys')
+      axios.get('http://localhost:8080/api/authoritys?page='+ vm.currentPage + '&size=' + vm.perPageNum)
           .then(response => {
             console.log(response);
             if(response.status === 200) {
-              vm.data = [];
-              vm.data = response.data;
-              console.log(vm.data);
+              vm.responseData = response;
+              vm.data = response.data.content;
+              vm.pageable = response.data.pageable;
+              vm.getStartAndEndPage();
+              // console.log(vm.responseData, vm.data, vm.pageable);
             }
           }).catch(e => {
             alert(e);
@@ -180,7 +209,34 @@ export default {
       // console.log('tr data : ', data);
       this.$refs.authorityUpdate.setData(data);
       this.showUpdateModal();
+    },
+    getStartAndEndPage() {
+      this.pages = [];
+      let endPage = Math.ceil((this.pageable.pageNumber+1) / this.displayPageNum) * this.displayPageNum;
+      let startPage = (endPage - this.displayPageNum) + 1;
+      let tempEndPage = Math.ceil(this.responseData.data.totalElements / this.perPageNum);
+
+      if(endPage > tempEndPage) {
+        endPage = tempEndPage;
+      }
+
+      for(var i=startPage; i<=endPage; i++) {
+        this.pages.push(i);
+      }
+    },
+    clickPreviousPageBtn() {
+      this.currentPage = this.pageable.pageNumber === 0 ? 0 : this.pageable.pageNumber-1;
+
+    },
+    clickNextPageBtn() {
+      let tempEndPage = Math.ceil(this.responseData.data.totalElements / this.perPageNum);
+      this.currentPage = this.pageable.pageNumber > tempEndPage ? tempEndPage : this.pageable.pageNumber+1;
+      console.log(this.currentPage);
+    },
+    clickPageBtn(page) {
+      this.currentPage = page;
     }
+
   }
 }
 </script>
