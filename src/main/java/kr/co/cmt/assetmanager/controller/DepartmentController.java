@@ -106,6 +106,10 @@ public class DepartmentController {
     @PostMapping
     public Department store(@RequestBody DepartmentDto departmentDto) {
         Department department = modelMapper.map(departmentDto, Department.class);
+        if(departmentDto.getParentId() != null) {
+            Department parent = departmentService.findDepartmentById(departmentDto.getParentId()).get();
+            department.setParent(parent);
+        }
         return departmentService.createDepartment(department);
     }
 

@@ -11,6 +11,7 @@ export default {
   name: "DepartmentJstree",
   data() {
     return {
+      activeMode : 'create',
       datas : null,
     }
   },
@@ -18,6 +19,9 @@ export default {
     this.init();
   },
   methods: {
+    getInstance() {
+      return $("#" + "department-div");
+    },
     init() {
       const vm = this;
       this.getInstance().jstree({
@@ -54,10 +58,13 @@ export default {
         "plugins" : vm.plugins(),
       }).on("refresh.jstree", function () {
         vm.getInstance().jstree(true).open_all();
+      }).on("rename_node.jstree", function (event, renamed_node) {
+        if(vm.activeMode === 'create') {
+          vm.createBtnClick(renamed_node.node);
+        }
+      }).on("select_node.jstree", function (event, selected_node) {
+        vm.$emit("changedDepartmentActive", selected_node.node);
       });
-    },
-    getInstance() {
-      return $("#" + "department-div");
     },
     getJstreeData() {
       const vm = this;
@@ -98,37 +105,48 @@ export default {
       const vm = this;
       let menus = {};
       let jsTreeInstance = vm.getInstance().jstree(true);
-      if($node.type !== "root") {
-        $.extend(menus, {
-          "Create": {
-            "separator_before": false,
-            "separator_after": false,
-            "label": "생성",
-            "action": function (obj) {
-              console.log(obj, $node, vm, menus, jsTreeInstance);
-              /*            vm.departmentIdIndex = vm.getMaxId() + 1;
-                          $node = jsTreeInstance.create_node($node, {"text" : "new-department-" + vm.departmentIdIndex, "type": "Dept"});
-                          jsTreeInstance.edit($node);*/
-            }
+      $.extend(menus, {
+        "Create": {
+          "separator_before": false,
+          "separator_after": false,
+          "label": "생성",
+          "action": function () {
+            $node = jsTreeInstance.create_node($node, {"text" : "code", "type": "Dept"});
+            jsTreeInstance.edit($node);
+            vm.activeMode = "create";
           }
-        });
-        $.extend(menus, {
-          "Rename": {
-            "separator_before": false,
-            "separator_after": false,
-            "label": "이름변경",
-            "action": function (obj) {
-              console.log(obj, $node, vm, menus, jsTreeInstance);
-              $node.text = $node.text.split("/")[0]
-              jsTreeInstance.edit($node);
-            }
-          }
-        });
-      }
+        }
+      });
       return menus;
     },
-
-
+    createBtnClick(node) {
+      const vm = this;
+      axios.get('http://localhost:8080/api/departments/' + node.text + '/exists')
+          .then(response => {
+            if(response.status === 200) {
+              if(response.data === true) {
+                alert("중복된 코드입니다.");
+                vm.getJstreeData();
+              } else {
+                axios.post('http://localhost:8080/api/departments', {
+                  parentId : node.parent === "0" ? null : node.parent,
+                  name : node.text,
+                  code : node.text,
+                  remark : '',
+                  useYn : true,
+                  register : "1",
+                }).then(response => {
+                  console.log(response);
+                  vm.getJstreeData();
+                }).catch(e => {
+                  alert(e);
+                });
+              }
+            }
+          }).catch(e => {
+        alert(e);
+      });
+    },
   }
 }
 </script>
