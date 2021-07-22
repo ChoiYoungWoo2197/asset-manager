@@ -1,5 +1,6 @@
 package kr.co.cmt.assetmanager.dto;
 
+import kr.co.cmt.assetmanager.model.Department;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -27,4 +28,18 @@ public class DepartmentDto {
     private String register;
     private LocalDate registedDateAt;
     private LocalDate updatedDateAt;
+
+    @Builder
+    public DepartmentDto(Long id, Department parent, String code, String name, String remark, Boolean useYn,
+                         String register, LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.id = id;
+        this.parentId = parent == null ? null : parent.getId();
+        this.code = code;
+        this.name = name;
+        this.remark = remark;
+        this.useYn = useYn;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
+    }
 }

@@ -6,6 +6,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const Login = () => { return import("../views/Login.vue");}
 const Index = () => { return import("../views/Index.vue");}
 const Authority = () => { return import("../views/Authority.vue");}
+const Organization = () => { return import("../views/Organization.vue");}
 
 const routes = [
   {
@@ -22,6 +23,11 @@ const routes = [
     path: "/authoritys",
     name: "Authority",
     component: Authority,
+  },
+  {
+    path: "/organization",
+    name: "Organization",
+    component: Organization
   }
 ];
 

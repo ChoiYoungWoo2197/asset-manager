@@ -2,7 +2,6 @@ package kr.co.cmt.assetmanager.specification;
 
 import kr.co.cmt.assetmanager.model.Department;
 import org.springframework.data.jpa.domain.Specification;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
