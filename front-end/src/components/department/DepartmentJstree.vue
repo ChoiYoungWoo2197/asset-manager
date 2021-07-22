@@ -63,6 +63,7 @@ export default {
           vm.createBtnClick(renamed_node.node);
         }
       }).on("select_node.jstree", function (event, selected_node) {
+        console.log(event);
         vm.$emit("changedDepartmentActive", selected_node.node);
       });
     },
@@ -73,6 +74,8 @@ export default {
         vm.datas = [];
         vm.datas = response.data.slice(0);
 
+        console.log(vm.datas);
+
         let jstreeDatas = [];
         jstreeDatas.push({
           "id": "0", "parent": "#", "text": "전체 부서 목록" , "type" : "root",
@@ -82,12 +85,14 @@ export default {
         });
 
         vm.datas.forEach((department) => {
-          jstreeDatas.push({
-            "id" : department.id,
-            "parent" : department.parentId === null?0:department.parentId,
-            "text" :  department.code + " / " + department.name,
-            "type" : "Dept",
-          });
+          if(department.useYn === true) {
+            jstreeDatas.push({
+              "id" : department.id,
+              "parent" : department.parentId === null?0:department.parentId,
+              "text" :  department.code + " / " + department.name,
+              "type" : "Dept",
+            });
+          }
         })
 
         vm.getInstance().jstree(true).settings.core.data = jstreeDatas;

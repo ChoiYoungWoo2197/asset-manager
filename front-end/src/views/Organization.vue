@@ -53,7 +53,9 @@
                 <div class="card-body table-responsive p-0 table-hover" style="height: 500px;">
                   <form>
                     <div class="form-group">
-                      <DepartmentJstree></DepartmentJstree>
+                      <DepartmentJstree ref="departmentJstree"
+                                        @changedDepartmentActive="handleChangedDepartmentActive">
+                      </DepartmentJstree>
                     </div>
                   </form>
 
@@ -78,42 +80,7 @@
               <div class="card-body" style="height: 500px;">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                   <div class="tab-pane fade active show" id="custom-tabs-three-dept" role="tabpanel" aria-labelledby="custom-tabs-three-dept-tab">
-                    <form class="show-info">
-                      <div class="form-group">
-                        <label for="">부서명<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control " id="label1u" placeholder="" value="보안연구소">
-                      </div>
-                      <div class="form-group">
-                        <label for="">상위 부서명<span class="text-danger"></span></label>
-                        <input type="text" class="form-control " id="" placeholder="" value="개발팀" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label for="">부서코드<span class="text-danger"></span></label>
-                        <input type="text" class="form-control "  placeholder="" value="development" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label for="">비고<code></code></label>
-                        <textarea class="form-control" ></textarea>
-                      </div>
-                      <div class="form-group">
-                        <div class="custom-control custom-radio d-inline pr-1">
-                          <input class="custom-control-input" type="radio" id="customRadio1u" name="customRadio">
-                          <label for="customRadio1u" class="custom-control-label">비활성화</label>
-                        </div>
-                        <div class="custom-control custom-radio d-inline">
-                          <input class="custom-control-input" type="radio" id="customRadio2u" name="customRadio" checked="">
-                          <label for="customRadio2u" class="custom-control-label">활성화</label>
-                        </div>
-                      </div>
-                      <div class="form-group text-right btn-group-default">
-                        <button class="create btn btn-secondary mr-1">
-                          <i class="far fa-window-close pr-1"></i>취소
-                        </button>
-                        <button class="update btn btn-primary ">
-                          <i class="far fa-edit pr-1"></i>수정
-                        </button>
-                      </div>
-                    </form>
+                    <DepartmentEditor ref="departmentEditor" :p-department="activeDepartment" @updateData="handleUpdateData"></DepartmentEditor>
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-three-member" role="tabpanel" aria-labelledby="custom-tabs-three-member-tab">
                     <form>
@@ -307,21 +274,30 @@
 <script>
 // import $ from "jquery";
 import DepartmentJstree from "@/components/department/DepartmentJstree.vue";
-
+import DepartmentEditor from "@/components/department/DepartmentEditor";
 export default {
   name: "Organization",
   components: {
     DepartmentJstree,
+    DepartmentEditor,
   },
   data() {
     return {
-
+      activeDepartment : null,
     }
   },
   mounted() {
     document.body.classList.remove('login-page');
     document.body.classList.add('layout-top-nav');
   },
+  methods: {
+    handleChangedDepartmentActive(data) {
+      this.activeDepartment = data;
+    },
+    handleUpdateData() {
+      this.$refs.departmentJstree.getJstreeData();
+    }
+  }
 }
 </script>
 

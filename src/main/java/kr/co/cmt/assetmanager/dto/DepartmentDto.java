@@ -29,6 +29,11 @@ public class DepartmentDto {
     private LocalDate registedDateAt;
     private LocalDate updatedDateAt;
 
+/*    public DepartmentDto(Department department) {
+
+    }*/
+
+
     @Builder
     public DepartmentDto(Long id, Department parent, String code, String name, String remark, Boolean useYn,
                          String register, LocalDate registedDateAt, LocalDate updatedDateAt) {
@@ -41,5 +46,19 @@ public class DepartmentDto {
         this.register = register;
         this.registedDateAt = registedDateAt;
         this.updatedDateAt = updatedDateAt;
+    }
+
+    public static DepartmentDto convertEntityToDto(Department department) {
+        DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.id = department.getId();
+        departmentDto.parentId = department.getParent() == null ? null : department.getParent().getId();
+        departmentDto.code = department.getCode();
+        departmentDto.name = department.getName();
+        departmentDto.remark = department.getRemark();
+        departmentDto.useYn = department.getUseYn();
+        departmentDto.register = department.getRegister();
+        departmentDto.registedDateAt = department.getRegistedDateAt();
+        departmentDto.updatedDateAt = department.getUpdatedDateAt();
+        return departmentDto;
     }
 }

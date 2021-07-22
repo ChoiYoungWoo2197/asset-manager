@@ -73,8 +73,6 @@ public class DepartmentController {
                     .register(department.getRegister()).registedDateAt(department.getRegistedDateAt()).updatedDateAt(department.getUpdatedDateAt())
                     .build());
         }
-/*        return departments.stream().map(department ->
-                modelMapper.map(department, DepartmentDto.class)).collect(Collectors.toList());*/
         return departmentDtos;
     }
     
@@ -104,13 +102,15 @@ public class DepartmentController {
      * 부서 저장
      */
     @PostMapping
-    public Department store(@RequestBody DepartmentDto departmentDto) {
+    public DepartmentDto store(@RequestBody DepartmentDto departmentDto) {
         Department department = modelMapper.map(departmentDto, Department.class);
         if(departmentDto.getParentId() != null) {
             Department parent = departmentService.findDepartmentById(departmentDto.getParentId()).get();
             department.setParent(parent);
         }
-        return departmentService.createDepartment(department);
+
+        departmentService.createDepartment(department);
+        return DepartmentDto.convertEntityToDto(department);
     }
 
     /**
@@ -118,9 +118,10 @@ public class DepartmentController {
      * 부서 보기
      */
     @GetMapping(value = "/{id}")
-    public Optional<Department> show(@PathVariable("id") long departmentId) {
+    public DepartmentDto show(@PathVariable("id") long departmentId) {
 //        Optional<Authority> authority = authorityRepository.findById(authorityId);
-        return departmentService.findDepartmentById(departmentId);
+        Department department = departmentService.findDepartmentById(departmentId).get();
+        return DepartmentDto.convertEntityToDto(department);
     }
 
     /**
@@ -128,13 +129,14 @@ public class DepartmentController {
      * 부서 수정
      */
     @PutMapping(value = "/{id}")
-    public Department update(@PathVariable("id") long departmentId, @RequestBody DepartmentDto departmentDto) {
+    public DepartmentDto update(@PathVariable("id") long departmentId, @RequestBody DepartmentDto departmentDto) {
         Department entity = departmentService.findDepartmentById(departmentId).get();
         entity.setName(departmentDto.getName());
         entity.setRemark(departmentDto.getRemark());
         entity.setUseYn(departmentDto.getUseYn());
         entity.setUpdatedDateAt(LocalDate.now());
-        return departmentService.updateDepartment(entity);
+        departmentService.updateDepartment(entity);
+        return DepartmentDto.convertEntityToDto(entity);
     }
 
     /**
