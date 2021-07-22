@@ -90,7 +90,7 @@ export default {
       if(vm.department === null) return false;
       return axios.get('http://localhost:8080/api/departments/' + vm.department.id);
     },
-    findAllDepartment(){
+    findParentAndChildDepartment(){
       const vm = this;
       if(vm.department === null) return false;
 
