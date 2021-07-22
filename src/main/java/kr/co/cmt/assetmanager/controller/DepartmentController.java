@@ -120,6 +120,8 @@ public class DepartmentController {
     @GetMapping(value = "/{id}")
     public DepartmentDto show(@PathVariable("id") long departmentId) {
 //        Optional<Authority> authority = authorityRepository.findById(authorityId);
+        if(departmentId == 0) return null;
+
         Department department = departmentService.findDepartmentById(departmentId).get();
         return DepartmentDto.convertEntityToDto(department);
     }

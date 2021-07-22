@@ -19,6 +19,7 @@ public class Department {
     private Long id;
 
     @ManyToOne
+//    @JoinColumn(name = "deparatment_id")
     private Department parent;
 
     @OneToMany(mappedBy = "parent", cascade ={CascadeType.ALL})

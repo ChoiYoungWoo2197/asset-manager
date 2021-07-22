@@ -71,8 +71,9 @@ export default {
   watch: {
     pDepartment() {
       this.department = this.pDepartment;
-      this.findParent();
-      this.findDepartment();
+/*      this.findParent();
+      this.findDepartment();*/
+      this.findAllDepartment();
     }
   },
   mounted() {
@@ -81,33 +82,40 @@ export default {
   methods: {
     findParent() {
       const vm = this;
-      this.activeParent = null;
-      if(vm.department.parent === "0" || vm.department.parent  === null) return false;
-      axios.get('http://localhost:8080/api/departments/' + vm.department.parent, {}
-      ).then(response => {
-        if(response.status === 200) {
-          vm.activeParent = response.data;
-          console.log(vm.activeParent)
-        }
-      }).catch(e => {
-        alert(e);
-      })
-
+      if(vm.department === null) return false;
+      return axios.get('http://localhost:8080/api/departments/' + vm.department.parent);
     },
-    findDepartment() {
+    findDepartment(){
+      const vm = this;
+      if(vm.department === null) return false;
+      return axios.get('http://localhost:8080/api/departments/' + vm.department.id);
+    },
+    findAllDepartment(){
       const vm = this;
       if(vm.department === null) return false;
 
-      axios.get('http://localhost:8080/api/departments/' + vm.department.id, {}
-      ).then(response => {
-        // console.log(response);
-        if(response.status === 200) {
-          vm.activeDepartment = response.data;
-          vm.setData();
+      axios.all([this.findParent(), this.findDepartment()])
+      .then(axios.spread(function (parent, child) {
+        vm.activeParent = parent.data;
+        vm.activeDepartment = child.data;
+
+        let texts = vm.department.text.split("/");
+        vm.id = vm.activeDepartment.id;
+        vm.name = texts[1].trim();
+        vm.code = texts[0].trim();
+        vm.remark = vm.activeDepartment.remark;
+        vm.useYn = vm.activeDepartment.useYn;
+        vm.parentName = vm.activeParent !== "" ? vm.activeParent.name : "";
+
+        if(vm.useYn === true) {
+          $('#useYnTrueEdit').prop("checked", true);
+        } else {
+          $('#useYnFalseEdit').prop("checked", true);
         }
-      }).catch(e => {
+
+      })).catch(e => {
         alert(e);
-      })
+      });
     },
     setData() {
       let texts = this.department.text.split("/");
@@ -116,6 +124,7 @@ export default {
       this.code = texts[0].trim();
       this.remark = this.activeDepartment.remark;
       this.useYn = this.activeDepartment.useYn;
+      console.log('setdAta : ',this.activeParent)
       this.parentName = this.activeParent !== null ? this.activeParent.name : '';
 
       if(this.useYn === true) {
