@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -58,8 +59,9 @@ public class AuthorityController {
     * 권한 목록
     */
     @GetMapping
-    public List<Authority> index() {
-        return authorityService.findAllAuthority();
+    public List<AuthorityDto> index() {
+        return  authorityService.findAllAuthority().stream().map(authority ->
+                modelMapper.map(authority, AuthorityDto.class)).collect(Collectors.toList());
     }
 
     /**
@@ -76,10 +78,11 @@ public class AuthorityController {
      * 권한 저장
      */
     @PostMapping
-    public Authority store(@RequestBody AuthorityDto authorityDto) {
+    public AuthorityDto store(@RequestBody AuthorityDto authorityDto) {
         Authority authority = modelMapper.map(authorityDto, Authority.class);
         authority.setRegister("1");
-        return authorityService.createAuthority(authority);
+        authorityService.createAuthority(authority);
+        return  modelMapper.map(authority, AuthorityDto.class);
     }
 
     /**
@@ -87,8 +90,9 @@ public class AuthorityController {
      * 권한 보기
      */
     @GetMapping(value = "/{id}")
-    public Optional<Authority> show(@PathVariable("id") long authorityId) {
-        return authorityService.findAuthorityById(authorityId);
+    public AuthorityDto show(@PathVariable("id") long authorityId) {
+        Authority authority = authorityService.findAuthorityById(authorityId).get();
+        return modelMapper.map(authority, AuthorityDto.class);
     }
 
     /**
@@ -96,14 +100,15 @@ public class AuthorityController {
      * 권한 수정
      */
     @PutMapping(value = "/{id}")
-    public Authority update(@PathVariable("id") long authorityId, @RequestBody AuthorityDto authorityDto) {
+    public AuthorityDto update(@PathVariable("id") long authorityId, @RequestBody AuthorityDto authorityDto) {
         Authority entity = authorityService.findAuthorityById(authorityId).get();
         entity.setName(authorityDto.getName());
         entity.setRemark(authorityDto.getRemark());
         entity.setUseYn(authorityDto.getUseYn());
         entity.setUpdatedDateAt(LocalDate.now());
+        authorityService.updateAuthority(entity);
 
-        return authorityService.updateAuthority(entity);
+        return modelMapper.map(entity, AuthorityDto.class);
     }
 
     /**
