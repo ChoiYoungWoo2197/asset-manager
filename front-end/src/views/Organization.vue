@@ -24,16 +24,10 @@
       <div class="container">
         <div class="mb-2">
           <div class="text-right">
-            <div>
+            <div v-if="activeVueComponent !== 'department'">
               <button class="create btn btn-secondary btn-sm mr-1">
                 <i class="far fa-plus-square pr-1"></i>등록
               </button>
-              <!--                            <button class="update btn btn-secondary btn-sm">
-                                              <i class="far fa-edit pr-1"></i>수정
-                                          </button>
-              <button class="remove btn btn-secondary btn-sm">
-                  <i class="far fa-minus-square pr-1"></i>삭제
-              </button>-->
               <button class="file-upload btn btn-secondary btn-sm mr-1">
                 <i class="fas fa-file-download pr-1"></i>파일업로드
               </button>
@@ -70,10 +64,12 @@
               <div class="card-header p-0 pt-1 border-bottom-0 ">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-three-dept-tab" data-toggle="pill" href="#custom-tabs-three-dept" role="tab" aria-controls="custom-tabs-three-dept" aria-selected="true">부서 관리</a>
+                    <a class="nav-link active" id="custom-tabs-three-dept-tab" data-toggle="pill" href="#custom-tabs-three-dept"
+                       role="tab" aria-controls="custom-tabs-three-dept" aria-selected="true" @click="clickTab('department')">부서 관리</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-member-tab" data-toggle="pill" href="#custom-tabs-three-member" role="tab" aria-controls="custom-tabs-three-member" aria-selected="false">계정 관리</a>
+                    <a class="nav-link" id="custom-tabs-three-member-tab" data-toggle="pill" href="#custom-tabs-three-member"
+                       role="tab" aria-controls="custom-tabs-three-member" aria-selected="false" @click="clickTab('member')">계정 관리</a>
                   </li>
                 </ul>
               </div>
@@ -245,14 +241,16 @@
                 </div>
               </div>
               <div class="card-footer clearfix">
-                <h4 class="card-title">Showing 1 to 4 of 12 entries</h4>
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                </ul>
+                <template v-if="activeVueComponent!== 'department'">
+                  <h4 class="card-title">Showing 1 to 4 of 12 entries</h4>
+                  <ul class="pagination pagination-sm m-0 float-right">
+                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                  </ul>
+                </template>
               </div>
               <!-- /.card -->
             </div>
@@ -283,6 +281,7 @@ export default {
   },
   data() {
     return {
+      activeVueComponent : 'department',
       activeDepartment : null,
     }
   },
@@ -295,7 +294,11 @@ export default {
       this.activeDepartment = data;
     },
     handleUpdateData() {
+      this.activeDepartment = null;
       this.$refs.departmentJstree.getJstreeData();
+    },
+    clickTab(activeVueComponent) {
+      this.activeVueComponent = activeVueComponent;
     }
   }
 }

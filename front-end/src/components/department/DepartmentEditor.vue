@@ -59,6 +59,7 @@ export default {
     return {
       department : null,
       activeDepartment : null,
+      activeParent : null,
       id : null,
       name : null,
       parentName : null,
@@ -70,6 +71,7 @@ export default {
   watch: {
     pDepartment() {
       this.department = this.pDepartment;
+      this.findParent();
       this.findDepartment();
     }
   },
@@ -77,13 +79,28 @@ export default {
     this.department = this.pDepartment;
   },
   methods: {
+    findParent() {
+      const vm = this;
+      this.activeParent = null;
+      if(vm.department.parent === "0" || vm.department.parent  === null) return false;
+      axios.get('http://localhost:8080/api/departments/' + vm.department.parent, {}
+      ).then(response => {
+        if(response.status === 200) {
+          vm.activeParent = response.data;
+          console.log(vm.activeParent)
+        }
+      }).catch(e => {
+        alert(e);
+      })
+
+    },
     findDepartment() {
       const vm = this;
       if(vm.department === null) return false;
 
       axios.get('http://localhost:8080/api/departments/' + vm.department.id, {}
       ).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.status === 200) {
           vm.activeDepartment = response.data;
           vm.setData();
@@ -99,6 +116,7 @@ export default {
       this.code = texts[0].trim();
       this.remark = this.activeDepartment.remark;
       this.useYn = this.activeDepartment.useYn;
+      this.parentName = this.activeParent !== null ? this.activeParent.name : '';
 
       if(this.useYn === true) {
         $('#useYnTrueEdit').prop("checked", true);

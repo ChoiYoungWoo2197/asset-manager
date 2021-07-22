@@ -63,7 +63,7 @@ export default {
           vm.createBtnClick(renamed_node.node);
         }
       }).on("select_node.jstree", function (event, selected_node) {
-        console.log(event);
+        if(selected_node.node.id === "0" || selected_node.event === undefined) return false;
         vm.$emit("changedDepartmentActive", selected_node.node);
       });
     },
@@ -73,9 +73,6 @@ export default {
       ).then(response => {
         vm.datas = [];
         vm.datas = response.data.slice(0);
-
-        console.log(vm.datas);
-
         let jstreeDatas = [];
         jstreeDatas.push({
           "id": "0", "parent": "#", "text": "전체 부서 목록" , "type" : "root",
@@ -137,7 +134,7 @@ export default {
                   parentId : node.parent === "0" ? null : node.parent,
                   name : node.text,
                   code : node.text,
-                  remark : '',
+                  remark : "",
                   useYn : true,
                   register : "1",
                 }).then(response => {
