@@ -71,9 +71,7 @@ export default {
   watch: {
     pDepartment() {
       this.department = this.pDepartment;
-/*      this.findParent();
-      this.findDepartment();*/
-      this.findAllDepartment();
+      this.findParentAndActiveDepartment();
     }
   },
   mounted() {
@@ -85,16 +83,16 @@ export default {
       if(vm.department === null) return false;
       return axios.get('http://localhost:8080/api/departments/' + vm.department.parent);
     },
-    findDepartment(){
+    findActiveDepartment(){
       const vm = this;
       if(vm.department === null) return false;
       return axios.get('http://localhost:8080/api/departments/' + vm.department.id);
     },
-    findParentAndChildDepartment(){
+    findParentAndActiveDepartment(){
       const vm = this;
       if(vm.department === null) return false;
 
-      axios.all([this.findParent(), this.findDepartment()])
+      axios.all([this.findParent(), this.findActiveDepartment()])
       .then(axios.spread(function (parent, child) {
         vm.activeParent = parent.data;
         vm.activeDepartment = child.data;

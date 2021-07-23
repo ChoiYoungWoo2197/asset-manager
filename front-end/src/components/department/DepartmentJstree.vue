@@ -75,7 +75,7 @@ export default {
         vm.datas = response.data.slice(0);
         let jstreeDatas = [];
         jstreeDatas.push({
-          "id": "0", "parent": "#", "text": "전체 부서 목록" , "type" : "root",
+          "id": "0", "parent": "#", "text": "전체 부서 목록 (code/name)" , "type" : "root",
           "a_attr": {
             class: "disable_checkbox"
           }

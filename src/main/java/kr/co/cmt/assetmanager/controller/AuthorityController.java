@@ -8,6 +8,7 @@ import kr.co.cmt.assetmanager.service.AuthorityService;
 import kr.co.cmt.assetmanager.specification.AuthoritySpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -117,6 +118,12 @@ public class AuthorityController {
      */
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") long authorityId) {
-        authorityService.deleteAuthority(authorityId);
+        /**
+         * 원래는 delete함수를 사용해야 하는데 논리적인 삭제이기 때문에 useYn을 false로 변경처리한다.
+         * authorityService.deleteAuthority(authorityId);
+         * */
+        Authority authority = authorityService.findAuthorityById(authorityId).get();
+        authority.setUseYn(false);
+        authorityService.updateAuthority(authority);
     }
 }
