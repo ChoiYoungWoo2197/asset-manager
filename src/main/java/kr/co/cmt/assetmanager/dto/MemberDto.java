@@ -1,6 +1,10 @@
 package kr.co.cmt.assetmanager.dto;
 
+import kr.co.cmt.assetmanager.model.Authority;
+import kr.co.cmt.assetmanager.model.Department;
+import kr.co.cmt.assetmanager.model.Member;
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -35,4 +39,43 @@ public class MemberDto {
     private String register;
     private LocalDate registedDateAt;
     private LocalDate updatedDateAt;
+
+    @Builder
+    public MemberDto(Long id, Authority authority, Department department, String email, String password, String name,
+                     LocalDate birthday, String position, String phone, String remark, Boolean useYn, String register,
+                     LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.id = id;
+        this.authorityId = authority == null ? null : authority.getId();
+        this.departmentId = department == null ? null : department.getId();
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.birthday = birthday;
+        this.position = position;
+        this.phone = phone;
+        this.remark = remark;
+        this.useYn = useYn;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
+    }
+
+    public static MemberDto convertEntityToDto(Member member) {
+        MemberDto memberDto = new MemberDto();
+        memberDto.id = member.getId();
+        memberDto.authorityId = member.getAuthority() == null ? null : member.getAuthority().getId();
+        memberDto.departmentId = member.getDepartment() == null ? null : member.getDepartment().getId();
+        memberDto.email = member.getEmail();
+        memberDto.password = member.getPassword();
+        memberDto.name = member.getName();
+        memberDto.birthday = member.getBirthday();
+        memberDto.position = member.getPosition();
+        memberDto.phone = member.getPhone();
+        memberDto.remark = member.getRemark();
+        memberDto.useYn = member.getUseYn();
+        memberDto.register = member.getRegister();
+        memberDto.registedDateAt = member.getRegistedDateAt();
+        memberDto.updatedDateAt = member.getUpdatedDateAt();
+        return memberDto;
+    }
 }

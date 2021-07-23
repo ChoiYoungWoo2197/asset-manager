@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 //계정
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 //@NoArgsConstructor
 @Entity
 public class Member {
@@ -18,9 +18,9 @@ public class Member {
      /**
      * N:1, 단방향, 연관관계(주인)
      **/
-    @ManyToOne
-    @JoinColumn(name = "authority_id")
-    private Authority authority;
+     @ManyToOne
+     @JoinColumn(name = "authority_id")
+     private Authority authority;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
@@ -65,4 +65,23 @@ public class Member {
         this.updatedDateAt = LocalDate.now();
     }
 
+    @Builder
+    public Member(Long id, Authority authority, Department department, String email, String password, String name,
+                     LocalDate birthday, String position, String phone, String remark, Boolean useYn, String register,
+                     LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.id = id;
+        this.authority = authority;
+        this.department = department;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.birthday = birthday;
+        this.position = position;
+        this.phone = phone;
+        this.remark = remark;
+        this.useYn = useYn;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
+    }
 }

@@ -10,4 +10,6 @@ import lombok.*;
 public class SearchDto {
     Boolean useYn;
     String remark;
+    Long departmentId;
+    Long authorityId;
 }
