@@ -63,7 +63,7 @@ public class DepartmentController {
     @GetMapping
     public List<DepartmentDto> index() {
         List<Department> departments = departmentService.findAllDepartment();
-        List<DepartmentDto> departmentDtos = new ArrayList<>();
+   /*     List<DepartmentDto> departmentDtos = new ArrayList<>();
 
         for (Department department : departments) {
             departmentDtos.add(DepartmentDto.builder()
@@ -72,7 +72,9 @@ public class DepartmentController {
                     .remark(department.getRemark()).useYn(department.getUseYn())
                     .register(department.getRegister()).registedDateAt(department.getRegistedDateAt()).updatedDateAt(department.getUpdatedDateAt())
                     .build());
-        }
+        }*/
+        List<DepartmentDto> departmentDtos = departments.stream().map(department ->
+                DepartmentDto.convertEntityToDto(department)).collect(Collectors.toList());
         return departmentDtos;
     }
     
@@ -83,8 +85,8 @@ public class DepartmentController {
     @GetMapping(params = "page")
     public Page<DepartmentDto> page(SearchDto searchDto, Pageable pageable) {
         Page<Department> departments = departmentService.findAllDepartment(searchDto, pageable);
-        Page<DepartmentDto> departmentDtos = departments.map(authority ->
-                modelMapper.map(authority, DepartmentDto.class));
+        Page<DepartmentDto> departmentDtos = departments.map(department ->
+                DepartmentDto.convertEntityToDto(department));
         return departmentDtos;
     }
 
