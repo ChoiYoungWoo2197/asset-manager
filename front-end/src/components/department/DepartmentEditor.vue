@@ -6,42 +6,44 @@
       </div>
     </template>
     <template v-else>
-      <form>
-        <div class="form-group">
-          <label for="nameEdit">부서명<span class="text-danger">*</span></label>
-          <input type="text" class="form-control " id="nameEdit" placeholder="" :value="name">
-        </div>
-        <div class="form-group">
-          <label for="parentName">상위 부서명<span class="text-danger"></span></label>
-          <input type="text" class="form-control " id="parentName" placeholder="" :value="parentName" readonly>
-        </div>
-        <div class="form-group">
-          <label for="codeEdit">부서코드<span class="text-danger"></span></label>
-          <input type="text" class="form-control" id="codeEdit"  placeholder="" :value="code" readonly>
-        </div>
-        <div class="form-group">
-          <label for="remarkEdit">비고<code></code></label>
-          <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
-        </div>
-        <div class="form-group">
-          <div class="custom-control custom-radio d-inline pr-1">
-            <input class="custom-control-input" type="radio" id="useYnFalseEdit" name="useYnRadio" @click="clickRadioBtn(false)">
-            <label for="useYnFalseEdit" class="custom-control-label">비활성화</label>
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <label for="nameEdit">부서명<span class="text-danger">*</span></label>
+            <input type="text" class="form-control " id="nameEdit" placeholder="" :value="name">
           </div>
-          <div class="custom-control custom-radio d-inline">
-            <input class="custom-control-input" type="radio" id="useYnTrueEdit" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
-            <label for="useYnTrueEdit" class="custom-control-label">활성화</label>
+          <div class="form-group">
+            <label for="parentName">상위 부서명<span class="text-danger"></span></label>
+            <input type="text" class="form-control " id="parentName" placeholder="" :value="parentName" readonly>
           </div>
-        </div>
-        <div class="form-group text-right btn-group-default">
-          <button class="create btn btn-secondary mr-1">
-            <i class="far fa-window-close pr-1"></i>취소
-          </button>
-          <button class="update btn btn-primary" @click.prevent="updateBtnClick">
-            <i class="far fa-edit pr-1"></i>수정
-          </button>
-        </div>
-      </form>
+          <div class="form-group">
+            <label for="codeEdit">부서코드<span class="text-danger"></span></label>
+            <input type="text" class="form-control" id="codeEdit"  placeholder="" :value="code" readonly>
+          </div>
+          <div class="form-group">
+            <label for="remarkEdit">비고<code></code></label>
+            <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-radio d-inline pr-1">
+              <input class="custom-control-input" type="radio" id="useYnFalseEdit" name="useYnRadio" @click="clickRadioBtn(false)">
+              <label for="useYnFalseEdit" class="custom-control-label">비활성화</label>
+            </div>
+            <div class="custom-control custom-radio d-inline">
+              <input class="custom-control-input" type="radio" id="useYnTrueEdit" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
+              <label for="useYnTrueEdit" class="custom-control-label">활성화</label>
+            </div>
+          </div>
+          <div class="form-group text-right btn-group-default">
+            <button class="create btn btn-secondary mr-1">
+              <i class="far fa-window-close pr-1"></i>취소
+            </button>
+            <button class="update btn btn-primary" @click.prevent="updateBtnClick">
+              <i class="far fa-edit pr-1"></i>수정
+            </button>
+          </div>
+        </form>
+      </div>
     </template>
   </div>
 </template>

@@ -3,6 +3,7 @@ package kr.co.cmt.assetmanager.dto;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
