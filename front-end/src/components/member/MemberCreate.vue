@@ -1,0 +1,235 @@
+<template>
+  <!-- Modal -->
+  <div class="modal fade" id="member-create-modal" tabindex="-1" aria-labelledby="authority-create-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h2 class="tit_step">계정등록</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="name">이름<span class="text-danger">*</span></label>
+              <input type="text" class="form-control " id="name" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="email">이메일<span class="text-danger">*</span></label>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <input type="text" class="form-control " id="email" placeholder="">
+                </div>
+                <div class="col-sm">
+                  <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">비밀번호<span class="text-danger">*</span></label>
+              <input type="password" class="form-control " id="password" placeholder="">
+            </div>
+<!--            <div class="form-group">
+              <label for="passwordCheck">비밀번호 재설정<span class="text-danger">*</span></label>
+              <input type="password" class="form-control " id="passwordCheck" placeholder="">
+            </div>-->
+            <div class="form-group">
+              <label for="birthday">생년월일<span class="text-danger"></span></label>
+              <input class="form-control" type="text" id="birthday" placeholder="생년월일을 입력하세요.">
+<!--              <div class="input-group date" id="birthday" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#birthday"/>
+                <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+              </div>-->
+            </div>
+            <div class="form-group">
+              <label for="phone">전화번호<span class="text-danger"></span></label>
+              <input type="text" class="form-control " id="phone" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="departments">부서<span class="text-danger">*</span></label>
+              <select class="form-control " style="width: 100%;" id="departments" disabled readonly="readonly">
+                <option v-for="(department, index) in getDepartments"
+                        :key="index"
+                        :value="department.id">
+                  {{ department.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="position">직급<span class="text-danger">*</span></label>
+              <select class="form-control " style="width: 100%;" id="position">
+                <option v-for="(position, index) in positions"
+                        :key="index"
+                        :value="position.code"
+                        :selected="index === 0">
+                  {{ position.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="authority">권한<span class="text-danger">*</span></label>
+              <select class="form-control " style="width: 100%;" id="authority">
+                <option v-for="(authority, index) in getAuthoritys"
+                        :key="index"
+                        :value="authority.id"
+                        :selected="authority.index === 0">
+                  {{ authority.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="remark">비고<code></code></label>
+              <textarea class="form-control" id="remark"></textarea>
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-radio d-inline pr-1">
+                <input class="custom-control-input" type="radio" id="useYnFalse" name="useYnRadio" @click="clickRadioBtn(false)">
+                <label for="useYnFalse" class="custom-control-label">비활성화</label>
+              </div>
+              <div class="custom-control custom-radio d-inline">
+                <input class="custom-control-input" type="radio" id="useYnTrue" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
+                <label for="useYnTrue" class="custom-control-label">활성화</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>
+          <button id="createBtn" type="button" class="btn btn-secondary" @click="createBtnClick"> <i class="far fa-edit pr-1"></i>등록</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import $ from "jquery";
+import axios from "axios";
+import moment from 'moment';
+import "daterangepicker/daterangepicker.js";
+import "daterangepicker/daterangepicker.css";
+
+export default {
+  name: "MemberCreate",
+  props: {
+    pDepartment: Object,
+  },
+  data() {
+    return {
+      department : null,
+      useYn : true,
+      authoritys : null,
+      departments : null,
+      positions : [
+        {code : 'e' , name : '사원'},
+        {code : 'am' , name : '대리'},
+        {code : 'm' , name : '과장'},
+        {code : 'dgm' , name : '차장'},
+        {code : 'gm' , name : '부장'},
+        {code : 'd' , name : '이사'},
+        {code : 'md' , name : '상무'},
+        {code : 'smd' , name : '전무'},
+        {code : 'p' , name : '사장'},
+      ]
+    }
+  },
+  computed: {
+    getAuthoritys() {
+      return this.authoritys;
+    },
+    getDepartments() {
+      return this.departments;
+    },
+  },
+  watch: {
+    pDepartment() {
+      this.department = this.pDepartment;
+      this.findAuthoriyAndDepartment();
+    }
+  },
+  mounted() {
+    this.initDatePicker();
+  },
+  methods: {
+    initDatePicker() {
+      $('input#birthday').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'),10),
+        locale : {
+          format: 'YYYY-MM-DD',
+          applyLabel: "적용",
+          cancelLabel: "닫기"
+        }
+      });
+    },
+    findAuthoritys() {
+      const vm = this;
+      if(vm.department === null) return false;
+      return axios.get('http://localhost:8080/api/authoritys');
+    },
+    findDepartments() {
+      const vm = this;
+      if(vm.department === null) return false;
+      return axios.get('http://localhost:8080/api/departments');
+    },
+    findAuthoriyAndDepartment(){
+      const vm = this;
+      if(vm.department === null) return false;
+
+      axios.all([this.findAuthoritys(), this.findDepartments()])
+          .then(axios.spread(function (authoritys, departmenets) {
+            vm.authoritys = authoritys.data.filter(authority => authority.useYn === true);
+            vm.departments = departmenets.data.filter(department => {
+              return (department.useYn === true && department.id === Number(vm.department.id));
+            });
+          })).catch(e => {
+            alert(e);
+          });
+    },
+    clickRadioBtn(flag){
+      this.useYn = flag;
+    },
+    createBtnClick() {
+      const vm = this;
+      if($( 'input#name' ).val() ==="" || $( 'input#code' ).val() === "" || this.isExistCode !== false) {
+        if($( 'input#name' ).val() === '') {
+          alert("이름을 입력해주세요.");
+          return false;
+        } else if($( 'input#code' ).val() === "" ) {
+          alert("코드를 입력해주세요.");
+          return false;
+        } else if( this.isExistCode !== false ) {
+          //제일 마지막에 추가해주자.
+          return false;
+        }
+      }
+
+      // console.log($( 'input#name' ).val(), $( 'input#code' ).val(),$( 'textarea#remark' ).val(), this.useYn);
+
+      axios.post('http://localhost:8080/api/authoritys', {
+        name : $( 'input#name' ).val(),
+        code : $( 'input#code' ).val(),
+        remark : $( 'textarea#remark' ).val(),
+        useYn : this.useYn,
+      }).then(response => {
+        console.log(response);
+        if(response.status === 200) {
+          vm.$emit("updateData", response.data);
+          $('#authority-create-modal').modal("hide");
+        }
+      }).catch(e => {
+        alert(e);
+      })
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

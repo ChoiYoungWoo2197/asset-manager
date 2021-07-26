@@ -7,7 +7,7 @@
     </template>
     <template v-else>
       <div class="card-body">
-        <form>
+        <form class="member">
           <div class="form-row">
             <div class="col-3">
               <div class="form-group">
@@ -125,15 +125,26 @@
         </ul>
       </div>
     </template>
+
+    <!-- 모달 컴포넌트  -->
+    <MemberCreate ref="memberCreate" :p-department="pDepartment" @updateData="handleUpdateData" style="display: none"></MemberCreate>
+    <MemberUpdate ref="memberUpdate" @updateData="handleUpdateData" style="display: none"></MemberUpdate>
+    <!-- /모달 컴포넌트  -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import $ from "jquery";
+import MemberCreate from "@/components/member/MemberCreate.vue";
+import MemberUpdate from "@/components/member/MemberUpdate.vue";
 
 export default {
   name: "Member",
+  components: {
+    MemberCreate,
+    MemberUpdate,
+  },
   props: {
     pDepartment: Object,
   },
@@ -237,9 +248,9 @@ export default {
 
       let departmentIds = vm.department.children_d;
       departmentIds.push(vm.department.id);
-      if(isSearch && $('#departments').val() !== "0") {
+      if(isSearch && $('form.member #departments').val() !== "0") {
         departmentIds = [];
-        departmentIds.push($('#departments').val());
+        departmentIds.push($('form.member #departments').val());
       }
 
       //부서에 속한 회원 + 하위 부서에 속한 회원까지 조회.
@@ -248,11 +259,11 @@ export default {
           page : vm.currentPage,
           size : vm.perPageNum,
           departmentIds: departmentIds,
-          authorityId : $('#authority').val() === undefined ? '' : ($('#authority').val() !== "0"
-              ? $('#authority').val() : ''),
-          position : $('#position').val() === undefined ? '' : $('#position').val(),
-          useYn:$('#useYn').val() === undefined ? '' : $('#useYn').val(),
-          remark: $('#search').val() === undefined ? '' : $('#search').val()
+          authorityId : $('form.member #authority').val() === undefined ? '' : ($('form.member #authority').val() !== "0"
+              ? $('form.member #authority').val() : ''),
+          position : $('#position').val() === undefined ? '' : $('form.member #position').val(),
+          useYn:$('form.member #useYn').val() === undefined ? '' : $('form.member #useYn').val(),
+          remark: $('form.member #search').val() === undefined ? '' : $('form.member #search').val()
         },
         paramsSerializer: function (paramObj) {
           //배열로 전송 할 때 []를 떼고 보내자.
@@ -279,6 +290,8 @@ export default {
     },
     clickTrTag(data) {
       console.log(data);
+      // this.$refs.authorityUpdate.setData(data);
+      this.showUpdateModal();
     },
     getStartAndEndPage() {
       this.pages = [];
@@ -333,6 +346,16 @@ export default {
 
       let selectPosition = vm.positions.filter(position => position.code === positionCode)[0];
       return selectPosition !== undefined ? selectPosition.name : "";
+    },
+    handleUpdateData() {
+      this.currentPage = 0;
+    },
+    showCreateModal() {
+      // this.$refs.authorityCreate.clearData();
+      $('#member-create-modal').modal("show");
+    },
+    showUpdateModal() {
+      $('#member-update-modal').modal("show");
     }
   }
 }

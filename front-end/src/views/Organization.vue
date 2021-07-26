@@ -24,8 +24,16 @@
       <div class="container">
         <div class="mb-2">
           <div class="text-right">
-            <div v-if="activeVueComponent !== 'department'">
-              <button class="create btn btn-secondary btn-sm mr-1">
+            <div v-if="activeVueComponent === 'department'">
+              <button class="file-upload btn btn-secondary btn-sm mr-1">
+                <i class="fas fa-file-download pr-1"></i>파일업로드
+              </button>
+              <button class="btn btn-secondary btn-sm">
+                <i class="fas fa-file-export pr-1"></i>파일다운로드
+              </button>
+            </div>
+            <div v-else>
+              <button class="create btn btn-secondary btn-sm mr-1" @click="showCreateModel">
                 <i class="far fa-plus-square pr-1"></i>등록
               </button>
               <button class="file-upload btn btn-secondary btn-sm mr-1">
@@ -35,6 +43,8 @@
                 <i class="fas fa-file-export pr-1"></i>파일다운로드
               </button>
             </div>
+
+
           </div>
         </div>
         <div class="row">
@@ -92,10 +102,7 @@
     </div>
     <!-- /.content -->
 
-    <!-- 모달 컴포넌트  -->
-<!--    <AuthorityCreate ref="authorityCreate" @updateData="handleUpdateData" style="display: none"></AuthorityCreate>
-    <AuthorityUpdate ref="authorityUpdate" @updateData="handleUpdateData" style="display: none"></AuthorityUpdate>-->
-    <!-- /모달 컴포넌트  -->
+
   </div>
   <!-- /.content-wrapper -->
  </template>
@@ -132,6 +139,9 @@ export default {
     },
     clickTab(activeVueComponent) {
       this.activeVueComponent = activeVueComponent;
+    },
+    showCreateModel() {
+      this.$refs.member.showCreateModal();
     }
   }
 }
