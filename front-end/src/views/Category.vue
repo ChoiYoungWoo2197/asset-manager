@@ -82,11 +82,11 @@
               </div>
               <div class="card-body" style="height: 500px;">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                  <div class="tab-pane fade active show" id="custom-tabs-three-dept" role="tabpanel" aria-labelledby="custom-tabs-three-category-tab">
+                  <div class="tab-pane fade active show" id="custom-tabs-three-category" role="tabpanel" aria-labelledby="custom-tabs-three-category-tab">
                     <CategoryEditor ref="categoryEditor" :p-category="activeCategory" @updateData="handleUpdateData"></CategoryEditor>
                   </div>
-                  <div class="tab-pane fade" id="custom-tabs-three-member" role="tabpanel" aria-labelledby="custom-tabs-three-category-specification-tab">
-<!--                    <Member ref="member" :p-department="activeDepartment"></Member>-->
+                  <div class="tab-pane fade" id="custom-tabs-three-category-specification" role="tabpanel" aria-labelledby="custom-tabs-three-category-specification-tab">
+                    <CategorySpecification ref="categorySpecification" :p-category="activeCategory"></CategorySpecification>
                   </div>
                 </div>
               </div>
@@ -106,12 +106,13 @@
 <script>
 import CategoryJstree from "@/components/category/CategoryJstree.vue";
 import CategoryEditor from "@/components/category/CategoryEditor.vue";
-
+import CategorySpecification from "@/components/category/CategorySpecification.vue";
 export default {
   name: "Category",
   components: {
     CategoryJstree,
     CategoryEditor,
+    CategorySpecification
   },
   data() {
     return {

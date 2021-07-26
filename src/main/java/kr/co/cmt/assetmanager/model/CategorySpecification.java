@@ -49,4 +49,16 @@ public class CategorySpecification {
         this.registedDateAt = LocalDate.now();
         this.updatedDateAt = LocalDate.now();
     }
+
+    @Builder
+    public CategorySpecification(Long id, Category category, String name, Boolean useYn, String register,
+                                 LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.id = id;
+        this.category = category;
+        this.name = name;
+        this.useYn = useYn;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
+    }
 }

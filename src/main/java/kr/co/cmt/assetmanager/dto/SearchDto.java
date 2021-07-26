@@ -19,4 +19,5 @@ public class SearchDto {
     Collection<Long> departmentIds;
     Long authorityId;
     Collection<Long> authorityIds;
+    Long categoryId;
 }
