@@ -20,7 +20,7 @@ public class MemberSpecification {
         List<Predicate> predicate = new ArrayList<>();
         for (String key : searchKeyword.keySet()) {
             if(searchKeyword.get(key)  == null || searchKeyword.get(key)  == "") continue;
-            if("remark".equals(key)){ //'remark' 조건은 like 검색
+            if("remark".equals(key) || "name".equals(key)){
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
             } else if("departmentId".equals(key) || "departmentIds".equals(key) ||
                     "authorityId".equals(key) || "authorityIds".equals(key)) {

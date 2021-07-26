@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
@@ -90,8 +91,17 @@ public class MemberController {
         return memberService.findAllMember();
     }
 
+    /**
+     * GET
+     * 회원 이메일 중복검사
+     */
+    @GetMapping(value = "/{email}/exists")
+    public ResponseEntity<Boolean> isExistEmail(@PathVariable("email") String email) {
+        return ResponseEntity.ok(memberService.isExistByEmail(email));
+    }
+
     @PostMapping
-    public Member store(@RequestBody MemberDto memberDto) {
+    public MemberDto store(@RequestBody MemberDto memberDto) {
         Member member = modelMapper.map(memberDto, Member.class);
 
         if (memberDto.getAuthorityId() != null) {
@@ -102,7 +112,9 @@ public class MemberController {
             member.setDepartment(departmentService.findDepartmentById(memberDto.getDepartmentId()).get());
         }
 
-        return memberService.createMember(member);
+        memberService.createMember(member);
+
+        return MemberDto.convertEntityToDto(member);
     }
 
     @GetMapping(value = "/{id}")
@@ -111,10 +123,9 @@ public class MemberController {
     }
 
     @PutMapping(value = "/{id}")
-    public Member update(@PathVariable("id") long memberId, @RequestBody MemberDto memberDto) {
+    public MemberDto update(@PathVariable("id") long memberId, @RequestBody MemberDto memberDto) {
         Member member = memberService.findMemberById(memberId).get();
         member.setName(memberDto.getName());
-        member.setPassword(memberDto.getPassword());
         member.setPhone(memberDto.getPhone());
         member.setBirthday(memberDto.getBirthday());
         member.setPosition(memberDto.getPosition());
@@ -122,7 +133,17 @@ public class MemberController {
         member.setUseYn(memberDto.getUseYn());
         member.setUpdatedDateAt(LocalDate.now());
 
-        return memberService.updateMember(member);
+        if (memberDto.getAuthorityId() != null) {
+            member.setAuthority(authorityService.findAuthorityById(memberDto.getAuthorityId()).get());
+        }
+
+        if (memberDto.getDepartmentId() != null) {
+            member.setDepartment(departmentService.findDepartmentById(memberDto.getDepartmentId()).get());
+        }
+
+        memberService.updateMember(member);
+
+        return MemberDto.convertEntityToDto(member);
     }
 
     /**
@@ -131,6 +152,9 @@ public class MemberController {
      **/
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") long memberId) {
-        memberService.deleteMemberById(memberId);
+//        memberService.deleteMemberById(memberId);
+        Member member = memberService.findMemberById(memberId).get();
+        member.setUseYn(false);
+        memberService.updateMember(member);
     }
 }

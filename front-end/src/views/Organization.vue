@@ -139,6 +139,9 @@ export default {
     },
     clickTab(activeVueComponent) {
       this.activeVueComponent = activeVueComponent;
+      // if(activeVueComponent !== "department") {
+      //   this.$refs.member.searchData(false);
+      // }
     },
     showCreateModel() {
       this.$refs.member.showCreateModal();

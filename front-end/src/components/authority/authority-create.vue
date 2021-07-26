@@ -70,7 +70,7 @@ export default {
       $( 'textarea#remark' ).val("");
       $('button#createBtn').addClass('btn-primary');
       $('button#createBtn').addClass('btn-secondary');
-      this.isExistCode = null,
+      this.isExistCode = null;
       this.useYn = true;
     },
     createBtnClick() {
@@ -84,6 +84,7 @@ export default {
           return false;
         } else if( this.isExistCode !== false ) {
           //제일 마지막에 추가해주자.
+          alert('코드 중복체크를 해주세요.');
           return false;
         }
       }

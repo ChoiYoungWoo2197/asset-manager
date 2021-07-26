@@ -6,8 +6,10 @@ import kr.co.cmt.assetmanager.model.Member;
 import kr.co.cmt.assetmanager.repository.MemberRepository;
 import kr.co.cmt.assetmanager.specification.MemberSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+/*    @Autowired
+    private PasswordEncoder passwordEncoder;*/
+
     private final MemberRepository memberRepository;
 
     public Page<Member> findAllMember(SearchDto searchDto, Pageable pageable) {
@@ -32,6 +37,8 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
+//        member.setPassword(passwordEncoder.encode(member.getPassword()));
+
         return memberRepository.save(member);
     }
 
@@ -45,5 +52,9 @@ public class MemberService {
 
     public void deleteMemberById(Long id) {
         memberRepository.deleteById(id);
+    }
+
+    public boolean isExistByEmail(String email) {
+        return memberRepository.existsByEmail(email);
     }
 }

@@ -62,7 +62,7 @@
         </form>
         <div class="form-group">
           <div class="input-group">
-            <input id="search" type="search" class="form-control" placeholder="키워드">
+            <input id="search" type="search" class="form-control" placeholder="이름" v-model=search>
             <div class="input-group-append">
               <button type="submit" class="btn btn-primary" @click.prevent="clickSearchBtn">
                 <i class="fa fa-search"></i>
@@ -128,7 +128,7 @@
 
     <!-- 모달 컴포넌트  -->
     <MemberCreate ref="memberCreate" :p-department="pDepartment" @updateData="handleUpdateData" style="display: none"></MemberCreate>
-    <MemberUpdate ref="memberUpdate" @updateData="handleUpdateData" style="display: none"></MemberUpdate>
+    <MemberUpdate ref="memberUpdate" :p-department="pDepartment" @updateData="handleUpdateData" style="display: none"></MemberUpdate>
     <!-- /모달 컴포넌트  -->
   </div>
 </template>
@@ -159,6 +159,7 @@ export default {
       displayPageNum : 10, // 페이지 번호의 수
       pages : [],
       pageInfo : null,
+      search : '',
       activeAuthority : '해당없음',
       authoritys : null,
       departments : null,
@@ -253,6 +254,7 @@ export default {
         departmentIds.push($('form.member #departments').val());
       }
 
+
       //부서에 속한 회원 + 하위 부서에 속한 회원까지 조회.
       axios.get('http://localhost:8080/api/members', {
         params: {
@@ -261,9 +263,9 @@ export default {
           departmentIds: departmentIds,
           authorityId : $('form.member #authority').val() === undefined ? '' : ($('form.member #authority').val() !== "0"
               ? $('form.member #authority').val() : ''),
-          position : $('#position').val() === undefined ? '' : $('form.member #position').val(),
+          position : $('form.member #position').val() === undefined ? '' : $('form.member #position').val(),
           useYn:$('form.member #useYn').val() === undefined ? '' : $('form.member #useYn').val(),
-          remark: $('form.member #search').val() === undefined ? '' : $('form.member #search').val()
+          name: vm.search
         },
         paramsSerializer: function (paramObj) {
           //배열로 전송 할 때 []를 떼고 보내자.
@@ -277,7 +279,6 @@ export default {
       }).then(response => {
 
         if(response.status === 200) {
-          // console.log(response);
           vm.responseData = response;
           vm.data = response.data.content;
           vm.pageable = response.data.pageable;
@@ -289,8 +290,7 @@ export default {
       })
     },
     clickTrTag(data) {
-      console.log(data);
-      // this.$refs.authorityUpdate.setData(data);
+      this.$refs.memberUpdate.setData(data);
       this.showUpdateModal();
     },
     getStartAndEndPage() {
@@ -349,9 +349,10 @@ export default {
     },
     handleUpdateData() {
       this.currentPage = 0;
+      this.searchData();
     },
     showCreateModal() {
-      // this.$refs.authorityCreate.clearData();
+      this.$refs.memberCreate.clearData();
       $('#member-create-modal').modal("show");
     },
     showUpdateModal() {

@@ -19,10 +19,10 @@
               <label for="email">이메일<span class="text-danger">*</span></label>
               <div class="form-group row">
                 <div class="col-sm-10">
-                  <input type="text" class="form-control " id="email" placeholder="">
+                  <input type="text" class="form-control " id="email" placeholder="" @keydown="keydownEmailInput">
                 </div>
                 <div class="col-sm">
-                  <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크">
+                  <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크" @click="clickEmailCheckBtn">
                 </div>
               </div>
             </div>
@@ -121,6 +121,7 @@ export default {
     return {
       department : null,
       useYn : true,
+      isExistEmail : null,
       authoritys : null,
       departments : null,
       positions : [
@@ -154,6 +155,17 @@ export default {
     this.initDatePicker();
   },
   methods: {
+    clearData() {
+      $( 'input#name' ).val("");
+      $( 'input#email' ).val("");
+      $( 'input#password' ).val("");
+      $( 'input#phone' ).val("");
+      $( 'textarea#remark' ).val("");
+      $('button#createBtn').addClass('btn-primary');
+      $('button#createBtn').addClass('btn-secondary');
+      this.isExistEmail = null;
+      this.useYn = true;
+    },
     initDatePicker() {
       $('input#birthday').daterangepicker({
         singleDatePicker: true,
@@ -196,36 +208,84 @@ export default {
     },
     createBtnClick() {
       const vm = this;
-      if($( 'input#name' ).val() ==="" || $( 'input#code' ).val() === "" || this.isExistCode !== false) {
+      if($( 'input#name' ).val() ==="" || $( 'input#email' ).val() === "" || $( 'input#password' ).val() === ""
+          || this.getDepartments === null || this.getDepartments.length === 0
+          || this.getAuthoritys === null || this.getAuthoritys.length === 0
+          || this.isExistEmail !== false) {
         if($( 'input#name' ).val() === '') {
           alert("이름을 입력해주세요.");
           return false;
-        } else if($( 'input#code' ).val() === "" ) {
-          alert("코드를 입력해주세요.");
+        } else if($( 'input#email' ).val() === "" ) {
+          alert("이메일을 입력해주세요.");
           return false;
-        } else if( this.isExistCode !== false ) {
-          //제일 마지막에 추가해주자.
+        } else if($( 'input#password' ).val() === "") {
+          alert("패스워드를 입력해주세요.");
+          return false;
+        } else if(this.getDepartments === null || this.getDepartments.length === 0) {
+          alert("부서를 생성해주세요.");
+          return false;
+        } else if(this.getAuthoritys === null || this.getAuthoritys.length === 0) {
+          alert("권한을 생성해주세요.");
+          return false;
+        } else if( this.isExistEmail !== false ) {
+          alert('이메일 중복체크를 해주세요.');
           return false;
         }
       }
 
-      // console.log($( 'input#name' ).val(), $( 'input#code' ).val(),$( 'textarea#remark' ).val(), this.useYn);
-
-      axios.post('http://localhost:8080/api/authoritys', {
-        name : $( 'input#name' ).val(),
-        code : $( 'input#code' ).val(),
-        remark : $( 'textarea#remark' ).val(),
+      axios.post('http://localhost:8080/api/members', {
+        name : $( '#member-create-modal input#name' ).val(),
+        email : $( '#member-create-modal input#email' ).val(),
+        password : $( '#member-create-modal input#password' ).val(),
+        remark : $( '#member-create-modal textarea#remark' ).val(),
+        birthday : $('#member-create-modal input#birthday').val(),
+        phone : $('#member-create-modal input#phone').val(),
+        position : $('#member-create-modal select#position').val(),
+        authorityId : $('#member-create-modal select#authority').val(),
+        departmentId : $('#member-create-modal select#departments').val(),
+        register : "1",
         useYn : this.useYn,
       }).then(response => {
         console.log(response);
         if(response.status === 200) {
           vm.$emit("updateData", response.data);
-          $('#authority-create-modal').modal("hide");
+          $('#member-create-modal').modal("hide");
         }
       }).catch(e => {
         alert(e);
       })
     },
+    clickEmailCheckBtn() {
+      const vm = this;
+      let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+      if($( 'input#email' ).val() === "" || $( 'input#email' ).val().match(regExp) === null) {
+        alert("올바른 이메일 주소를 입력하세요.");
+        return false;
+      }
+
+      axios.get('http://localhost:8080/api/members/' + $( 'input#email' ).val() + '/exists')
+          .then(response => {
+            if(response.status === 200) {
+              if(response.data === true) {
+                vm.isExistEmail = true;
+                alert("중복된 이메일 입니다.");
+              } else {
+                vm.isExistEmail = false;
+                $('button#createBtn').removeClass('btn-secondary');
+                $('button#createBtn').addClass('btn-primary');
+                alert("사용 가능한 이메일 입니다.");
+              }
+            }
+          }).catch(e => {
+        alert(e);
+      })
+    },
+    keydownEmailInput() {
+      this.isExistEmail = true;
+      $('button#createBtn').removeClass('btn-primary');
+      $('button#createBtn').addClass('btn-secondary');
+    }
   }
 }
 </script>
