@@ -24,9 +24,7 @@
                   <router-link :to="{ name : 'Organization'}" class="dropdown-item">조직도 정보관리</router-link>
                 </li>
                 <li>
-                  <a href="./views/category.html" class="dropdown-item">
-                    카테고리 정보관리
-                  </a>
+                  <router-link :to="{ name : 'Category'}" class="dropdown-item">카테고리 정보관리</router-link>
                 </li>
                 <li>
                   <a href="./views/authority.html" class="dropdown-item">

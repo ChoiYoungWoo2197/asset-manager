@@ -7,6 +7,7 @@ const Login = () => { return import("../views/Login.vue");}
 const Index = () => { return import("../views/Index.vue");}
 const Authority = () => { return import("../views/Authority.vue");}
 const Organization = () => { return import("../views/Organization.vue");}
+const Category = () => { return import("../views/Category.vue");}
 
 const routes = [
   {
@@ -28,7 +29,12 @@ const routes = [
     path: "/organization",
     name: "Organization",
     component: Organization
-  }
+  },
+  {
+    path: "/category",
+    name: "Category",
+    component: Category
+  },
 ];
 
 const router = createRouter({
