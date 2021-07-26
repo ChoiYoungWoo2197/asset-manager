@@ -58,7 +58,7 @@
                   </form>
                   <div class="form-group">
                     <div class="input-group">
-                      <input id="search" type="search" class="form-control" placeholder="키워드">
+                      <input id="search" type="search" class="form-control" placeholder="권한명" v-model="search">
                       <div class="input-group-append">
                         <button type="submit" class="btn btn-primary" @click.prevent="clickSearchBtn">
                           <i class="fa fa-search"></i>
@@ -150,6 +150,7 @@ export default {
       displayPageNum : 10, // 페이지 번호의 수
       pages : [],
       pageInfo : null,
+      search : ''
     }
   },
   computed : {
@@ -184,7 +185,7 @@ export default {
           page : vm.currentPage,
           size : vm.perPageNum,
           useYn:$('#useYn').val(),
-          remark: $('#search').val()
+          name: vm.search
         }
       }).then(response => {
         // console.log(response);

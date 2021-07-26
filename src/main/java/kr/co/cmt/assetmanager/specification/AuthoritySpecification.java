@@ -22,9 +22,9 @@ public class AuthoritySpecification {
     private static List<Predicate> getPredicateWithKeyword(Map<String, Object> searchKeyword, Root<Authority> root, CriteriaBuilder builder) {
         List<Predicate> predicate = new ArrayList<>();
         for (String key : searchKeyword.keySet()) {
-            if(searchKeyword.get(key)  == null) continue;
+            if(searchKeyword.get(key)  == null || searchKeyword.get(key)  == "") continue;
 
-            if("remark".equals(key)){ //'name' 조건은 like 검색
+            if("remark".equals(key) || "name".equals(key)){ //'name' 조건은 like 검색
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
             } else{ // 'name', 'partner' 이외의 모든 조건 파라미터에 대해 equal 검색
                 predicate.add(builder.equal(root.get(key), searchKeyword.get(key)));
