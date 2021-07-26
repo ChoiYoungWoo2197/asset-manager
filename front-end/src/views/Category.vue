@@ -83,7 +83,7 @@
               <div class="card-body" style="height: 500px;">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                   <div class="tab-pane fade active show" id="custom-tabs-three-dept" role="tabpanel" aria-labelledby="custom-tabs-three-category-tab">
-<!--                    <DepartmentEditor ref="departmentEditor" :p-department="activeDepartment" @updateData="handleUpdateData"></DepartmentEditor>-->
+                    <CategoryEditor ref="categoryEditor" :p-category="activeCategory" @updateData="handleUpdateData"></CategoryEditor>
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-three-member" role="tabpanel" aria-labelledby="custom-tabs-three-category-specification-tab">
 <!--                    <Member ref="member" :p-department="activeDepartment"></Member>-->
@@ -105,11 +105,13 @@
 </template>
 <script>
 import CategoryJstree from "@/components/category/CategoryJstree.vue";
+import CategoryEditor from "@/components/category/CategoryEditor.vue";
 
 export default {
   name: "Category",
   components: {
-    CategoryJstree
+    CategoryJstree,
+    CategoryEditor,
   },
   data() {
     return {
@@ -127,7 +129,7 @@ export default {
     },
     handleUpdateData() {
       this.activeCategory = null;
-      // this.$refs.departmentJstree.getJstreeData();
+      this.$refs.categoryJstree.getJstreeData();
     },
     clickTab(activeVueComponent) {
       this.activeVueComponent = activeVueComponent;
