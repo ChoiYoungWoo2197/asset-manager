@@ -24,7 +24,6 @@ public class CategorySpecification {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
     /**
      * 1:N, 단방향
      * */

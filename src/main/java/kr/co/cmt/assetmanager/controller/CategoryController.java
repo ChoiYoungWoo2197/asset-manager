@@ -134,8 +134,4 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
     }
 
-    /**
-     * GET
-     * 카테고리 목록(페이징 + 검색)
-     */
 }
