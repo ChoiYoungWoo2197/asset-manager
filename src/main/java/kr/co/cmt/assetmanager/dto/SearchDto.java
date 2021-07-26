@@ -13,6 +13,7 @@ import java.util.List;
 public class SearchDto {
     Boolean useYn;
     String remark;
+    String position;
     Long departmentId;
     Collection<Long> departmentIds;
     Long authorityId;

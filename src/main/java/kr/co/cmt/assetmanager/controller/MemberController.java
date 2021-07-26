@@ -59,19 +59,19 @@ public class MemberController {
         memberService.createMember(Member.builder().id(1L)
                 .authority(authorityService.findAuthorityById(1L).get()).department(departmentService.findDepartmentById(1L).get())
                 .email("test1@naver.com").password("sdfsdf").name("김아무개").birthday(LocalDate.of(1992,8,11))
-                .position("사원").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
+                .position("e").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
                 .updatedDateAt(LocalDate.now()).build());
 
         memberService.createMember(Member.builder().id(2L)
                 .authority(authorityService.findAuthorityById(1L).get()).department(departmentService.findDepartmentById(3L).get())
                 .email("test2@naver.com").password("sdfsdf").name("최아무개").birthday(LocalDate.of(1992,8,11))
-                .position("대리").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
+                .position("am").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
                 .updatedDateAt(LocalDate.now()).build());
 
         memberService.createMember(Member.builder().id(3L)
                 .authority(authorityService.findAuthorityById(1L).get()).department(departmentService.findDepartmentById(5L).get())
                 .email("test3@naver.com").password("sdfsdf").name("최아무개").birthday(LocalDate.of(1992,8,11))
-                .position("과장").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
+                .position("m").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
                 .updatedDateAt(LocalDate.now()).build());
 
         return "test";

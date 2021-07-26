@@ -19,7 +19,7 @@ public class MemberSpecification {
     private static List<Predicate> getPredicateWithKeyword(Map<String, Object> searchKeyword, Root<Member> root, CriteriaBuilder builder) {
         List<Predicate> predicate = new ArrayList<>();
         for (String key : searchKeyword.keySet()) {
-            if(searchKeyword.get(key)  == null) continue;
+            if(searchKeyword.get(key)  == null || searchKeyword.get(key)  == "") continue;
             if("remark".equals(key)){ //'remark' 조건은 like 검색
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
             } else if("departmentId".equals(key) || "departmentIds".equals(key) ||

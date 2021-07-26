@@ -11,14 +11,14 @@
           <div class="form-row">
             <div class="col-3">
               <div class="form-group">
-                <label for="positions">직급</label>
-                <select class="form-control " style="width: 100%;" id="positions">
-                  <option>해당없음</option>
-                  <option>사원</option>
-                  <option>대리</option>
-                  <option>과장</option>
-                  <option>차장</option>
-                  <option>부장</option>
+                <label for="position">직급</label>
+                <select class="form-control " style="width: 100%;" id="position">
+                  <option v-for="(position, index) in positions"
+                          :key="index"
+                          :value="position.code"
+                          :selected="position.name === '해당없음'">
+                    {{ position.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -96,7 +96,7 @@
               <td v-text="data.name" class=""></td>
               <td v-text="data.email" class=""></td>
               <td v-text="data.birthday" class=""></td>
-              <td v-text="data.position" class=""></td>
+              <td v-text="getPostionNameByPosition(data.position)" class=""></td>
               <td v-text="getAuthorityNameById(data.authorityId)" class=""></td>
               <td v-text="getDepartmentNameById(data.departmentId)" class=""></td>
               <td v-text="data.phone" class=""></td>
@@ -151,6 +151,18 @@ export default {
       activeAuthority : '해당없음',
       authoritys : null,
       departments : null,
+      positions : [
+        {code : '' , name : '해당없음'},
+        {code : 'e' , name : '사원'},
+        {code : 'am' , name : '대리'},
+        {code : 'm' , name : '과장'},
+        {code : 'dgm' , name : '차장'},
+        {code : 'gm' , name : '부장'},
+        {code : 'd' , name : '이사'},
+        {code : 'md' , name : '상무'},
+        {code : 'smd' , name : '전무'},
+        {code : 'p' , name : '사장'},
+      ]
     }
   },
   computed: {
@@ -238,6 +250,7 @@ export default {
           departmentIds: departmentIds,
           authorityId : $('#authority').val() === undefined ? '' : ($('#authority').val() !== "0"
               ? $('#authority').val() : ''),
+          position : $('#position').val() === undefined ? '' : $('#position').val(),
           useYn:$('#useYn').val() === undefined ? '' : $('#useYn').val(),
           remark: $('#search').val() === undefined ? '' : $('#search').val()
         },
@@ -314,7 +327,13 @@ export default {
       let selectDepartment = vm.departments.filter(department => department.id === departmentId)[0];
       return selectDepartment !== undefined ? selectDepartment.name  : '' ;
     },
+    getPostionNameByPosition(positionCode) {
+      const vm = this;
+      if(vm.department === null) return '';
 
+      let selectPosition = vm.positions.filter(position => position.code === positionCode)[0];
+      return selectPosition !== undefined ? selectPosition.name : "";
+    }
   }
 }
 </script>
