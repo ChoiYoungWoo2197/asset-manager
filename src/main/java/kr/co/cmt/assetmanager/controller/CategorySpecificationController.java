@@ -74,12 +74,13 @@ public class CategorySpecificationController {
     public CategorySpecificationDto store(@RequestBody CategorySpecificationDto categorySpecificationDto) {
         CategorySpecification categorySpecification = modelMapper.map(categorySpecificationDto, CategorySpecification.class);
         if(categorySpecificationDto.getParentId() != null) {
-            Category parent = categoryService.findCategoryById(categorySpecificationDto.getId()).get();
+            Category parent = categoryService.findCategoryById(categorySpecificationDto.getParentId()).get();
             categorySpecification.setCategory(parent);
+            categorySpecificationService.createCategorySpecification(categorySpecification);
+            return CategorySpecificationDto.convertEntityToDto(categorySpecification);
+        } else {
+            return null;
         }
-
-        categorySpecificationService.createCategorySpecification(categorySpecification);
-        return CategorySpecificationDto.convertEntityToDto(categorySpecification);
     }
 
     /**

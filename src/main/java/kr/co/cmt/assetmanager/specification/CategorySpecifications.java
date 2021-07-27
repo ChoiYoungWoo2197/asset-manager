@@ -24,6 +24,9 @@ public class CategorySpecifications {
             if(searchKeyword.get(key)  == null || searchKeyword.get(key)  == "") continue;
             if("remark".equals(key) || "name".equals(key)){
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
+            } else if("categoryId".equals(key)) {
+                String column = key.substring(0, key.toLowerCase().indexOf("id"));
+                predicate.add(builder.equal(root.get(column), searchKeyword.get(key)));
             } else{ //이외의 모든 조건 파라미터에 대해 equal 검색
                 predicate.add(builder.equal(root.get(key), searchKeyword.get(key)));
             }

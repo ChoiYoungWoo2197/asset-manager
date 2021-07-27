@@ -136,7 +136,7 @@ export default {
       this.activeVueComponent = activeVueComponent;
     },
     showCreateModel() {
-      // this.$refs.member.showCreateModal();
+      this.$refs.categorySpecification.showCreateModal();
     }
   }
 }

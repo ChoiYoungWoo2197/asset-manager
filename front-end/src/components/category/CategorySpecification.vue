@@ -49,8 +49,8 @@
             <tbody>
             <tr v-for="(data, index) in getDatas"  :key="index" @click="clickTrTag(data)">
               <td v-text="index+1" class=""></td>
-              <td v-text="data.name" class=""></td>
-              <td v-text="data.name" class=""></td>
+              <td v-text="data.parentId" class=""></td>
+              <td v-text="getCategoryNameById(data.parentId)" class=""></td>
               <td v-text="data.name" class=""></td>
               <td v-text="data.useYn === true ? '활성화' : '비활성화'" class=""></td>
               <td v-text="data.registedDateAt" class=""></td>
@@ -78,20 +78,24 @@
     </template>
 
     <!-- 모달 컴포넌트  -->
-<!--    <MemberCreate ref="memberCreate" :p-department="pDepartment" @updateData="handleUpdateData" style="display: none"></MemberCreate>
-    <MemberUpdate ref="memberUpdate" :p-department="pDepartment" @updateData="handleUpdateData" style="display: none"></MemberUpdate>-->
+    <CategorySpecificationCreate ref="categorySpecificationCreate" :p-category="pCategory" @updateData="handleUpdateData" style="display: none"></CategorySpecificationCreate>
+    <CategorySpecificationUpdate ref="categorySpecificationUpdate" :p-category="pCategory" @updateData="handleUpdateData" style="display: none"></CategorySpecificationUpdate>
     <!-- /모달 컴포넌트  -->
   </div>
 </template>
 
 
 <script>
-// import $ from "jquery";
-// import axios from "axios";
+import axios from "axios";
+import $ from "jquery";
+import CategorySpecificationCreate from "@/components/category/CategorySpecificationCreate.vue";
+import CategorySpecificationUpdate from "@/components/category/CategorySpecificationUpdate.vue";
 
 export default {
   name: "CategorySpecification",
   components: {
+    CategorySpecificationCreate,
+    CategorySpecificationUpdate
   },
   props: {
     pCategory: Object,
@@ -108,9 +112,13 @@ export default {
       pages : [],
       pageInfo : null,
       search : '',
+      categorys: null,
     }
   },
   computed: {
+    getDatas() {
+      return this.data;
+    },
     isFirstPageGroup() {
       if(this.responseData === null) return false;
       return this.responseData.data.first;
@@ -124,8 +132,8 @@ export default {
     pCategory() {
       this.currentPage = 0;
       this.category = this.pCategory;
-/*      this.findAuthoriyAndDepartment();
-      this.searchData(false);*/
+      this.findCategorys();
+      this.searchData();
     },
     currentPage() {
       this.searchData();
@@ -136,9 +144,100 @@ export default {
     // this.findAuthoriyAndDepartment();
   },
   methods: {
+    findCategorys() {
+      const vm = this;
+      if(vm.category === null) return false;
+      axios.get('http://localhost:8080/api/categorys', {
+      }).then(response => {
+        if(response.status === 200) {
+          vm.categorys = response.data.filter(category => category.useYn === true);
+        }
+      }).catch(e => {
+        alert(e);
+      })
+    },
     searchData() {
+      const vm = this;
+      if(vm.category === null) return false;
+
+      let categoryId = vm.category.id;
+
+      //카테고리에 속한 규겨정보 조회.
+      axios.get('http://localhost:8080/api/category-specifications', {
+        params: {
+          page : vm.currentPage,
+          size : vm.perPageNum,
+          categoryId: categoryId,
+          useYn:$('form.member #useYn').val() === undefined ? '' : $('form.member #useYn').val(),
+          name: vm.search
+        },
+      }).then(response => {
+        if(response.status === 200) {
+          vm.responseData = response;
+          vm.data = response.data.content;
+          vm.pageable = response.data.pageable;
+          vm.getStartAndEndPage();
+        }
+      }).catch(e => {
+        alert(e);
+      })
+    },
+    getStartAndEndPage() {
+      this.pages = [];
+      let endPage = Math.ceil((this.pageable.pageNumber+1) / this.displayPageNum) * this.displayPageNum;
+      let startPage = (endPage - this.displayPageNum) + 1;
+      let tempEndPage = Math.ceil(this.responseData.data.totalElements / this.perPageNum);
+
+      if(endPage > tempEndPage) {
+        endPage = tempEndPage;
+      }
+
+      for(var i=startPage; i<=endPage; i++) {
+        this.pages.push(i);
+      }
+
+      this.pageInfo = String.format("Showing {0} to {1} of {2} entries", (this.pageable.pageNumber * this.perPageNum)+1,
+          (this.pageable.pageNumber * this.perPageNum)+this.responseData.data.numberOfElements, this.responseData.data.totalElements);
 
     },
+    clickPreviousPageBtn() {
+      this.currentPage = this.pageable.pageNumber === 0 ? 0 : this.pageable.pageNumber-1;
+
+    },
+    clickNextPageBtn() {
+      let tempEndPage = Math.ceil(this.responseData.data.totalElements / this.perPageNum);
+      this.currentPage = this.pageable.pageNumber > tempEndPage ? tempEndPage : this.pageable.pageNumber+1;
+    },
+    clickPageBtn(page) {
+      this.currentPage = page;
+    },
+    clickSearchBtn() {
+      this.currentPage = 0;
+      this.searchData();
+    },
+    handleUpdateData() {
+      this.currentPage = 0;
+      this.searchData();
+    },
+    showCreateModal() {
+      this.$refs.categorySpecificationCreate.clearData();
+      $('#category-specification-create-modal').modal("show");
+    },
+    showUpdateModal() {
+      $('#category-specification-update-modal').modal("show");
+    },
+    clickTrTag(data) {
+      data['parentName'] = this.getCategoryNameById(data.parentId);
+      this.$refs.categorySpecificationUpdate.setData(data);
+      this.showUpdateModal();
+    },
+    getCategoryNameById(categoryId) {
+      const vm = this;
+      if(vm.category === null) return '';
+
+      let selectCategory = vm.categorys.filter(category => category.id === categoryId)[0];
+      return selectCategory !== undefined ? selectCategory.name : '';
+    }
   }
 }
 </script>
