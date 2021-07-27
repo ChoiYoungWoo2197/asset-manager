@@ -27,9 +27,7 @@
                   <router-link :to="{ name : 'Category'}" class="dropdown-item">카테고리 정보관리</router-link>
                 </li>
                 <li>
-                  <a href="./views/authority.html" class="dropdown-item">
-                    업체정보관리
-                  </a>
+                  <router-link :to="{ name : 'PartnerCompany'}" class="dropdown-item">업체 정보관리</router-link>
                 </li>
 
               </ul>
