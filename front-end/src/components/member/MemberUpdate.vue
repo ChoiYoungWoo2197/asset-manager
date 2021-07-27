@@ -10,74 +10,83 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="nameEdit">이름<span class="text-danger">*</span></label>
-              <input type="text" class="form-control " id="nameEdit" placeholder="" :value="name">
-            </div>
-            <div class="form-group">
-              <label for="emailEdit">이메일<span class="text-danger"></span></label>
-              <div class="form-group row">
-                <div class="col-sm">
-                  <input type="text" class="form-control " id="emailEdit" placeholder="" readonly disabled :value="email">
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="nameEdit">이름<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control " id="nameEdit" placeholder="" :value="name">
+                    </div>
+                    <div class="form-group">
+                      <label for="emailEdit">이메일<span class="text-danger"></span></label>
+                      <div class="form-group row">
+                        <div class="col-sm">
+                          <input type="text" class="form-control " id="emailEdit" placeholder="" readonly disabled :value="email">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="birthdayEdit">생년월일<span class="text-danger"></span></label>
+                      <input class="form-control" type="text" id="birthdayEdit" placeholder="생년월일을 입력하세요." :value="birthday">
+                    </div>
+                    <div class="form-group">
+                      <label for="phoneEdit">전화번호<span class="text-danger"></span></label>
+                      <input type="text" class="form-control " id="phoneEdit" placeholder="" :value="phone">
+                    </div>
+                    <div class="form-group">
+                      <label for="departmentsEdit">부서<span class="text-danger">*</span></label>
+                      <select class="form-control " style="width: 100%;" id="departmentsEdit">
+                        <option v-for="(department, index) in getDepartments"
+                                :key="index"
+                                :value="department.id">
+                          {{ department.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="positionEdit">직급<span class="text-danger">*</span></label>
+                      <select class="form-control " style="width: 100%;" id="positionEdit">
+                        <option v-for="(position, index) in positions"
+                                :key="index"
+                                :value="position.code"
+                                :selected="index === 0">
+                          {{ position.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="authorityEdit">권한<span class="text-danger">*</span></label>
+                      <select class="form-control " style="width: 100%;" id="authorityEdit">
+                        <option v-for="(authority, index) in getAuthoritys"
+                                :key="index"
+                                :value="authority.id"
+                                :selected="authority.index === 0">
+                          {{ authority.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="remarkEdit">비고<code></code></label>
+                      <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-radio d-inline pr-1">
+                        <input class="custom-control-input" type="radio" id="useYnFalseEditModal" name="useYnRadio" @click="clickRadioBtn(false)">
+                        <label for="useYnFalseEditModal" class="custom-control-label">비활성화</label>
+                      </div>
+                      <div class="custom-control custom-radio d-inline">
+                        <input class="custom-control-input" type="radio" id="useYnTrueEditModal" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
+                        <label for="useYnTrueEditModal" class="custom-control-label">활성화</label>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <label for="birthdayEdit">생년월일<span class="text-danger"></span></label>
-              <input class="form-control" type="text" id="birthdayEdit" placeholder="생년월일을 입력하세요." :value="birthday">
-            </div>
-            <div class="form-group">
-              <label for="phoneEdit">전화번호<span class="text-danger"></span></label>
-              <input type="text" class="form-control " id="phoneEdit" placeholder="" :value="phone">
-            </div>
-            <div class="form-group">
-              <label for="departmentsEdit">부서<span class="text-danger">*</span></label>
-              <select class="form-control " style="width: 100%;" id="departmentsEdit">
-                <option v-for="(department, index) in getDepartments"
-                        :key="index"
-                        :value="department.id">
-                  {{ department.name }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="positionEdit">직급<span class="text-danger">*</span></label>
-              <select class="form-control " style="width: 100%;" id="positionEdit">
-                <option v-for="(position, index) in positions"
-                        :key="index"
-                        :value="position.code"
-                        :selected="index === 0">
-                  {{ position.name }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="authorityEdit">권한<span class="text-danger">*</span></label>
-              <select class="form-control " style="width: 100%;" id="authorityEdit">
-                <option v-for="(authority, index) in getAuthoritys"
-                        :key="index"
-                        :value="authority.id"
-                        :selected="authority.index === 0">
-                  {{ authority.name }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="remarkEdit">비고<code></code></label>
-              <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
-            </div>
-            <div class="form-group">
-              <div class="custom-control custom-radio d-inline pr-1">
-                <input class="custom-control-input" type="radio" id="useYnFalseEditModal" name="useYnRadio" @click="clickRadioBtn(false)">
-                <label for="useYnFalseEditModal" class="custom-control-label">비활성화</label>
-              </div>
-              <div class="custom-control custom-radio d-inline">
-                <input class="custom-control-input" type="radio" id="useYnTrueEditModal" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
-                <label for="useYnTrueEditModal" class="custom-control-label">활성화</label>
-              </div>
-            </div>
-          </form>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>

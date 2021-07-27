@@ -10,26 +10,35 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="categoryNameEdit">카테고리명<span class="text-danger"></span></label>
-              <input type="text" class="form-control " id="categoryNameEdit" placeholder="" disabled readonly="readonly" :value="categoryName">
-            </div>
-            <div class="form-group">
-              <label for="nameEdit">규격명<span class="text-danger">*</span></label>
-              <input type="text" class="form-control " id="nameEdit" placeholder="" @keydown="keyDownNameInput" :value="name">
-            </div>
-            <div class="form-group">
-              <div class="custom-control custom-radio d-inline pr-1">
-                <input class="custom-control-input" type="radio" id="useYnFalseEditModal" name="useYnRadio" @click="clickRadioBtn(false)">
-                <label for="useYnFalseEditModal" class="custom-control-label">비활성화</label>
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="categoryNameEdit">카테고리명<span class="text-danger"></span></label>
+                      <input type="text" class="form-control " id="categoryNameEdit" placeholder="" disabled readonly="readonly" :value="categoryName">
+                    </div>
+                    <div class="form-group">
+                      <label for="nameEdit">규격명<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control " id="nameEdit" placeholder="" @keydown="keyDownNameInput" :value="name">
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-radio d-inline pr-1">
+                        <input class="custom-control-input" type="radio" id="useYnFalseEditModal" name="useYnRadio" @click="clickRadioBtn(false)">
+                        <label for="useYnFalseEditModal" class="custom-control-label">비활성화</label>
+                      </div>
+                      <div class="custom-control custom-radio d-inline">
+                        <input class="custom-control-input" type="radio" id="useYnTrueEditModal" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
+                        <label for="useYnTrueEditModal" class="custom-control-label">활성화</label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <div class="custom-control custom-radio d-inline">
-                <input class="custom-control-input" type="radio" id="useYnTrueEditModal" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
-                <label for="useYnTrueEditModal" class="custom-control-label">활성화</label>
-              </div>
             </div>
-          </form>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>

@@ -10,26 +10,35 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="categoryName">카테고리명<span class="text-danger"></span></label>
-              <input type="text" class="form-control " id="categoryName" placeholder="" disabled readonly="readonly">
-            </div>
-            <div class="form-group">
-              <label for="name">규격명<span class="text-danger">*</span></label>
-              <input type="text" class="form-control " id="name" placeholder="" @keydown="keyDownNameInput">
-            </div>
-            <div class="form-group">
-              <div class="custom-control custom-radio d-inline pr-1">
-                <input class="custom-control-input" type="radio" id="useYnFalse" name="useYnRadio" @click="clickRadioBtn(false)">
-                <label for="useYnFalse" class="custom-control-label">비활성화</label>
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="categoryName">카테고리명<span class="text-danger"></span></label>
+                      <input type="text" class="form-control " id="categoryName" placeholder="" disabled readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                      <label for="name">규격명<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control " id="name" placeholder="" @keydown="keyDownNameInput">
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-radio d-inline pr-1">
+                        <input class="custom-control-input" type="radio" id="useYnFalse" name="useYnRadio" @click="clickRadioBtn(false)">
+                        <label for="useYnFalse" class="custom-control-label">비활성화</label>
+                      </div>
+                      <div class="custom-control custom-radio d-inline">
+                        <input class="custom-control-input" type="radio" id="useYnTrue" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
+                        <label for="useYnTrue" class="custom-control-label">활성화</label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <div class="custom-control custom-radio d-inline">
-                <input class="custom-control-input" type="radio" id="useYnTrue" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
-                <label for="useYnTrue" class="custom-control-label">활성화</label>
-              </div>
             </div>
-          </form>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>

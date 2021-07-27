@@ -10,30 +10,39 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="nameEdit">권한명<span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="nameEdit" placeholder="" :value="name">
-            </div>
-            <div class="form-group">
-              <label for="codeEdit">권한코드<code></code></label>
-              <input type="text" class="form-control " id="codeEdit" placeholder="" readonly :value="code">
-            </div>
-            <div class="form-group">
-              <label for="remarkEdit">비고<code></code></label>
-              <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
-            </div>
-            <div class="form-group">
-              <div class="custom-control custom-radio d-inline pr-1">
-                <input class="custom-control-input" type="radio" id="useYnFalseEdit" name="useYnRadio" @click="clickRadioBtn(false)">
-                <label for="useYnFalseEdit" class="custom-control-label">비활성화</label>
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="nameEdit">권한명<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="nameEdit" placeholder="" :value="name">
+                    </div>
+                    <div class="form-group">
+                      <label for="codeEdit">권한코드<code></code></label>
+                      <input type="text" class="form-control " id="codeEdit" placeholder="" readonly :value="code">
+                    </div>
+                    <div class="form-group">
+                      <label for="remarkEdit">비고<code></code></label>
+                      <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-radio d-inline pr-1">
+                        <input class="custom-control-input" type="radio" id="useYnFalseEdit" name="useYnRadio" @click="clickRadioBtn(false)">
+                        <label for="useYnFalseEdit" class="custom-control-label">비활성화</label>
+                      </div>
+                      <div class="custom-control custom-radio d-inline">
+                        <input class="custom-control-input" type="radio" id="useYnTrueEdit" name="useYnRadio" @click="clickRadioBtn(true)">
+                        <label for="useYnTrueEdit" class="custom-control-label">활성화</label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <div class="custom-control custom-radio d-inline">
-                <input class="custom-control-input" type="radio" id="useYnTrueEdit" name="useYnRadio" @click="clickRadioBtn(true)">
-                <label for="useYnTrueEdit" class="custom-control-label">활성화</label>
-              </div>
             </div>
-          </form>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>

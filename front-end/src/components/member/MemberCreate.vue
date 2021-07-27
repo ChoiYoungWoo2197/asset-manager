@@ -10,91 +10,100 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="name">이름<span class="text-danger">*</span></label>
-              <input type="text" class="form-control " id="name" placeholder="">
-            </div>
-            <div class="form-group">
-              <label for="email">이메일<span class="text-danger">*</span></label>
-              <div class="form-group row">
-                <div class="col-sm-10">
-                  <input type="text" class="form-control " id="email" placeholder="" @keydown="keydownEmailInput">
-                </div>
-                <div class="col-sm">
-                  <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크" @click="clickEmailCheckBtn">
+          <div class="row">
+            <div class="col-lg">
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="name">이름<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control " id="name" placeholder="">
+                    </div>
+                    <div class="form-group">
+                      <label for="email">이메일<span class="text-danger">*</span></label>
+                      <div class="form-group row">
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control " id="email" placeholder="" @keydown="keydownEmailInput">
+                        </div>
+                        <div class="col-sm">
+                          <input type="button" class="form-control btn btn-primary btn-sm" value="중복체크" @click="clickEmailCheckBtn">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="password">비밀번호<span class="text-danger">*</span></label>
+                      <input type="password" class="form-control " id="password" placeholder="">
+                    </div>
+                    <!--            <div class="form-group">
+                                  <label for="passwordCheck">비밀번호 재설정<span class="text-danger">*</span></label>
+                                  <input type="password" class="form-control " id="passwordCheck" placeholder="">
+                                </div>-->
+                    <div class="form-group">
+                      <label for="birthday">생년월일<span class="text-danger"></span></label>
+                      <input class="form-control" type="text" id="birthday" placeholder="생년월일을 입력하세요.">
+                      <!--              <div class="input-group date" id="birthday" data-target-input="nearest">
+                                      <input type="text" class="form-control datetimepicker-input" data-target="#birthday"/>
+                                      <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                      </div>
+                                    </div>-->
+                    </div>
+                    <div class="form-group">
+                      <label for="phone">전화번호<span class="text-danger"></span></label>
+                      <input type="text" class="form-control " id="phone" placeholder="">
+                    </div>
+                    <div class="form-group">
+                      <label for="departments">부서<span class="text-danger">*</span></label>
+                      <select class="form-control " style="width: 100%;" id="departments" disabled readonly="readonly">
+                        <option v-for="(department, index) in getDepartments"
+                                :key="index"
+                                :value="department.id">
+                          {{ department.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="position">직급<span class="text-danger">*</span></label>
+                      <select class="form-control " style="width: 100%;" id="position">
+                        <option v-for="(position, index) in positions"
+                                :key="index"
+                                :value="position.code"
+                                :selected="index === 0">
+                          {{ position.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="authority">권한<span class="text-danger">*</span></label>
+                      <select class="form-control " style="width: 100%;" id="authority">
+                        <option v-for="(authority, index) in getAuthoritys"
+                                :key="index"
+                                :value="authority.id"
+                                :selected="authority.index === 0">
+                          {{ authority.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="remark">비고<code></code></label>
+                      <textarea class="form-control" id="remark"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-radio d-inline pr-1">
+                        <input class="custom-control-input" type="radio" id="useYnFalse" name="useYnRadio" @click="clickRadioBtn(false)">
+                        <label for="useYnFalse" class="custom-control-label">비활성화</label>
+                      </div>
+                      <div class="custom-control custom-radio d-inline">
+                        <input class="custom-control-input" type="radio" id="useYnTrue" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
+                        <label for="useYnTrue" class="custom-control-label">활성화</label>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <label for="password">비밀번호<span class="text-danger">*</span></label>
-              <input type="password" class="form-control " id="password" placeholder="">
-            </div>
-<!--            <div class="form-group">
-              <label for="passwordCheck">비밀번호 재설정<span class="text-danger">*</span></label>
-              <input type="password" class="form-control " id="passwordCheck" placeholder="">
-            </div>-->
-            <div class="form-group">
-              <label for="birthday">생년월일<span class="text-danger"></span></label>
-              <input class="form-control" type="text" id="birthday" placeholder="생년월일을 입력하세요.">
-<!--              <div class="input-group date" id="birthday" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" data-target="#birthday"/>
-                <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
-                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-              </div>-->
-            </div>
-            <div class="form-group">
-              <label for="phone">전화번호<span class="text-danger"></span></label>
-              <input type="text" class="form-control " id="phone" placeholder="">
-            </div>
-            <div class="form-group">
-              <label for="departments">부서<span class="text-danger">*</span></label>
-              <select class="form-control " style="width: 100%;" id="departments" disabled readonly="readonly">
-                <option v-for="(department, index) in getDepartments"
-                        :key="index"
-                        :value="department.id">
-                  {{ department.name }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="position">직급<span class="text-danger">*</span></label>
-              <select class="form-control " style="width: 100%;" id="position">
-                <option v-for="(position, index) in positions"
-                        :key="index"
-                        :value="position.code"
-                        :selected="index === 0">
-                  {{ position.name }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="authority">권한<span class="text-danger">*</span></label>
-              <select class="form-control " style="width: 100%;" id="authority">
-                <option v-for="(authority, index) in getAuthoritys"
-                        :key="index"
-                        :value="authority.id"
-                        :selected="authority.index === 0">
-                  {{ authority.name }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="remark">비고<code></code></label>
-              <textarea class="form-control" id="remark"></textarea>
-            </div>
-            <div class="form-group">
-              <div class="custom-control custom-radio d-inline pr-1">
-                <input class="custom-control-input" type="radio" id="useYnFalse" name="useYnRadio" @click="clickRadioBtn(false)">
-                <label for="useYnFalse" class="custom-control-label">비활성화</label>
-              </div>
-              <div class="custom-control custom-radio d-inline">
-                <input class="custom-control-input" type="radio" id="useYnTrue" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
-                <label for="useYnTrue" class="custom-control-label">활성화</label>
-              </div>
-            </div>
-          </form>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>
