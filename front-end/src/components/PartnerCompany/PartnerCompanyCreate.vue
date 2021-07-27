@@ -1,7 +1,7 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="partner-company-create-modal" tabindex="-1" aria-labelledby="partner-company-create-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+  <div class="modal fade " id="partner-company-create-modal" tabindex="-1" aria-labelledby="partner-company-create-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable ">
       <div class="modal-content">
         <div class="modal-header ">
           <h2 class="tit_step">업체등록</h2>
@@ -11,7 +11,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-lg">
+            <div class="col-lg-7">
               <div class="card card-primary card-outline">
                 <div class="card-body">
                   <form>
@@ -62,6 +62,9 @@
                   </form>
                 </div>
               </div>
+            </div>
+            <div class="col-lg">
+              <PartnerCompanyMemberManager ref="partnerCompanyMemberManager"></PartnerCompanyMemberManager>
 
             </div>
           </div>
@@ -79,9 +82,13 @@
 <script>
 import $ from "jquery";
 import axios from "axios";
+import PartnerCompanyMemberManager from "@/components/PartnerCompany/PartnerCompanyMemberManager.vue";
 
 export default {
   name: "PartnerCompanyCreate",
+  components: {
+    PartnerCompanyMemberManager
+  },
   data() {
     return {
       isExistCode : null,
@@ -106,21 +113,30 @@ export default {
     },
     createBtnClick() {
       const vm = this;
-      if($( '#partner-company-create-modal input#name' ).val() ==="" || $( '#partner-company-create-modal input#code' ).val() === "" || this.isExistCode !== false) {
-        if($( '#partner-company-create-modal input#name' ).val() === '') {
+      if($( '#partner-company-create-modal input#name' ).val() ==="" || $( '#partner-company-create-modal input#code' ).val() === ""
+          || this.$refs.partnerCompanyMemberManager.getDatas().length !== 0 || this.isExistCode !== false) {
+        if($( '#partner-company-create-modal input#name' ).val() === '' ) {
           alert("업체명을 입력해주세요.");
           return false;
         } else if($( '#partner-company-create-modal input#code' ).val() === "" ) {
           alert("코드를 입력해주세요.");
           return false;
+        } else if(this.$refs.partnerCompanyMemberManager.getDatas().length !== 0) {
+          let isExistNameNull = this.$refs.partnerCompanyMemberManager.getDatas().find(partnerCompanyMember => {
+            if(partnerCompanyMember.name === "") {
+              return partnerCompanyMember;
+            }
+          })
+          if(isExistNameNull !== null) {
+            alert("담장자 이름을 입력해주세요.");
+            return false;
+          }
         } else if( this.isExistCode !== false ) {
           //제일 마지막에 추가해주자.
           alert('코드 중복체크를 해주세요.');
           return false;
         }
       }
-
-      // console.log($( 'input#name' ).val(), $( 'input#code' ).val(),$( 'textarea#remark' ).val(), this.useYn);
 
       axios.post('http://localhost:8080/api/partner-companys', {
         name : $( '#partner-company-create-modal input#name' ).val(),
@@ -149,6 +165,7 @@ export default {
         alert("코드를 입력해주세요.");
         return false;
       }
+
 
       axios.get('http://localhost:8080/api/partner-companys/' + $( '#partner-company-create-modal input#code' ).val() + '/exists')
           .then(response => {
