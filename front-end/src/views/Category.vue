@@ -33,12 +33,6 @@
               <button class="create btn btn-secondary btn-sm mr-1" @click="showCreateModel">
                 <i class="far fa-plus-square pr-1"></i>등록
               </button>
-              <button class="file-upload btn btn-secondary btn-sm mr-1">
-                <i class="fas fa-file-download pr-1"></i>파일업로드
-              </button>
-              <button class="btn btn-secondary btn-sm">
-                <i class="fas fa-file-export pr-1"></i>파일다운로드
-              </button>
             </div>
 
 

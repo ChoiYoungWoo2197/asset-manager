@@ -88,7 +88,7 @@ export default {
         remark : $( 'textarea#remarkEdit' ).val(),
         useYn : this.useYn,
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.status === 200) {
           // this.$router.push('Authority');
           vm.$emit("updateData", response.data);

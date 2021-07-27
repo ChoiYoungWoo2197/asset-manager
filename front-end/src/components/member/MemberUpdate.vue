@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     setData(data) {
-      console.log(data);
+      // console.log(data);
       this.id = data.id;
       this.name = data.name;
       this.email = data.email;
@@ -249,8 +249,11 @@ export default {
       axios.all([this.findAuthoritys(), this.findDepartments()])
           .then(axios.spread(function (authoritys, departmenets) {
             vm.authoritys = authoritys.data.filter(authority => authority.useYn === true);
-            vm.departments = departmenets.data.filter(department => {
+/*            vm.departments = departmenets.data.filter(department => {
               return (department.useYn === true && department.id === Number(vm.department.id));
+            });*/
+            vm.departments = departmenets.data.filter(department => {
+              return (department.useYn === true);
             });
           })).catch(e => {
         alert(e);

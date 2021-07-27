@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     setData(data) {
-      console.log(data);
+      // console.log(data);
       this.id = data.id;
       this.name = data.name;
       this.categoryId = data.parentId;
@@ -86,7 +86,7 @@ export default {
     updateBtnClick() {
       const vm = this;
 
-      if($( 'input#nameEdit' ).val() ==="") {
+      if($( '#category-specification-update-modal input#nameEdit' ).val() ==="") {
         alert("이름을 입력해주세요.");
         return false;
       }
@@ -96,7 +96,7 @@ export default {
         parentId : $('#category-specification-update-modal select#authorityEdit').val(),
         useYn : this.useYn,
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.status === 200) {
           // this.$router.push('Authority');
           vm.$emit("updateData", response.data);

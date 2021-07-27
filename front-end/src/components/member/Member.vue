@@ -6,7 +6,7 @@
       </div>
     </template>
     <template v-else>
-      <div class="card-body">
+      <div class="card-body" >
         <form class="member">
           <div class="form-row">
             <div class="col-3">
@@ -70,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div class="card-body table-responsive p-0 table-hover">
+        <div class="card-body table-responsive p-0 table-hover" style="height: 300px;">
           <table class="table table-head-fixed text-nowrap">
             <thead>
             <tr>
