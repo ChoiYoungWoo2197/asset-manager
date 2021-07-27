@@ -1,7 +1,7 @@
 <template>
   <div class="card card-primary card-outline">
     <div class="card-body">
-      <h6 class="card-subtitle mb-4 "><b>담당자</b></h6>
+      <h6 class="card-subtitle mb-4 "><b>담당자</b> </h6>
       <div class="form-row">
         <div class="col-md-1 text-center">
           <input type="button" class="btn btn-sm font-weight-bold" value="+" @click.prevent="clickPlusBtn">

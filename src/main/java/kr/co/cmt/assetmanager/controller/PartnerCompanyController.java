@@ -123,4 +123,10 @@ public class PartnerCompanyController {
         partnerCompanyService.updatePartnerCompany(partnerCompany);
     }
 
+    @PostMapping(value = "/test")
+    public String jsonResponse(@RequestBody PartnerCompanyDto[] partnerCompanyDtos) {
+        int a = 1;
+        int b = 2;
+        return "test";
+    }
 }

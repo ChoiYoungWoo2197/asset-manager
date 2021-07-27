@@ -21,4 +21,5 @@ public class SearchDto {
     Long authorityId;
     Collection<Long> authorityIds;
     Long categoryId;
+    Long partnerCompanyId;
 }
