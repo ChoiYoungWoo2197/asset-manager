@@ -22,22 +22,22 @@ const routes = [
     component: Index,
   },
   {
-    path: "/authoritys",
+    path: "/api/authoritys",
     name: "Authority",
     component: Authority,
   },
   {
-    path: "/organization",
+    path: "/api/organization",
     name: "Organization",
     component: Organization
   },
   {
-    path: "/categorys",
+    path: "/api/categorys",
     name: "Category",
     component: Category
   },
   {
-    path: "/partner-companys",
+    path: "/api/partner-companys",
     name: "PartnerCompany",
     component: PartnerCompany
   }

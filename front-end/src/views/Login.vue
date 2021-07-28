@@ -64,7 +64,7 @@ export default {
   methods : {
     signUp() {
       console.log(this.email, this.password);
-      axios.get('http://localhost:8080/api/login/signup')
+      axios.get('http://localhost:8080/api/logins/signin')
           .then(response => {
             console.log(response);
             this.$router.replace('Index');

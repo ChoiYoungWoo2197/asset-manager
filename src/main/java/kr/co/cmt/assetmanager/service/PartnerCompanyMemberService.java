@@ -15,9 +15,7 @@ import org.springframework.data.domain.Pageable;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +42,11 @@ public class PartnerCompanyMemberService {
 
     public PartnerCompanyMember createPartnerCompanyMember(PartnerCompanyMember partnerCompanyMember) {
         return partnerCompanyMemberRepository.save(partnerCompanyMember);
+    }
+
+    public List<PartnerCompanyMember> createPartnerCompanyMemberByList(Collection<PartnerCompanyMember> partnerCompanyMembers) {
+        partnerCompanyMembers.forEach(this::createPartnerCompanyMember);
+        return new ArrayList<>(partnerCompanyMembers);
     }
 
     public PartnerCompanyMember updatePartnerCompanyMember(PartnerCompanyMember partnerCompanyMember) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,18 +57,28 @@ public class PartnerCompanyMemberController {
 //        return partnerCompanyMemberDtos;
 //    }
 //
-//    @PostMapping
-//    public PartnerCompanyMemberDto store(@RequestBody PartnerCompanyMemberDto partnerCompanyMemberDto) {
-//        PartnerCompanyMember partnerCompanyMember = modelMapper.map(partnerCompanyMemberDto, PartnerCompanyMember.class);
-//        if(partnerCompanyMemberDto.getParentId() != null) {
-//            PartnerCompany parent = partnerCompanyService.findPartnerCompanyById(partnerCompanyMemberDto.getParentId()).get();
-//            partnerCompanyMember.setPartnerCompany(parent);
-//            partnerCompanyMemberService.createPartnerCompanyMember(partnerCompanyMember);
-//            return PartnerCompanyMemberDto.convertEntityToDto(partnerCompanyMember);
-//        } else {
-//            return null;
-//        }
-//    }
+
+/*    @PostMapping(value = "/test")
+    public String jsonResponse(@RequestBody PartnerCompanyDto[] partnerCompanyDtos) {
+        int a = 1;
+        int b = 2;
+        return "test";
+    }*/
+
+    @PostMapping
+    public Collection<PartnerCompanyMemberDto> store(@RequestBody Collection<PartnerCompanyMemberDto> partnerCompanyMemberDto) {
+
+        if(partnerCompanyMemberDto.size() > 0) {
+            Collection<PartnerCompanyMember> partnerCompanyMembers = partnerCompanyMemberDto.stream().map(partnerCompanyMember ->
+                modelMapper.map(partnerCompanyMember, PartnerCompanyMember.class)).collect(Collectors.toList());
+            partnerCompanyMemberService.createPartnerCompanyMemberByList(partnerCompanyMembers);
+
+            return partnerCompanyMembers.stream().map(partnerCompanyMember ->
+                    PartnerCompanyMemberDto.convertEntityToDto(partnerCompanyMember)).collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
 //
 //    @GetMapping(value = "/{id}")
 //    public PartnerCompanyMemberDto show(@PathVariable("id") long partnerCompanyMemberId) {

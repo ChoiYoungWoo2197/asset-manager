@@ -4,14 +4,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
-@RequestMapping(value = "/api/login/signup")
+@RequestMapping(value = "/api/logins")
 public class LoginController {
 
-
     @GetMapping
-//    public String signUp(@PathVariable("email") String email, @PathVariable("password") String password){
-    public String signUp(){
+    public String login(){
         System.out.println("임시로 해둠.");
-        return "test";
+        return "login";
+    }
+
+    @GetMapping(value = "/signin")
+    public String signIn(){
+        System.out.println("임시로 해둠.");
+        return "login";
     }
 }
