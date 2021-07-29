@@ -16,11 +16,13 @@
     "jquery": "^3.6.0",
     "jquery-param": "^1.1.8",
     "jstree": "^3.3.11",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "tempusdominus-bootstrap-4": "^5.39.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

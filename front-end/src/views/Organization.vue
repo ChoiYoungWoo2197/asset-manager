@@ -25,7 +25,7 @@
         <div class="mb-2">
           <div class="text-right">
             <div v-if="activeVueComponent === 'department'">
-              <button class="file-upload btn btn-secondary btn-sm mr-1">
+              <button class="file-upload btn btn-secondary btn-sm mr-1" @click="showFileUploadModal">
                 <i class="fas fa-file-download pr-1"></i>파일업로드
               </button>
               <button class="btn btn-secondary btn-sm">
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4">
+          <div class="col-lg-3">
             <div class="card card-primary card-outline card-tabs h-100">
               <div class="card-header">
                 <h3 class="card-title"></h3>
@@ -69,7 +69,7 @@
               </div>
             </div><!-- /.card -->
           </div>
-          <div class="col-lg-8">
+          <div class="col-lg-9">
             <div class="card card-primary card-outline card-tabs h-100">
               <div class="card-header p-0 pt-1 border-bottom-0 ">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -103,6 +103,10 @@
     <!-- /.content -->
 
 
+
+    <!-- 모달 컴포넌트  -->
+    <FileUpload ref="fileUpload" style="display: none"></FileUpload>
+    <!-- /모달 컴포넌트  -->
   </div>
   <!-- /.content-wrapper -->
  </template>
@@ -112,12 +116,14 @@
 import DepartmentJstree from "@/components/department/DepartmentJstree.vue";
 import DepartmentEditor from "@/components/department/DepartmentEditor";
 import Member from "@/components/member/Member";
+import FileUpload from "@/components/file/FileUpload.vue";
 export default {
   name: "Organization",
   components: {
     DepartmentJstree,
     DepartmentEditor,
     Member,
+    FileUpload,
   },
   data() {
     return {
@@ -145,6 +151,9 @@ export default {
     },
     showCreateModel() {
       this.$refs.member.showCreateModal();
+    },
+    showFileUploadModal() {
+      this.$refs.fileUpload.showFileUploadModal();
     }
   }
 }

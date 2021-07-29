@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4">
+          <div class="col-lg-3">
             <div class="card card-primary card-outline card-tabs h-100">
               <div class="card-header">
                 <h3 class="card-title"></h3>
@@ -60,7 +60,7 @@
               </div>
             </div><!-- /.card -->
           </div>
-          <div class="col-lg-8">
+          <div class="col-lg-9">
             <div class="card card-primary card-outline card-tabs h-100">
               <div class="card-header p-0 pt-1 border-bottom-0 ">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
