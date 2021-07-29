@@ -1,9 +1,12 @@
 package kr.co.cmt.assetmanager.controller;
 
 import kr.co.cmt.assetmanager.dto.PartnerCompanyDto;
+import kr.co.cmt.assetmanager.dto.PartnerCompanyMemberDto;
 import kr.co.cmt.assetmanager.dto.SearchDto;
 import kr.co.cmt.assetmanager.model.Category;
 import kr.co.cmt.assetmanager.model.PartnerCompany;
+import kr.co.cmt.assetmanager.model.PartnerCompanyMember;
+import kr.co.cmt.assetmanager.service.PartnerCompanyMemberService;
 import kr.co.cmt.assetmanager.service.PartnerCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +28,9 @@ import java.util.stream.Collectors;
 public class PartnerCompanyController {
     @Autowired
     private PartnerCompanyService partnerCompanyService;
+
+    @Autowired
+    private PartnerCompanyMemberService partnerCompanyMemberService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -123,5 +130,11 @@ public class PartnerCompanyController {
         partnerCompanyService.updatePartnerCompany(partnerCompany);
     }
 
+    @GetMapping(value = "/{id}/members")
+    public Collection<PartnerCompanyMemberDto> getMembersById(@PathVariable("id") long partnerCompanyId) {
+        Collection<PartnerCompanyMember> partnerCompanyMembers = partnerCompanyMemberService.findAllPartnerCompanyMembersByParentId(partnerCompanyId);
+        return  partnerCompanyMembers.stream().map(partnerCompanyMember ->
+                PartnerCompanyMemberDto.convertEntityToDto(partnerCompanyMember)).collect(Collectors.toList());
 
+    }
 }

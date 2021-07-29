@@ -20,7 +20,7 @@
 export default {
   name: "PartnerCompanyMember",
   props : {
-    pId : String,
+    pId : Number,
     pName : String,
     pPhone : String,
     pDirectPhone : String,

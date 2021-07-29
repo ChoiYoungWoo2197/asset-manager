@@ -40,13 +40,22 @@ export default {
   components: {
     PartnerCompanyMember
   },
+  props : {
+    pDatas : Array,
+  },
   data() {
     return {
       name : '',
       phone : '',
       directPhone : '',
       datas : [],
+      removeDatas : [],
       index : 1,
+    }
+  },
+  watch: {
+    pDatas() {
+      this.datas = this.pDatas;
     }
   },
   mounted() {
@@ -65,24 +74,31 @@ export default {
         'directPhone' : this.directPhone,
       });
 
-      this.clearData();
+      this.clearData(false);
     },
-    clearData() {
+    clearData(isDatasInit) {
       this.name = '';
       this.phone =  '';
       this.directPhone = '';
+      this.removeDatas = [];
+      if(isDatasInit === true) {
+        this.datas = [];
+      }
+
     },
     handleDeletedPartnerCompanyMemberData(data) {
       const index = this.datas.find((partnerCompanyMember, index) => {
-        if(Number(partnerCompanyMember.id) === Number(data.id)) {
+        if(partnerCompanyMember.id === data.id) {
           return index;
         }
       });
+      this.removeDatas.push(data);
+      console.log(this.removeDatas, '222222222')
       this.datas.splice(index, 1);
     },
     handleChangedPartnerCompanyMemberData(data) {
       this.datas.find((partnerCompanyMember) => {
-        if(partnerCompanyMember.id.indexOf(data.id) !== -1) {
+        if(partnerCompanyMember.id === data.id) {
           partnerCompanyMember.name = data.name;
           partnerCompanyMember.phone = data.phone;
           partnerCompanyMember.directPhone = data.directPhone;
@@ -91,7 +107,11 @@ export default {
     },
     getDatas() {
       return this.datas;
+    },
+    getRemoveDatas() {
+      return this.removeDatas;
     }
+
 
   }
 }

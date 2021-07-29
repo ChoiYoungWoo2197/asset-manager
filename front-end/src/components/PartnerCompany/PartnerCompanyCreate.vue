@@ -110,6 +110,10 @@ export default {
       $('button#createBtn').addClass('btn-secondary');
       this.isExistCode = null;
       this.useYn = true;
+
+      if(this.$refs.partnerCompanyMemberManager !== null) {
+        this.$refs.partnerCompanyMemberManager.clearData(true);
+      }
     },
     createBtnClick() {
       const vm = this;
@@ -121,7 +125,8 @@ export default {
         } else if($( '#partner-company-create-modal input#code' ).val() === "" ) {
           alert("코드를 입력해주세요.");
           return false;
-        } else if(this.$refs.partnerCompanyMemberManager.getDatas().length !== 0) {
+        }
+/*        else if(this.$refs.partnerCompanyMemberManager.getDatas().length !== 0) {
           let isExistNameNull = this.$refs.partnerCompanyMemberManager.getDatas().find(partnerCompanyMember => {
             if(partnerCompanyMember.name === "") {
               return partnerCompanyMember;
@@ -131,7 +136,8 @@ export default {
             alert("담장자 이름을 입력해주세요.");
             return false;
           }
-        } else if( this.isExistCode !== false ) {
+        }*/
+        else if( this.isExistCode !== false ) {
           //제일 마지막에 추가해주자.
           alert('코드 중복체크를 해주세요.');
           return false;
@@ -147,10 +153,23 @@ export default {
         useYn : this.useYn,
         register : "1"
       }).then(response => {
-        console.log(response);
+        // console.log(response)
+        let members = this.$refs.partnerCompanyMemberManager.getDatas().slice();
+        members.forEach(member =>{
+          member.parentId = response.data.id;
+        });
+
         if(response.status === 200) {
-          vm.$emit("updateData", response.data);
-          $('#partner-company-create-modal').modal("hide");
+          axios.post('http://localhost:8080/api/partner-company-members', members
+          ).then(response2 => {
+            if(response2.status === 200) {
+              // console.log(response2, '2222');
+              vm.$emit("updateData", response2.data);
+              $('#partner-company-create-modal').modal("hide");
+            }
+          }).catch(e2 =>{
+            alert(e2);
+          });
         }
       }).catch(e => {
         alert(e);

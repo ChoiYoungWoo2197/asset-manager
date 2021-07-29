@@ -66,11 +66,18 @@ public class PartnerCompanyMemberController {
     }*/
 
     @PostMapping
-    public Collection<PartnerCompanyMemberDto> store(@RequestBody Collection<PartnerCompanyMemberDto> partnerCompanyMemberDto) {
+    public Collection<PartnerCompanyMemberDto> store(@RequestBody Collection<PartnerCompanyMemberDto> partnerCompanyMemberDtos) {
 
-        if(partnerCompanyMemberDto.size() > 0) {
-            Collection<PartnerCompanyMember> partnerCompanyMembers = partnerCompanyMemberDto.stream().map(partnerCompanyMember ->
-                modelMapper.map(partnerCompanyMember, PartnerCompanyMember.class)).collect(Collectors.toList());
+        if(partnerCompanyMemberDtos.size() > 0) {
+            Collection<PartnerCompanyMember> partnerCompanyMembers = new ArrayList<>();
+            for(PartnerCompanyMemberDto partnerCompanyMemberDto: partnerCompanyMemberDtos) {
+                if(partnerCompanyMemberDto.getName() != "") {
+                    PartnerCompanyMember entity = modelMapper.map(partnerCompanyMemberDto, PartnerCompanyMember.class);
+                    entity.setPartnerCompany(partnerCompanyService.findPartnerCompanyById(partnerCompanyMemberDto.getParentId()).get());
+                    partnerCompanyMembers.add(entity);
+                }
+            }
+
             partnerCompanyMemberService.createPartnerCompanyMemberByList(partnerCompanyMembers);
 
             return partnerCompanyMembers.stream().map(partnerCompanyMember ->
@@ -79,33 +86,44 @@ public class PartnerCompanyMemberController {
             return null;
         }
     }
-//
-//    @GetMapping(value = "/{id}")
-//    public PartnerCompanyMemberDto show(@PathVariable("id") long partnerCompanyMemberId) {
-//        if(partnerCompanyMemberId == 0) return null;
-//
-//        PartnerCompanyMember partnerCompanyMember = partnerCompanyMemberService.findPartnerCompanyMemberById(
-//                partnerCompanyMemberId).get();
-//        return PartnerCompanyMemberDto.convertEntityToDto(partnerCompanyMember);
-//    }
-//
-//    @PutMapping(value = "/{id}")
-//    public PartnerCompanyMemberDto update(@PathVariable("id") long partnerCompanyMemberId, @RequestBody PartnerCompanyMemberDto partnerCompanyMemberDto) {
-//        PartnerCompanyMember entity = partnerCompanyMemberService.findPartnerCompanyMemberById(partnerCompanyMemberId).get();
-//        entity.setName(partnerCompanyMemberDto.getName());
-//        entity.setPhone(partnerCompanyMemberDto.getPhone());
-//        entity.setDirectPhone(partnerCompanyMemberDto.getDirectPhone());
-//        entity.setUseYn(partnerCompanyMemberDto.getUseYn());
-//        entity.setUpdatedDateAt(LocalDate.now());
-//        partnerCompanyMemberService.updatePartnerCompanyMember(entity);
-//        return PartnerCompanyMemberDto.convertEntityToDto(entity);
-//    }
-//
-//    @DeleteMapping(value = "/{id}")
-//    public void delete(@PathVariable("id") long partnerCompanyMemberId) {
-////        categorySpecificationService.deleteCategorySpecification(categorySpecificationId);
-//        PartnerCompanyMember partnerCompanyMember = partnerCompanyMemberService.findPartnerCompanyMemberById(partnerCompanyMemberId).get();
-//        partnerCompanyMember.setUseYn(false);
-//        partnerCompanyMemberService.updatePartnerCompanyMember(partnerCompanyMember);
-//    }
+
+    @GetMapping(value = "/{id}")
+    public PartnerCompanyMemberDto show(@PathVariable("id") long partnerCompanyMemberId) {
+        if(partnerCompanyMemberId == 0) return null;
+
+        PartnerCompanyMember partnerCompanyMember = partnerCompanyMemberService.findPartnerCompanyMemberById(
+                partnerCompanyMemberId).get();
+        return PartnerCompanyMemberDto.convertEntityToDto(partnerCompanyMember);
+    }
+
+    @PutMapping()
+    public Collection<PartnerCompanyMemberDto> update(@RequestBody Collection<PartnerCompanyMemberDto> partnerCompanyMemberDtos) {
+        if(partnerCompanyMemberDtos.size() > 0) {
+            Collection<PartnerCompanyMember> partnerCompanyMembers = new ArrayList<>();
+            for(PartnerCompanyMemberDto partnerCompanyMemberDto: partnerCompanyMemberDtos) {
+                if(partnerCompanyMemberDto.getName() != "") {
+                    PartnerCompanyMember entity = modelMapper.map(partnerCompanyMemberDto, PartnerCompanyMember.class);
+                    entity.setPartnerCompany(partnerCompanyService.findPartnerCompanyById(partnerCompanyMemberDto.getParentId()).get());
+                    partnerCompanyMembers.add(entity);
+                }
+            }
+
+            partnerCompanyMemberService.updatePartnerCompanyMemberByList(partnerCompanyMembers);
+
+            return partnerCompanyMembers.stream().map(partnerCompanyMember ->
+                    PartnerCompanyMemberDto.convertEntityToDto(partnerCompanyMember)).collect(Collectors.toList());
+
+        } else {
+            return null;
+        }
+    }
+
+    @DeleteMapping()
+    public void delete(@RequestBody Collection<PartnerCompanyMemberDto> partnerCompanyMemberDtos) {
+        if(partnerCompanyMemberDtos.size() > 0) {
+            Collection<PartnerCompanyMember> partnerCompanyMembers = partnerCompanyMemberDtos.stream().map(partnerCompanyMember ->
+                    modelMapper.map(partnerCompanyMember, PartnerCompanyMember.class)).collect(Collectors.toList());
+            partnerCompanyMemberService.deletePartnerCompanyMemberByList(partnerCompanyMembers);
+        }
+    }
 }

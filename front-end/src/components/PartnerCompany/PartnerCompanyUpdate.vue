@@ -1,7 +1,7 @@
 <template>
   <!-- Modal 수정 -->
   <div class="modal fade" id="partner-company-update-modal" tabindex="-1" aria-labelledby="partner-company-update-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable ">
       <div class="modal-content ">
         <div class="modal-header">
           <h2 class="tit_step">업체수정</h2>
@@ -11,7 +11,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-lg">
+            <div class="col-lg-7">
               <div class="card card-primary card-outline">
                 <div class="card-body">
                   <form>
@@ -60,6 +60,9 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg">
+              <PartnerCompanyMemberManager ref="partnerCompanyMemberManager" :p-datas="activePartnerCompanyMembers"></PartnerCompanyMemberManager>
+            </div>
           </div>
 
         </div>
@@ -76,9 +79,13 @@
 <script>
 import $ from "jquery";
 import axios from "axios";
+import PartnerCompanyMemberManager from "@/components/PartnerCompany/PartnerCompanyMemberManager.vue";
 
 export default {
   name: "PartnerCompanyUpdate",
+  components: {
+    PartnerCompanyMemberManager
+  },
   data() {
     return {
       id : null,
@@ -90,7 +97,8 @@ export default {
       types: [
         {code : 'buy', name : '구매'},
         {code : 'rental', name : '렌탈'},
-      ]
+      ],
+      activePartnerCompanyMembers : [],
     }
   },
   methods: {
@@ -108,6 +116,8 @@ export default {
       } else {
         $('#partner-company-update-modal #useYnFalseEditModal').prop("checked", true);
       }
+
+      this.findPartnerCompanyMembers();
     },
     updateBtnClick() {
       const vm = this;
@@ -126,6 +136,7 @@ export default {
         // console.log(response);
         if(response.status === 200) {
           // this.$router.push('Authority');
+          vm.updateAndDeletePartnerCompanyMembers();
           vm.$emit("updateData", response.data);
           $('#partner-company-update-modal').modal("hide");
         }
@@ -154,7 +165,44 @@ export default {
     },
     clickRadioBtn(flag){
       this.useYn = flag;
+    },
+    findPartnerCompanyMembers() {
+      const vm = this;
+      axios.get('http://localhost:8080/api/partner-companys/' + vm.id + "/members", {
+      }).then(response => {
+        vm.activePartnerCompanyMembers = response.data;
+      }).catch(e => {
+        alert(e);
+      })
+    },
+    updatePartnerCompanyMembers() {
+      const vm = this;
+      let members = this.$refs.partnerCompanyMemberManager.getDatas().slice();
+      members.forEach(member => {
+        member.parentId = vm.id;
+      });
+      return axios.put('http://localhost:8080/api/partner-company-members' , members);
+    },
+    deletePartnerCompanyMembers() {
+      const vm = this;
+      let memberstest = this.$refs.partnerCompanyMemberManager.getRemoveDatas().slice();
+      memberstest.forEach(member => {
+        member.parentId = vm.id;
+      });
+
+      console.log(memberstest, 'dddddddddd')
+      // return axios.delete('http://localhost:8080/api/partner-company-members', memberstest);
+      return axios.get('http://localhost:8080/api/partner-company-members');
+    },
+    updateAndDeletePartnerCompanyMembers() {
+      axios.all([this.updatePartnerCompanyMembers(), this.deletePartnerCompanyMembers()])
+          .then(axios.spread(function (updateResult, deleteResult) {
+            console.log(updateResult, deleteResult);
+          })).catch(e => {
+        alert(e);
+      });
     }
+
   }
 }
 </script>

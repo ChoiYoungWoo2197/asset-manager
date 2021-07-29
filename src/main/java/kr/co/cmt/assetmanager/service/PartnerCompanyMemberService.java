@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,24 @@ public class PartnerCompanyMemberService {
         return partnerCompanyMemberRepository.save(partnerCompanyMember);
     }
 
+    public List<PartnerCompanyMember> updatePartnerCompanyMemberByList(Collection<PartnerCompanyMember> partnerCompanyMembers) {
+        partnerCompanyMembers.forEach(this::updatePartnerCompanyMember);
+        return new ArrayList<>(partnerCompanyMembers);
+    }
+
     public void deletePartnerCompanyMember(Long id) {
         partnerCompanyMemberRepository.deleteById(id);
+    }
+
+    public void deletePartnerCompanyMemberByList(Collection<PartnerCompanyMember> partnerCompanyMembers) {
+        partnerCompanyMembers.forEach(partnerCompanyMember ->
+                this.deletePartnerCompanyMember(partnerCompanyMember.getId()));
+    }
+
+    public List<PartnerCompanyMember> findAllPartnerCompanyMembersByParentId(Long partnerCompanyId) {
+        SearchDto searchDto = new SearchDto();
+        searchDto.setPartnerCompanyId(partnerCompanyId);
+        return this.findAllPartnerCompanyMember(searchDto);
+//        return partnerCompanyMemberRepository.findAllPartnerCompanyMembersByParentId(partnerCompanyId).stream().collect(Collectors.toList());
     }
 }
