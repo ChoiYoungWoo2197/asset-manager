@@ -24,6 +24,7 @@ export default {
     pName : String,
     pPhone : String,
     pDirectPhone : String,
+    pUseYn : Boolean
   },
   data() {
     return {
@@ -31,6 +32,7 @@ export default {
       name : '',
       phone : '',
       directPhone : '',
+      useYn : true,
     }
   },
   mounted() {
@@ -38,6 +40,7 @@ export default {
     this.name = this.pName;
     this.phone = this.pPhone;
     this.directPhone = this.pDirectPhone;
+    this.useYn = this.pUseYn;
   },
   watch: {
   },
@@ -48,6 +51,7 @@ export default {
         'name' : this.name,
         'phone' : this.phone,
         'directPhone' : this.directPhone,
+        'useYn' : this.useYn,
       });
     },
     keyupPartnerCompanyMember() {
@@ -56,6 +60,7 @@ export default {
         'name' : this.name,
         'phone' : this.phone,
         'directPhone' : this.directPhone,
+        'useYn' : this.useYn,
       });
     }
   }

@@ -98,7 +98,7 @@
                       <td v-text="index+1" class=""></td>
                       <td v-text="data.name" class=""></td>
                       <td v-text="data.code" class=""></td>
-                      <td v-text="data.type === 'buy' ? '구매' : '비활성화'" class=""></td>
+                      <td v-text="data.type === 'buy' ? '구매' : '렌탈'" class=""></td>
                       <td v-text="data.companyPhone" class=""></td>
                       <td v-text="data.remark" class=""></td>
                       <td v-text="data.useYn === true ? '활성화' : '비활성화'" class=""></td>

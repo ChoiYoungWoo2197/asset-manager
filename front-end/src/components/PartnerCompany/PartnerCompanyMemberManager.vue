@@ -68,10 +68,11 @@ export default {
       }
 
       this.datas.push({
-        'id' : (this.index++).toString(),
+        'id' : this.getMaxId(),
         'name' : this.name,
         'phone' : this.phone,
         'directPhone' : this.directPhone,
+        'useYn' : true,
       });
 
       this.clearData(false);
@@ -110,9 +111,16 @@ export default {
     },
     getRemoveDatas() {
       return this.removeDatas;
+    },
+    getMaxId() {
+      let maxId = 0;
+      this.datas.find(partnerCompanyMember => {
+        if(maxId < partnerCompanyMember.id) {
+          maxId = partnerCompanyMember.id;
+        }
+      })
+      return maxId+1;
     }
-
-
   }
 }
 </script>

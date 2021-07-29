@@ -117,6 +117,9 @@ export default {
         $('#partner-company-update-modal #useYnFalseEditModal').prop("checked", true);
       }
 
+      if(this.$refs.partnerCompanyMemberManager !== null) {
+        this.$refs.partnerCompanyMemberManager.clearData(true);
+      }
       this.findPartnerCompanyMembers();
     },
     updateBtnClick() {
@@ -170,7 +173,7 @@ export default {
       const vm = this;
       axios.get('http://localhost:8080/api/partner-companys/' + vm.id + "/members", {
       }).then(response => {
-        vm.activePartnerCompanyMembers = response.data;
+        vm.activePartnerCompanyMembers = response.data.filter(partnerCompanyMember => partnerCompanyMember.useYn === true);
       }).catch(e => {
         alert(e);
       })
@@ -185,14 +188,15 @@ export default {
     },
     deletePartnerCompanyMembers() {
       const vm = this;
-      let memberstest = this.$refs.partnerCompanyMemberManager.getRemoveDatas().slice();
-      memberstest.forEach(member => {
+      let members = this.$refs.partnerCompanyMemberManager.getRemoveDatas().slice();
+      members.forEach(member => {
         member.parentId = vm.id;
+        member.useYn = false;
       });
 
-      console.log(memberstest, 'dddddddddd')
-      // return axios.delete('http://localhost:8080/api/partner-company-members', memberstest);
-      return axios.get('http://localhost:8080/api/partner-company-members');
+      return axios.put('http://localhost:8080/api/partner-company-members' , members);
+      // return axios.delete('http://localhost:8080/api/partner-company-members', member);
+      // return axios.get('http://localhost:8080/api/partner-company-members');
     },
     updateAndDeletePartnerCompanyMembers() {
       axios.all([this.updatePartnerCompanyMembers(), this.deletePartnerCompanyMembers()])
