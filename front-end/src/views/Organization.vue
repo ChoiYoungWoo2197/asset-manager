@@ -28,15 +28,15 @@
               <button class="file-upload btn btn-secondary btn-sm mr-1" @click="showFileUploadModal">
                 <i class="fas fa-file-download pr-1"></i>파일업로드
               </button>
-              <button class="btn btn-secondary btn-sm">
-                <i class="fas fa-file-export pr-1"></i>파일다운로드
+              <button class="btn btn-secondary btn-sm" @click="clickFileDownloadBtn">
+                <i class="fas fa-file-export pr-1" ></i>파일다운로드
               </button>
             </div>
             <div v-else>
               <button class="create btn btn-secondary btn-sm mr-1" @click="showCreateModel">
                 <i class="far fa-plus-square pr-1"></i>등록
               </button>
-              <button class="file-upload btn btn-secondary btn-sm mr-1">
+              <button class="file-upload btn btn-secondary btn-sm mr-1" @click="showFileUploadModal">
                 <i class="fas fa-file-download pr-1"></i>파일업로드
               </button>
               <button class="btn btn-secondary btn-sm">
@@ -105,7 +105,8 @@
 
 
     <!-- 모달 컴포넌트  -->
-    <FileUpload ref="fileUpload" style="display: none"></FileUpload>
+    <FileUpload ref="fileUpload" @completeFileUpload="handleCompleteFileUpload" style="display: none"></FileUpload>
+    <FileDownload ref="fileDownload" style="display: none"></FileDownload>
     <!-- /모달 컴포넌트  -->
   </div>
   <!-- /.content-wrapper -->
@@ -117,6 +118,8 @@ import DepartmentJstree from "@/components/department/DepartmentJstree.vue";
 import DepartmentEditor from "@/components/department/DepartmentEditor";
 import Member from "@/components/member/Member";
 import FileUpload from "@/components/file/FileUpload.vue";
+import FileDownload from "@/components/file/FileDownload.vue";
+
 export default {
   name: "Organization",
   components: {
@@ -124,6 +127,7 @@ export default {
     DepartmentEditor,
     Member,
     FileUpload,
+    FileDownload
   },
   data() {
     return {
@@ -153,7 +157,22 @@ export default {
       this.$refs.member.showCreateModal();
     },
     showFileUploadModal() {
+      this.$refs.fileUpload.clearData();
       this.$refs.fileUpload.showFileUploadModal();
+    },
+    handleCompleteFileUpload(datas) {
+      // console.log(data, 'filedata')
+      if(this.activeVueComponent === "department") {
+        this.$refs.departmentJstree.createByFile(datas);
+      } else {
+        this.$refs.member.createByFile(datas);
+      }
+    },
+    clickFileDownloadBtn() {
+      let fileData = this.activeVueComponent === "department" ? this.$refs.departmentJstree.getFileDatas() :
+          this.$refs.member.getFileDatas();
+
+      this.$refs.fileDownload.download(fileData);
     }
   }
 }

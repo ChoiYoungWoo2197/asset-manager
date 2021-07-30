@@ -19,6 +19,8 @@ public class DepartmentDto {
      * */
     private Long id;
     private Long parentId;
+    private String parentCode;
+    private String parentName;
     @NotBlank(message = "코드는 필수 입력 값입니다.")
     private String code;
     @NotBlank(message = "코드는 필수 입력 값입니다.")
@@ -52,6 +54,8 @@ public class DepartmentDto {
         DepartmentDto departmentDto = new DepartmentDto();
         departmentDto.id = department.getId();
         departmentDto.parentId = department.getParent() == null ? null : department.getParent().getId();
+        departmentDto.parentCode = department.getParent() == null ? null : department.getParent().getCode();
+        departmentDto.parentName = department.getParent() == null ? null : department.getParent().getName();
         departmentDto.code = department.getCode();
         departmentDto.name = department.getName();
         departmentDto.remark = department.getRemark();

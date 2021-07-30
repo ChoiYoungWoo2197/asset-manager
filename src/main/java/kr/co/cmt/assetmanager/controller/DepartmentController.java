@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -150,5 +151,30 @@ public class DepartmentController {
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") long departmentId) {
         departmentService.deleteDepartment(departmentId);
+    }
+
+    /**
+     * POST
+     * 부서 저장 (파일업로드)
+     * 프론트로 부터 json배열로 받자.
+     */
+    @PostMapping(value = "/file-upload")
+    public Collection<DepartmentDto> fileUpload(@RequestBody Collection<DepartmentDto> departmentDtos) {
+        if(departmentDtos.size() > 0) {
+            return departmentService.storeByFile(departmentDtos).stream().map(department ->
+                    DepartmentDto.convertEntityToDto(department)).collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * GET
+     * 부서 목록 (파일다운로드)
+     * 프론트로 json배열을 넘기자.
+     */
+    @GetMapping(value = "/file-download")
+    public Collection<DepartmentDto> fileDownload(){
+        return this.index();
     }
 }

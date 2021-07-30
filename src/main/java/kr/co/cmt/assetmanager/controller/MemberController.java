@@ -16,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -156,5 +158,18 @@ public class MemberController {
         Member member = memberService.findMemberById(memberId).get();
         member.setUseYn(false);
         memberService.updateMember(member);
+    }
+
+    /**
+     * POST
+     * 회원 저장 (파일업로드)
+     **/
+    @PostMapping(value = "/file-upload")
+    public Collection<MemberDto> fileUpload(@RequestBody Collection<MemberDto> memberDtos) {
+        if(memberDtos.size() > 0) {
+            return memberService.storeByFile(memberDtos).stream().map(member ->
+                    MemberDto.convertEntityToDto(member)).collect(Collectors.toList());
+        }
+        return null;
     }
 }

@@ -174,6 +174,20 @@ export default {
         {code : 'md' , name : '상무'},
         {code : 'smd' , name : '전무'},
         {code : 'p' , name : '사장'},
+      ],
+      keys : [
+        {value : "이름" , key : "name"},
+        {value : "비밀번호" , key : "password"},
+        {value : "이메일" , key : "email"},
+        {value : "전화번호" , key : "phone"},
+        {value : "비고" , key : "remark"},
+        {value : "사용여부" , key : "useYn"},
+        {value : "부서코드" , key : "departmentCode"},
+        {value : "부서명" , key : "departmentName"},
+        {value : "직급코드" , key : "position"},
+        {value : "직급명" , key : "positionName"},
+        {value : "권한코드" , key : "authorityCode"},
+        {value : "권한명" , key : "authorityName"},
       ]
     }
   },
@@ -357,6 +371,35 @@ export default {
     },
     showUpdateModal() {
       $('#member-update-modal').modal("show");
+    },
+    createByFile(datas){
+      // const vm = this;
+      let members = [];
+      datas.forEach(member => {
+        let newNode = {};
+        this.keys.forEach(key => {
+          if(key.key === "useYn") {
+            newNode[key.key] = member[key.value] === null ? false :
+                (member[key.value] === "활성화" ? true : false);
+          } else {
+            newNode[key.key] = member[key.value] !== null ? member[key.value] : '';
+          }
+        })
+        members.push(newNode);
+      })
+
+
+      axios.post('http://localhost:8080/api/members/file-upload', members
+      ).then(response => {
+        console.log(response);
+        // vm.getJstreeData();
+      }).catch(e =>{
+        alert(e);
+      });
+
+    },
+    getFileDatas() {
+      return '';
     }
   }
 }

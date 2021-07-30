@@ -23,7 +23,11 @@ public class MemberDto {
      * */
     private Long id;
     private Long authorityId;
+    private String authorityCode;
+    private String authorityName;
     private Long departmentId;
+    private String departmentCode;
+    private String departmentName;
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
@@ -33,6 +37,7 @@ public class MemberDto {
     private String name;
     private LocalDate birthday;
     private String position;
+    private String positionName;
     private String phone;
     private String remark;
     private Boolean useYn;
@@ -64,7 +69,11 @@ public class MemberDto {
         MemberDto memberDto = new MemberDto();
         memberDto.id = member.getId();
         memberDto.authorityId = member.getAuthority() == null ? null : member.getAuthority().getId();
+        memberDto.authorityCode = member.getAuthority() == null ? null : member.getAuthority().getCode();
+        memberDto.authorityName = member.getAuthority() == null ? null : member.getAuthority().getName();
         memberDto.departmentId = member.getDepartment() == null ? null : member.getDepartment().getId();
+        memberDto.departmentCode = member.getDepartment() == null ? null : member.getDepartment().getCode();
+        memberDto.departmentName = member.getDepartment() == null ? null : member.getDepartment().getName();
         memberDto.email = member.getEmail();
         memberDto.password = member.getPassword();
         memberDto.name = member.getName();

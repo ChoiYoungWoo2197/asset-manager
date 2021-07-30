@@ -13,6 +13,14 @@ export default {
     return {
       activeMode : 'create',
       datas : null,
+      keys : [
+        {value : "부서코드", key : "code"},
+        {value : "부서명", key : "name"},
+        {value : "비고", key : "remark"},
+        {value : "사용여부", key : "useYn"},
+        {value : "상위부서코드", key : "parentCode"},
+        {value : "상위부서명", key : "parentName"}
+      ]
     }
   },
   mounted() {
@@ -149,6 +157,54 @@ export default {
         alert(e);
       });
     },
+    createByFile(datas) {
+      const vm = this;
+      let departments = [];
+      datas.forEach(department => {
+        let newNode = {};
+        this.keys.forEach(key => {
+          if(key.key === "useYn") {
+            newNode[key.key] = department[key.value] === null ? false :
+                (department[key.value] === "활성화" ? true : false);
+          } else {
+            newNode[key.key] = department[key.value] !== null ? department[key.value] : '';
+          }
+
+        });
+        departments.push(newNode);
+      });
+
+      axios.post('http://localhost:8080/api/departments/file-upload', departments
+      ).then(response => {
+        console.log(response);
+        vm.getJstreeData();
+      }).catch(e2 =>{
+        alert(e2);
+      });
+
+    },
+    getFileDatas(){
+      const vm = this;
+      let departments = [];
+
+      vm.datas.forEach(department => {
+        let newNode = {};
+        vm.keys.forEach(key => {
+          if(key.key === "useYn") {
+            newNode[key.value] = department[key.key] === null ? '비활성화' :
+                (department[key.key] === true ? '활성화' : '비활성화');
+          } else {
+            newNode[key.value] = department[key.key] !== null ? department[key.key] : '';
+          }
+        })
+        departments.push(newNode);
+      })
+
+      return {
+        fileName : "부서목록",
+        fileData : departments
+      };
+    }
   }
 }
 </script>

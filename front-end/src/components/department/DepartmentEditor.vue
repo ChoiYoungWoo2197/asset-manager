@@ -26,8 +26,8 @@
           </div>
           <div class="form-group">
             <div class="custom-control custom-radio d-inline pr-1">
-              <input class="custom-control-input" type="radio" id="" name="useYnRadio" @click="clickRadioBtn(false)">
-              <label for="" class="custom-control-label">비활성화</label>
+              <input class="custom-control-input" type="radio" id="useYnFalseEdit" name="useYnRadio" @click="clickRadioBtn(false)">
+              <label for="useYnFalseEdit" class="custom-control-label">비활성화</label>
             </div>
             <div class="custom-control custom-radio d-inline">
               <input class="custom-control-input" type="radio" id="useYnTrueEdit" name="useYnRadio" checked="" @click="clickRadioBtn(true)">
