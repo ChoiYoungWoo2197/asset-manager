@@ -1,15 +1,20 @@
 package kr.co.cmt.assetmanager.model;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 
 //계정
 @Data
 //@AllArgsConstructor
 //@NoArgsConstructor
 @Entity
-public class Member {
+public class Member  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -83,5 +88,53 @@ public class Member {
         this.register = register;
         this.registedDateAt = registedDateAt;
         this.updatedDateAt = updatedDateAt;
+    }
+
+
+    //"/logins/sign-in"로 요청하면 시큐리티가 인터셉트 한다.(컨트롤러를 생성 안해도 되는거 같네..)
+    // 로그인을 성공하면 시큐리티 session을 만듬 (Security ContextHolder ). 일반 세션이랑은 다른가?
+    // 저 세션에다가 저장하기 위해선 타입이 Authentication객체 타입이여야 함. >> 오키 이건 정해진 객체가 있네
+    // Authentication객체 내부에 User정보가 있어야 한다. >> 이것도 정해진 객체
+    // User객체는 UserDetails객체 이다.
+
+    // 결론은 세션에다가 Authentical <- UserDetails(PrincipalDetails)를 넣어야 한다.
+
+    //유저에 속한 권한을 리턴
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return authority.getCode();
+            }
+        });
+
+        return grantedAuthorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

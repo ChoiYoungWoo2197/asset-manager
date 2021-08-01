@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
@@ -25,6 +26,9 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping(value = "/api/members")
 public class MemberController {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private MemberService memberService;
 
@@ -79,6 +83,27 @@ public class MemberController {
 
         return "test";
     }
+
+
+    @GetMapping(value = "/test-create")
+    public String testCreate() {
+        Authority authority = new Authority(null, "관리자","admin", "비고",
+                true,"1", LocalDate.now(),LocalDate.now());
+        authorityService.createAuthority(authority);
+
+        departmentService.createDepartment(Department.builder().id(1L).code("dev")
+                .parent(null).name("dev").remark("비고").useYn(true).register("1")
+                .registedDateAt(LocalDate.now()).updatedDateAt(LocalDate.now()).build());
+
+        memberService.createMember(Member.builder().id(1L)
+                .authority(authorityService.findAuthorityById(1L).get()).department(departmentService.findDepartmentById(1L).get())
+                .email("123@cmtinfo.co.kr").password(bCryptPasswordEncoder.encode("123")).name("김아무개").birthday(LocalDate.of(1992,8,11))
+                .position("e").phone("010-1232-6666").remark("비고").useYn(true).register("1").registedDateAt(LocalDate.now())
+                .updatedDateAt(LocalDate.now()).build());
+
+        return "testCreate";
+    }
+
 
     @GetMapping(params = "page")
     public Page<MemberDto> page(SearchDto searchDto, Pageable pageable) {

@@ -8,9 +8,9 @@
         </a>
       </div>
       <div class="card-body">
-        <form @submit.prevent="signUp" >
+        <form @submit.prevent="signIn" >
           <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email" v-model="email">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" v-model="email">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password" v-model="password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" v-model="password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -28,7 +28,7 @@
           <div class="row">
             <!-- /.col -->
             <div class="col">
-              <button type="submit" class="btn btn-primary btn-block">로그인</button>
+              <button type="submit" class="btn btn-primary btn-block" @click="singIn">로그인</button>
             </div>
             <!-- /.col -->
           </div>
@@ -62,16 +62,49 @@ export default {
     document.querySelector('.main-footer').style.display = 'none';
   },
   methods : {
-    signUp() {
+/*    singIn() {
       console.log(this.email, this.password);
-      axios.get('http://localhost:8080/api/logins/signin')
+/!*      axios.get('http://localhost:8080/logins/sign-in')
           .then(response => {
+            console.log('dddddddddddddddddddddddd')
+            console.log(response);
+            this.$router.replace('Index');
+          })
+          .catch(e => {
+            console.log('error : ', e)          // 에러가 나는 경우 콘솔에 에러를 출력한다
+          })*!/
+
+      axios.get('http://localhost:8080/logins/sign-in'), {
+        auth: {
+          email: this.email,
+          password: this.password
+        }
+      }
+
+          .then(response => {
+            console.log('dddddddddddddddddddddddd')
             console.log(response);
             this.$router.replace('Index');
           })
           .catch(e => {
             console.log('error : ', e)          // 에러가 나는 경우 콘솔에 에러를 출력한다
           })
+    },*/
+    async signIn() {
+      try {
+        const result = await axios.get('/api/logins', {
+          auth: {
+            username: this.email,
+            password: this.password
+          }
+        });
+        if (result.status === 200) {
+          this.loginSuccess = true
+        }
+      } catch (err) {
+        this.loginError = true;
+        throw new Error(err)
+      }
     }
   }
 }

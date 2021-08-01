@@ -3,6 +3,7 @@ package kr.co.cmt.assetmanager.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,74 +11,65 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    String admin = "admin";
+    String user = "user";
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/js/**","/css/**","/img/**","/fonts/**", "*.ico","/html/**");
         // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
-        web.ignoring().antMatchers("/resource/**");
+        web.ignoring().antMatchers("/js/**","/css/**","/img/**","/fonts/**", "*.ico","/html/**", "/adminlte/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session will be created or used by spring security
-//                .and()
-//                .httpBasic()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/api/hello").permitAll()
-//                .antMatchers("/api/user/**").permitAll() // allow every URI, that begins with '/api/user/'
-//                .antMatchers("/api/secured").authenticated()
-//                .anyRequest().authenticated() // protect all other requests
-//                .and()
-//                .formLogin()            //로그인 수행
-//                .loginPage("/test")
-//                .permitAll()
-//                .and()
-//                .logout()               //로그아웃 수행
-//                .permitAll()
-//                .and()
-//                .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
-
-//        http.authorizeRequests()
-////                .antMatchers("/admin/**").hasRole("ADMIN")	//Admin 권한이 있는 경우 접근 허용
-////                .antMatchers("/user/**").hasRole("USER")	//User 권한이 있는 경우 접근 허용
-//                .antMatchers("/","/api/logins/signin", "/apoi/logins/singout").permitAll() //해당 URL은 전체 접근 허용
-//                .anyRequest().authenticated()	//이외의 URL은 인증 절차를 수행하기 위해 login 페이지로 이동
-//                .and().csrf().disable()
-//                .formLogin()            //로그인 수행
-//                .loginPage("/api/logins")
-//                .permitAll()
-//                .and()
-//                .logout()               //로그아웃 수행
-//                .permitAll();
+/*        http.csrf().disable();		// 개발 시 에만
         http.authorizeRequests()
-//                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")// 관리자페이지를 위한 곳
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()// 여기까지는 기본적으로 경로를 어떻게 사용할 것인가를 위한 곳이다
-                .and().csrf().disable()
-                .formLogin()            //로그인 수행
-                .loginPage("/api/logins").permitAll()
+                .antMatchers("/api/authoritys/**", "/api/departments/**").access("hasRole('admin')")	// 관리자 전용 페이지
+                .antMatchers("/api/categorys/**",  "/api/category-specifications/**", "/api/partner-companys/**", "/api/partner-company-members/**")
+                    .access("hasRole('admin') or hasRole('asset')") //관리자, 자산담당자 전용 페이지
+                .antMatchers("/", "/logins","/api/logins/sing-in", "/api/logins/sign-out", "/api/members/test-create","/logins/login-success").permitAll()
+                .antMatchers("/**").authenticated();
+
+        http.formLogin()
+                .loginPage("/")
+                .loginProcessingUrl("/logins/sign-in") //"/logins/sign-in"로 요청하면 시큐리티가 인터셉트 한다.(컨트롤러를 생성 안해도 되는거 같네..)
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/logins/login-success"); //로긴 성공하면 여기 페이지를 띄워라.
+        http.logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);*/
+
+
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .logout().permitAll();
+                .httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/hello").permitAll()
+                .antMatchers("/api/logins").authenticated()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("foo").password("{noop}bar").roles("USER");
     }
 
-/*    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:8080")
-                .allowedOrigins("http://127.0.0.1:8081")
-                .allowedOrigins("http://localhost:8081")
-                .allowedOrigins("http://localhost:8080");
-    }*/
 }
