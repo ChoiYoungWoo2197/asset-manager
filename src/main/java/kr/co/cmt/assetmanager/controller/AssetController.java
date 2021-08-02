@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.cmt.assetmanager.dto.AssetDto;
 import kr.co.cmt.assetmanager.dto.AuthorityDto;
 import kr.co.cmt.assetmanager.dto.SearchDto;
-import kr.co.cmt.assetmanager.model.Asset;
-import kr.co.cmt.assetmanager.model.Authority;
-import kr.co.cmt.assetmanager.model.Member;
+import kr.co.cmt.assetmanager.model.*;
 import kr.co.cmt.assetmanager.service.*;
 import kr.co.cmt.assetmanager.specification.AuthoritySpecification;
 import org.modelmapper.ModelMapper;
@@ -44,6 +42,12 @@ public class AssetController {
     private AssetService assetService;
 
     @Autowired
+    private AssetUseLogService assetUseLogService;
+
+    @Autowired
+    private AssetRentalLogService assetRentalLogService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping
@@ -69,6 +73,10 @@ public class AssetController {
     public AssetDto store(@RequestBody AssetDto assetDto) {
         Asset asset = modelMapper.map(assetDto, Asset.class);
 
+        if(assetDto.getCategoryId() == null || assetDto.getDepartmentId() == null || assetDto.getPartnerCompanyId() == null) {
+            return null;
+        }
+
         if(assetDto.getCategoryId() != null) {
             asset.setCategory(categoryService.findCategoryById(assetDto.getCategoryId()).get());
         }
@@ -85,7 +93,26 @@ public class AssetController {
             asset.setPartnerCompany(partnerCompanyService.findPartnerCompanyById(assetDto.getPartnerCompanyId()).get());
         }
 
+        //자산 테이블 저장
         assetService.createAsset(asset);
+
+        //자산 변경내역 테이블 저장
+        assetUseLogService.createAssetUseLog(
+                AssetUseLog.builder()
+                        .asset(asset).type("create").content("").register("1").registedDateAt(LocalDate.now()).updatedDateAt(LocalDate.now())
+                        . build());
+
+        //자산 렌탈내역
+        if(assetDto.getType().equals("rental")) {
+            assetRentalLogService.createAssetRentalLog(
+                    AssetRentalLog.builder()
+                            .asset(asset).contractedDateAt(assetDto.getContractDateAt()).expiredDateAt(assetDto.getExpireDateAt())
+                            .rentalCount(0L).returnedDateAt(null).register("1").registedDateAt(LocalDate.now()).updatedDateAt(LocalDate.now()).build()
+            );
+
+            asset.setBuyDateAt(null);
+            assetService.updateAsset(asset);
+        }
 
         return AssetDto.convertEntityToDto(asset);
     }

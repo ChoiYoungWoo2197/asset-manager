@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,8 +23,8 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-/*    @Autowired
-    private PasswordEncoder passwordEncoder;*/
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private final AuthorityService authorityService;
@@ -46,7 +47,7 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
-//        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 
         return memberRepository.save(member);
     }

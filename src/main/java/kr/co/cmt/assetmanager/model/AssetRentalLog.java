@@ -41,4 +41,18 @@ public class AssetRentalLog {
         this.registedDateAt = LocalDate.now();
         this.updatedDateAt = LocalDate.now();
     }
+
+
+    @Builder
+    public AssetRentalLog(Asset asset, LocalDate contractedDateAt, LocalDate expiredDateAt, Long rentalCount,
+            LocalDate returnedDateAt, String register, LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.asset = asset;
+        this.contractedDateAt = contractedDateAt;
+        this.expiredDateAt = expiredDateAt;
+        this.rentalCount = rentalCount;
+        this.returnedDateAt = returnedDateAt;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
+    }
 }

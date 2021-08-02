@@ -33,7 +33,20 @@ public class AssetUseLog {
 
     private LocalDate registedDateAt;
 
+    private LocalDate updatedDateAt;
+
     public AssetUseLog() {
         this.registedDateAt = LocalDate.now();
+        this.updatedDateAt = LocalDate.now();
+    }
+
+    @Builder
+    public AssetUseLog(Asset asset, String type, String content, String register, LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.asset = asset;
+        this.type = type;
+        this.content = content;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
     }
 }

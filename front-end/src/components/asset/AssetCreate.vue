@@ -259,13 +259,13 @@ export default {
         vm.categorys = resCategorys.data.filter(category => {
           return (category.useYn === true);
         });
-        vm.categorys.forEach((category, index) => {
-          console.log(index, 'dddddee')
+        vm.categorys.forEach(category => {
+          // console.log(index, 'dddddee')
           categorysNewDatas.push({
             'id' : category.id ,
             'text' : category.name,
-            'defaultSelected' : Number(index) === 0 ? true : false,
-            'selected' : Number(index) === 0 ? true : false
+            'defaultSelected' : false,
+            'selected' : false
           });
         })
         vm.getCategoryInstance().select2({
@@ -435,25 +435,27 @@ export default {
     },
     createBtnClick() {
       const vm = this;
-/*      if($( '#asset-create-modal input#code' ).val() === "" || $( '#asset-create-modal input#name' ).val() === "" || $("#asset-create-modal #categorys").val() === ""
-          || $( '#asset-create-modal input#count' ).val() === "" || $( '#asset-create-modal #departments' ).val() === ""
-          || $( '#asset-create-modal #partnerCompanys' ).val() === "" || this.isExistCode !== false) {
+      if($( '#asset-create-modal input#code' ).val() === "" || $( '#asset-create-modal input#name' ).val() === ""
+          || $("#asset-create-modal #categorys").val() === "" || $("#asset-create-modal #categorys").val() == null
+          || $( '#asset-create-modal #departments' ).val() === "" || $( '#asset-create-modal #departments' ).val() === null
+          || $( '#asset-create-modal #partnerCompanys' ).val() === "" || $( '#asset-create-modal #partnerCompanys' ).val() === null
+          || $( '#asset-create-modal input#count' ).val() === "" || this.isExistCode !== false) {
         if($( '#asset-create-modal input#code' ).val() === '') {
           alert("코드를 입력해주세요.");
           return false;
         } else if($( '#asset-create-modal input#name' ).val() === '') {
           alert("이름을 입력해주세요.");
           return false;
-        } else if($("#asset-create-modal #categorys").val() === "") {
+        } else if($("#asset-create-modal #categorys").val() === "" || $("#asset-create-modal #categorys").val() === null) {
           alert("카테고리를 선택해주세요.");
           return false;
         } else if($( '#asset-create-modal input#count' ).val() === "") {
           alert("수량을 선택해주세요.");
           return false;
-        } else if($( '#asset-create-modal #departments' ).val() === "") {
+        } else if($( '#asset-create-modal #departments' ).val() === "" || $( '#asset-create-modal #departments' ).val() === null) {
           alert("부서를 선택해주세요.");
           return false;
-        } else if($( '#asset-create-modal #partnerCompanys' ).val() === "") {
+        } else if($( '#asset-create-modal #partnerCompanys' ).val() === "" || $( '#asset-create-modal #partnerCompanys' ).val() === null) {
           alert("업체를 선택해주세요.");
           return false;
         } else if( this.isExistCode !== false ) {
@@ -461,11 +463,10 @@ export default {
           alert('코드 중복체크를 해주세요.');
           return false;
         }
-      }*/
+      }
 
 
-      console.log(vm, $("#asset-create-modal #categorys").val())
-/*      axios.post('http://localhost:8080/api/assets', {
+      axios.post('http://localhost:8080/api/assets', {
         code : $( '#asset-create-modal input#code' ).val(),
         name : $( '#asset-create-modal input#name' ).val(),
         categoryId : $("#asset-create-modal #categorys").val(),
@@ -477,8 +478,8 @@ export default {
         type : $( '#asset-create-modal select#type' ).val(),
         buyDateAt : $( '#asset-create-modal #buyDate' ).val(),
         receivedDateAt : $( '#asset-create-modal #receiveDate' ).val(),
-        contractDateAt : $( '#asset-create-modal #contractDates' ).val().split("~")[0],
-        expireDateAt : $( '#asset-create-modal #contractDates' ).val().split("~")[1],
+        contractDateAt : $( '#asset-create-modal #contractDates' ).val().split("~")[0].trim(),
+        expireDateAt : $( '#asset-create-modal #contractDates' ).val().split("~")[1].trim(),
         remark : $( 'textarea#remark' ).val(),
         useYn : this.useYn,
         register : "1"
@@ -490,7 +491,7 @@ export default {
         }
       }).catch(e => {
         alert(e);
-      })*/
+      })
     }
   }
 }
