@@ -114,8 +114,9 @@ public class MemberController {
     }
 
     @GetMapping
-    public List<Member> index() {
-        return memberService.findAllMember();
+    public List<MemberDto> index() {
+        return memberService.findAllMember().stream().map(member ->
+                MemberDto.convertEntityToDto(member)).collect(Collectors.toList());
     }
 
     /**

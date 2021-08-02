@@ -143,8 +143,8 @@
 <script>
 import axios from "axios";
 import $ from "jquery";
-import PartnerCompanyCreate from "@/components/PartnerCompany/PartnerCompanyCreate.vue";
-import PartnerCompanyUpdate from "@/components/PartnerCompany/PartnerCompanyUpdate.vue";
+import PartnerCompanyCreate from "@/components/partnerCompany/PartnerCompanyCreate.vue";
+import PartnerCompanyUpdate from "@/components/partnerCompany/PartnerCompanyUpdate.vue";
 
 export default {
   name: "PartnerCompany",

@@ -33,6 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/**").permitAll()
+                .anyRequest().permitAll();
+
+
+
 /*        http.csrf().disable();		// 개발 시 에만
         http.authorizeRequests()
                 .antMatchers("/api/authoritys/**", "/api/departments/**").access("hasRole('admin')")	// 관리자 전용 페이지
@@ -53,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);*/
 
 
-        http
+/*        http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .httpBasic()
@@ -63,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/logins").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .csrf().disable();
+                .csrf().disable();*/
     }
 
     @Override

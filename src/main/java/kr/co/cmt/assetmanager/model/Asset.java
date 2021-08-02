@@ -9,7 +9,7 @@ import java.util.List;
 
 //자산
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 //@NoArgsConstructor
 @Entity
 public class Asset {
@@ -71,7 +71,7 @@ public class Asset {
     private String remark;
 
     @Column(length = 1)
-    private String useYn;
+    private Boolean useYn;
 
     @Column(length = 20)
     private String register;
@@ -83,5 +83,28 @@ public class Asset {
     public Asset() {
         this.registedDateAt = LocalDate.now();
         this.updatedDateAt = LocalDate.now();
+    }
+
+    @Builder
+    public Asset(String code, Category category, PartnerCompany partnerCompany, Member member, Department department,
+                 String name, String count, String price, String type, LocalDate buyDateAt, LocalDate receivedDateAt,
+                 String remark, Boolean useYn, String register, LocalDate registedDateAt,
+                 LocalDate updatedDateAt) {
+        this.code = code;
+        this.category = category;
+        this.partnerCompany = partnerCompany;
+        this.member = member;
+        this.department = department;
+        this.name = name;
+        this.count = count;
+        this.price = price;
+        this.type = type;
+        this.buyDateAt = buyDateAt;
+        this.receivedDateAt = receivedDateAt;
+        this.remark = remark;
+        this.useYn = useYn;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
     }
 }

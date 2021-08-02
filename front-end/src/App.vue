@@ -36,9 +36,7 @@
               <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">자산관리</a>
               <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
                 <li>
-                  <a href="./views/asset.html" class="dropdown-item">
-                    자산정보관리
-                  </a>
+                  <router-link :to="{ name : 'Asset'}" class="dropdown-item">자산 정보관리</router-link>
                 </li>
                 <li>
                   <a href="./views/assetStatus.html" class="dropdown-item">

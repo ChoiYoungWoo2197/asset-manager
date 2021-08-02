@@ -20,6 +20,7 @@
     "moment": "^2.29.1",
     "path": "^0.12.7",
     "request": "^2.88.2",
+    "select2": "^4.1.0-rc.0",
     "tempusdominus-bootstrap-4": "^5.39.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",

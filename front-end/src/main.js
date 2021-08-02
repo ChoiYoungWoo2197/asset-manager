@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "@/assets/css/layout.css";
+import "select2/dist/css/select2.min.css";
 import "admin-lte/plugins/jquery-ui/jquery-ui.css";
 import "admin-lte/plugins/fontawesome-free/css/all.min.css";
 import "admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
@@ -10,7 +11,9 @@ import "admin-lte/dist/css/adminlte.min.css";
 import "daterangepicker/daterangepicker.css";
 import "jstree/dist/themes/default/style.min.css";
 
+
 import "@/assets/js/common.js";
+import "select2/dist/js/select2.js";
 import "admin-lte/plugins/jquery/jquery.min.js";
 import "admin-lte/plugins/jquery-ui/jquery-ui.js";
 import "admin-lte/plugins/bootstrap/js/bootstrap.bundle.js";

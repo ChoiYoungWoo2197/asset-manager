@@ -100,6 +100,7 @@ export default {
         });
         if (result.status === 200) {
           this.loginSuccess = true
+          this.$router.replace('Index');
         }
       } catch (err) {
         this.loginError = true;

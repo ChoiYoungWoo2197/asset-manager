@@ -33,7 +33,7 @@
 
 <script>
 // import _ from "lodash"
-import PartnerCompanyMember from "@/components/PartnerCompany/PartnerCompanyMember.vue";
+import PartnerCompanyMember from "@/components/partnerCompany/PartnerCompanyMember.vue";
 
 export default {
   name: "PartnerCompanyMemberManager",

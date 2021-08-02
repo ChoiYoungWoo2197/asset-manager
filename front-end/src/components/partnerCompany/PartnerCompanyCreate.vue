@@ -82,7 +82,7 @@
 <script>
 import $ from "jquery";
 import axios from "axios";
-import PartnerCompanyMemberManager from "@/components/PartnerCompany/PartnerCompanyMemberManager.vue";
+import PartnerCompanyMemberManager from "@/components/partnerCompany/PartnerCompanyMemberManager.vue";
 
 export default {
   name: "PartnerCompanyCreate",

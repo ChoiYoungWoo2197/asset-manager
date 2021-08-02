@@ -9,6 +9,7 @@ const Authority = () => { return import("../views/Authority.vue");}
 const Organization = () => { return import("../views/Organization.vue");}
 const Category = () => { return import("../views/Category.vue");}
 const PartnerCompany = () => { return import("../views/PartnerCompany.vue");}
+const Asset = () => { return import("../views/Asset.vue");}
 
 const routes = [
   {
@@ -40,6 +41,11 @@ const routes = [
     path: "/api/partner-companys",
     name: "PartnerCompany",
     component: PartnerCompany
+  },
+  {
+    path: "/api/assets",
+    name: "Asset",
+    component: Asset
   }
 ];
 
