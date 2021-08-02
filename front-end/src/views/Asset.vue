@@ -45,82 +45,58 @@
                     <div class="form-row">
                       <div class="col-3">
                         <div class="form-group">
-                          <label for="test1">구분</label>
-                          <select class="form-control " style="width: 100%;" id="test1">
-                            <option>해당없음</option>
-                            <option>구매</option>
-                            <option>렌탈</option>
+                          <label for="typeView">구분</label>
+                          <select class="form-control " style="width: 100%;" id="typeView">
+                            <option value="">해당없음</option>
+                            <option value="buy">구매</option>
+                            <option value="rental">렌탈</option>
                           </select>
                         </div>
                         <div class="form-group">
-                          <label for="test5">렌탈계약기간:</label>
-                          <div class="input-group date " id="test5" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input " data-target="#test5" placeholder="렌탈계약기간"/>
-                            <div class="input-group-append" data-target="#test5" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label for="test2">카테고리</label>
-                          <select class="form-control " style="width: 100%;" id="test2">
-                            <option>해당없음</option>
-                            <option>컴퓨터</option>
-                            <option>데스크탑</option>
-                            <option>CPU</option>
-                            <option>모니터</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="test6">담당자</label>
-                          <select class="form-control " style="width: 100%;" id="test6">
-                            <option>해당없음</option>
-                            <option>최영우</option>
-                            <option>은선영</option>
-                            <option>박지은</option>
-                            <option>이새은</option>
-                            <option>이치은</option>
+                          <label for="partnerCompanysView">업체명</label>
+                          <select class="form-control" style="width: 100%;" id="partnerCompanysView">
+                            <option value="">해당없음</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-3">
                         <div class="form-group">
-                          <label for="test3" >구매일자</label>
-                          <div class="input-group date " id="test3" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input " data-target="#test3" placeholder="구매일자"/>
-                            <div class="input-group-append" data-target="#test3" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                          </div>
+                          <label for="categorysView">카테고리</label>
+                          <select class="form-control" style="width: 100%;" id="categorysView">
+                            <option value="">해당없음</option>
+                          </select>
                         </div>
                         <div class="form-group">
-                          <label for="test7">부서</label>
-                          <select class="form-control " style="width: 100%;" id="test7">
-                            <option>해당없음</option>
-                            <option>보안연구소</option>
-                            <option>경영팀</option>
-                            <option>보안팀</option>
-                          </select>
+                          <label for="contractDatesView">계약기간</label>
+                          <input class="form-control" type="text" id="contractDatesView" placeholder="" value="">
                         </div>
                       </div>
                       <div class="col-3">
                         <div class="form-group">
-                          <label for="test4">수령일자</label>
-                          <div class="input-group date " id="test4" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input " data-target="#test4" placeholder="구매일자"/>
-                            <div class="input-group-append" data-target="#test4" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                          </div>
+                          <label for="membersView">담당자</label>
+                          <select class="form-control" style="width: 100%;" id="membersView">
+                            <option value="">해당없음</option>
+                          </select>
                         </div>
                         <div class="form-group">
-                          <label for="test8">사용유무</label>
-                          <select class="form-control " style="width: 100%;" id="test8">
-                            <option>해당없음</option>
-                            <option>비활성화</option>
-                            <option>활성화</option>
+                          <label for="receiveDateView">수령일자</label>
+                          <input class="form-control" type="text" id="receiveDateView"  placeholder="" value="">
+                        </div>
+
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label for="departmentsView">부서</label>
+                          <select class="form-control" style="width: 100%;" id="departmentsView">
+                            <option value="">해당없음</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="useYnView">사용유무</label>
+                          <select class="form-control " style="width: 100%;" id="useYnView">
+                            <option value="">해당없음</option>
+                            <option value="false">비활성화</option>
+                            <option value="true">활성화</option>
                           </select>
                         </div>
                       </div>
@@ -128,9 +104,9 @@
                   </form>
                   <div class="form-group">
                     <div class="input-group">
-                      <input type="search" class="form-control " placeholder="자산명" value="">
+                      <input type="search" class="form-control " placeholder="자산명" v-model="search">
                       <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" @click.prevent="clickSearchBtn">
                           <i class="fa fa-search"></i>
                         </button>
                       </div>
@@ -152,52 +128,47 @@
                       <th>가격</th>
                       <th>구매일자</th>
                       <th>수령일자</th>
-                      <!--                                            <th>모델명</th>
-                                                                  <th>시리얼넘버</th>-->
                       <th>담당자</th>
                       <th>담당부서</th>
                       <th>구분</th>
                       <th>업체명</th>
                       <th>계약시작일자</th>
                       <th>계약종료일자</th>
-                      <th>재고</th>
                       <th>비고</th>
                       <th>사용유무</th>
                       <th>등록자</th>
                       <th>등록일자</th>
+                      <th>수정일자</th>
                       <th>렌탈내역</th>
                       <th>변경내역</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>1</td>
-                      <!--                                            <td><input type="checkbox"></td>-->
-                      <td><a href="#" class="a-click text-dark">모니터</a></td>
-                      <td>asset-1</td>
-                      <td>monitor</td>
-                      <td>1</td>
-                      <td>50000</td>
-                      <td>2021-05-21</td>
-                      <td>2021-06-05</td>
-                      <!--                                            <td>Dell U2415</td>
-                                                                  <td>CN02JVJ4QDC00879176U</td>-->
-                      <td>최영우</td>
-                      <td>보안연구소</td>
-                      <td>렌탈</td>
-                      <td>롯데렌탈</td>
-                      <td>2021-06-01</td>
-                      <td>2022-06-01</td>
-                      <td>1</td>
-                      <td></td>
-                      <td>Y</td>
-                      <td>최영우</td>
-                      <td>2021-06-08</td>
+                    <tr v-for="(data, index) in getDatas"  :key="index" @click="clickTrTag(data)">
+                      <td v-text="index+1" class=""></td>
+                      <td v-text="data.name" class=""></td>
+                      <td v-text="data.code" class=""></td>
+                      <td v-text="data.categoryName" class=""></td>
+                      <td v-text="data.count" class=""></td>
+                      <td v-text="data.price" class=""></td>
+                      <td v-text="data.buyDateAt" class=""></td>
+                      <td v-text="data.receivedDateAt" class=""></td>
+                      <td v-text="data.memberName" class=""></td>
+                      <td v-text="data.departmentName" class=""></td>
+                      <td v-text="data.type === 'buy' ? '구매' : '렌탈'" class=""></td>
+                      <td v-text="data.partnerCompanyName" class=""></td>
+                      <td v-text="data.contractDateAt" class=""></td>
+                      <td v-text="data.expireDateAt" class=""></td>
+                      <td v-text="data.remark" class=""></td>
+                      <td v-text="data.useYn === true ? '활성화' : '비활성화'" class=""></td>
+                      <td v-text="data.register" class=""></td>
+                      <td v-text="data.registedDateAt" class=""></td>
+                      <td v-text="data.updatedDateAt" class=""></td>
                       <td>
-                        <button class="asset-extention btn btn-info btn-sm">렌탈내역</button>
+                        <button class="btn btn-info btn-sm">렌탈내역</button>
                       </td>
                       <td>
-                        <button class=" btn btn-info btn-sm">변경내역</button>
+                        <button class="btn btn-info btn-sm">변경내역</button>
                       </td>
                     </tr>
                     </tbody>
@@ -205,13 +176,17 @@
                 </div>
               </div>
               <div class="card-footer clearfix">
-                <h4 class="card-title">Showing 1 to 4 of 12 entries</h4>
+                <h4 class="card-title">{{pageInfo}}</h4>
                 <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                  <li class="page-item" :class="{disabled: isFirstPageGroup}">
+                    <a class="page-link" href="#" aria-label="Previous" @click="clickPreviousPageBtn">&laquo;</a>
+                  </li>
+                  <li class="page-item" v-for="page in pages" :key="page" :class="{active: page-1 === currentPage}">
+                    <a class="page-link" v-text="page" href="#" @click="clickPageBtn(page-1)"></a>
+                  </li>
+                  <li class="page-item" :class="{disabled: isLastPageGroup}">
+                    <a class="page-link" href="#" aria-label="Next" @click="clickNextPageBtn">&raquo;</a>
+                  </li>
                 </ul>
               </div>
             </div><!-- /.card -->
@@ -236,6 +211,8 @@
 import AssetCreate from "@/components/asset/AssetCreate.vue";
 import AssetUpdate from "@/components/asset/AssetUpdate.vue";
 import $ from "jquery";
+import axios from "axios";
+import moment from "moment";
 
 export default {
   name: "Asset",
@@ -245,21 +222,260 @@ export default {
   },
   data() {
     return {
-
+      responseData : null,
+      data : null,
+      pageable : null,
+      currentPage : 0, //현재 페이지
+      perPageNum : 10, //게시글의 수
+      displayPageNum : 10, // 페이지 번호의 수
+      pages : [],
+      pageInfo : null,
+      search : '',
+      categorys : [],
+      members : [],
+      departments : [],
+      partnerCompanys : [],
+    }
+  },
+  computed: {
+    getDatas() {
+      return this.data;
+    },
+    isFirstPageGroup() {
+      if(this.responseData === null) return false;
+      return this.responseData.data.first;
+    },
+    isLastPageGroup() {
+      if(this.responseData === null) return false;
+      return this.responseData.data.last;
+    },
+  },
+  watch: {
+    currentPage() {
+      this.searchData();
     }
   },
   mounted() {
     document.body.classList.remove('login-page');
     document.body.classList.add('layout-top-nav');
+    this.findAll();
+    this.initContractDatePicker();
+    this.initReceiveDatePicker();
+    this.searchData();
   },
   methods: {
-    handleUpdateData(data) {
-      console.log(data);
+    searchData() {
+      const vm = this;
+      axios.get('http://localhost:8080/api/assets', {
+        params: {
+          page : vm.currentPage,
+          size : vm.perPageNum,
+          useYn:$('#useYnView').val(),
+          name: vm.search
+        }
+      }).then(response => {
+        console.log(response);
+        if(response.status === 200) {
+          vm.responseData = response;
+          vm.data = response.data.content;
+          vm.pageable = response.data.pageable;
+          vm.getStartAndEndPage();
+          // console.log(vm.responseData, vm.data, vm.pageable);
+        }
+      }).catch(e => {
+        alert(e);
+      })
+    },
+    handleUpdateData() {
+      this.currentPage = 0;
+      this.searchData();
     },
     showCreateModal() {
       this.$refs.assetCreate.clearData();
       $('#asset-create-modal').modal("show");
-    }
+    },
+    clickTrTag(data) {
+      console.log(data);
+    },
+    getStartAndEndPage() {
+      this.pages = [];
+      let endPage = Math.ceil((this.pageable.pageNumber+1) / this.displayPageNum) * this.displayPageNum;
+      let startPage = (endPage - this.displayPageNum) + 1;
+      let tempEndPage = Math.ceil(this.responseData.data.totalElements / this.perPageNum);
+
+      if(endPage > tempEndPage) {
+        endPage = tempEndPage;
+      }
+
+      for(var i=startPage; i<=endPage; i++) {
+        this.pages.push(i);
+      }
+
+      this.pageInfo = String.format("Showing {0} to {1} of {2} entries", (this.pageable.pageNumber * this.perPageNum)+1,
+          (this.pageable.pageNumber * this.perPageNum)+this.responseData.data.numberOfElements, this.responseData.data.totalElements);
+
+    },
+    clickPreviousPageBtn() {
+      this.currentPage = this.pageable.pageNumber === 0 ? 0 : this.pageable.pageNumber-1;
+
+    },
+    clickNextPageBtn() {
+      let tempEndPage = Math.ceil(this.responseData.data.totalElements / this.perPageNum);
+      this.currentPage = this.pageable.pageNumber > tempEndPage ? tempEndPage : this.pageable.pageNumber+1;
+      console.log(this.currentPage);
+    },
+    clickPageBtn(page) {
+      this.currentPage = page;
+    },
+    clickSearchBtn() {
+      this.currentPage = 0;
+      this.searchData();
+    },
+    getCategoryInstance() {
+      return $("#" + "categorysView");
+    },
+    getDepartmentInstance() {
+      return $("#" + "departmentsView");
+    },
+    getMemberInstance() {
+      return $("#" + "membersView");
+    },
+    getPartnerCompanyInstance() {
+      return $("#" + "partnerCompanysView");
+    },
+    findCategorys() {
+      return axios.get('http://localhost:8080/api/categorys');
+    },
+    findDepartments() {
+      return axios.get('http://localhost:8080/api/departments');
+    },
+    findMembers() {
+      return axios.get('http://localhost:8080/api/members');
+    },
+    findPartnerCompanys() {
+      return axios.get('http://localhost:8080/api/partner-companys');
+    },
+    findAll() {
+      const vm = this;
+      axios.all([this.findCategorys(), this.findDepartments(), this.findMembers(),
+        this.findPartnerCompanys()])
+          .then(axios.spread(function (resCategorys, resDepartments, resMembers, resPartnerCompanys) {
+            // console.log(resCategorys, resDepartments, resMembers, resPartnerCompanys, 'dddddddd');
+
+            let categorysNewDatas = [];
+            vm.categorys = resCategorys.data.filter(category => {
+              return (category.useYn === true);
+            });
+            vm.categorys.forEach(category => {
+              categorysNewDatas.push({
+                'id' : category.id ,
+                'text' : category.name,
+                'defaultSelected' : false,
+                'selected' : false
+              });
+            })
+            vm.getCategoryInstance().select2({
+              data : categorysNewDatas,
+            });
+
+            let departmentsNewDatas = [];
+            vm.departments = resDepartments.data.filter(department => {
+              return department.useYn === true;
+            });
+            vm.departments.forEach(department => {
+              departmentsNewDatas.push({
+                'id' : department.id ,
+                'text' : department.name,
+                'defaultSelected' : false,
+                'selected' : false
+              })
+            })
+            vm.getDepartmentInstance().select2({
+              data : departmentsNewDatas,
+            });
+
+            let membersNewDatas = [];
+            vm.members = resMembers.data.filter(member => {
+              return member.useYn === true;
+            });
+            vm.members.forEach(member => {
+              membersNewDatas.push({
+                'id' : member.id ,
+                'text' : member.name,
+                'defaultSelected' : false,
+                'selected' : false
+              })
+            })
+            vm.getMemberInstance().select2({
+              data : membersNewDatas,
+            });
+
+            let partnerCompanyNewDatas = [];
+            vm.partnerCompanys = resPartnerCompanys.data.filter(partnerCompany => {
+              return partnerCompany.useYn === true;
+            })
+            vm.partnerCompanys.forEach(partnerCompany => {
+              partnerCompanyNewDatas.push({
+                'id' : partnerCompany.id ,
+                'text' : partnerCompany.name,
+                'defaultSelected' : false,
+                'selected' : false
+              })
+            })
+
+            vm.getPartnerCompanyInstance().select2({
+              data : partnerCompanyNewDatas,
+            });
+
+          })).catch(e => {
+        alert(e);
+      })
+    },
+    initContractDatePicker() {
+      $('input#contractDatesView').daterangepicker({
+        timePicker: true,
+        showDropdowns: true,                     // 년월 수동 설정 여부
+        autoApply: true,                         // 확인/취소 버튼 사용여부
+        startDate: moment().startOf('hour'),
+        endDate: moment().startOf('hour').add(32, 'hour'),
+        autoUpdateInput: false,
+        locale : {
+          separator: " ~ ",
+          format: 'YYYY-MM-DD',
+          applyLabel: "적용",
+          cancelLabel: "닫기",
+          daysOfWeek: ["일", "월", "화", "수", "목", "금", "토"],
+          monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+        },
+      }).on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
+      }).on('cancel.daterangepicker', function(ev, picker) {
+        console.log(ev, picker)
+        $(this).val('');
+      });
+    },
+    initReceiveDatePicker() {
+      $('input#receiveDateView').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'),10),
+        autoUpdateInput: false,
+        locale : {
+          format: 'YYYY-MM-DD',
+          applyLabel: "적용",
+          cancelLabel: "닫기",
+          daysOfWeek: ["일", "월", "화", "수", "목", "금", "토"],
+          monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+        }
+      }).on('apply.daterangepicker', function(ev, picker) {
+        console.log(picker)
+        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+      }).on('cancel.daterangepicker', function(ev, picker) {
+        console.log(ev, picker)
+        $(this).val('');
+      });
+    },
   }
 }
 </script>

@@ -2,6 +2,7 @@ package kr.co.cmt.assetmanager.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,4 +23,8 @@ public class SearchDto {
     Collection<Long> authorityIds;
     Long categoryId;
     Long partnerCompanyId;
+    Long CategoryId;
+    LocalDate contractDateAt;
+    LocalDate expireDateAt;
+    LocalDate receivedDateAt;
 }
