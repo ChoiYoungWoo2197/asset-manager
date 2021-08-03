@@ -51,6 +51,14 @@ public class Asset {
     @OneToMany(mappedBy = "asset")
     private List<AssetSpecification> assetSpecificationList = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "asset_code")
+    private List<AssetUseLog> assetUseLogs = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "asset_code")
+    private List<AssetRentalLog> assetRentalLogs = new ArrayList<>();
+
 //    @NotBlank
     @Column(length = 100, nullable = false)
     private String name;

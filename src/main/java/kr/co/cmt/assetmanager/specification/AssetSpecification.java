@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.util.*;
 public class AssetSpecification {
     public static Specification<Asset> searchWith(Map<String, Object> searchKeyword) {
@@ -21,14 +22,14 @@ public class AssetSpecification {
             if(searchKeyword.get(key)  == null || searchKeyword.get(key)  == "") continue;
             if("remark".equals(key) || "name".equals(key)){
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
-            } else if("departmentId".equals(key) || "departmentIds".equals(key)
-                    ||"authorityId".equals(key) || "authorityIds".equals(key)) {
+            } else if("departmentId".equals(key) || "categoryId".equals(key) ||"partnerCompanyId".equals(key)
+                    || "memberId".equals(key)) {
                 String column = key.substring(0, key.toLowerCase().indexOf("id"));
-                if ("departmentId".equals(key) == true || "authorityId".equals(key) == true ) {
-                    predicate.add(builder.equal(root.get(column), searchKeyword.get(key)));
-                } else {
-                    predicate.add(root.get(column).in((Collection<Long>)searchKeyword.get(key)));
-                }
+                predicate.add(builder.equal(root.get(column), searchKeyword.get(key)));
+            } else if("contractDateAt".equals(key)) {
+                LocalDate startDate = LocalDate.parse(searchKeyword.get(key).toString().split("~")[0].trim());
+                LocalDate endDate = LocalDate.parse(searchKeyword.get(key).toString().split("~")[1].trim());
+                predicate.add(builder.between(root.get("assetRentalLogs"), startDate, endDate));
             }
             else{ //이외의 모든 조건 파라미터에 대해 equal 검색
                 predicate.add(builder.equal(root.get(key), searchKeyword.get(key)));

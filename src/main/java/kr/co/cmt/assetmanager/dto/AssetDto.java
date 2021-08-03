@@ -8,6 +8,7 @@ import org.apache.tomcat.jni.Local;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -71,6 +72,8 @@ public class AssetDto {
         assetDto.memberName = asset.getMember() == null ? null : asset.getMember().getName();
         assetDto.departmentId = asset.getDepartment() == null ? null : asset.getDepartment().getId();
         assetDto.departmentName = asset.getDepartment() == null ? null : asset.getDepartment().getName();
+        assetDto.contractDateAt = asset.getAssetRentalLogs().size() == 0 ? null : asset.getAssetRentalLogs().get(asset.getAssetRentalLogs().size()-1).getContractedDateAt();
+        assetDto.expireDateAt = asset.getAssetRentalLogs().size() == 0 ? null : asset.getAssetRentalLogs().get(asset.getAssetRentalLogs().size()-1).getExpiredDateAt();
         assetDto.name = asset.getName();
         assetDto.count = asset.getCount();
         assetDto.price = asset.getPrice();
@@ -82,7 +85,6 @@ public class AssetDto {
         assetDto.register = asset.getRegister();
         assetDto.registedDateAt = asset.getRegistedDateAt();
         assetDto.updatedDateAt = asset.getUpdatedDateAt();
-
         return assetDto;
     }
 }

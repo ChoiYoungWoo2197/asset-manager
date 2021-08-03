@@ -23,8 +23,8 @@ public class SearchDto {
     Collection<Long> authorityIds;
     Long categoryId;
     Long partnerCompanyId;
-    Long CategoryId;
-    LocalDate contractDateAt;
-    LocalDate expireDateAt;
-    LocalDate receivedDateAt;
+    Long memberId;
+    String contractDateAt;
+//    String expireDateAt;
+    String receivedDateAt;
 }

@@ -266,15 +266,31 @@ export default {
   methods: {
     searchData() {
       const vm = this;
+      console.log(
+          $( 'input#contractDatesView' ).val().split("~")[0],
+          $( 'input#contractDatesView' ).val().split("~")[1],
+          $( 'input#receiveDateView' ).val()
+      )
+
+      console.log($("#departmentsViews").val())
+
       axios.get('http://localhost:8080/api/assets', {
         params: {
           page : vm.currentPage,
           size : vm.perPageNum,
-          useYn:$('#useYnView').val(),
+          useYn: $('select#useYnView').val(),
+          type : $('select#typeView').val(),
+          categoryId : $("select#categorysView").val(),
+          memberId :  $("select#membersView").val(),
+          departmentId : $("select#departmentsView").val(),
+          partnerCompanyId : $("select#partnerCompanysView").val(),
+          receivedDateAt : $( 'input#receiveDateView' ).val() === null ? "" : $( 'input#receiveDateView' ).val(),
+          contractDateAt : $( 'input#contractDatesView' ).val() === null ? "" : $( 'input#contractDatesView' ).val(),
+          // expireDateAt : $( 'input#contractDatesView' ).val() === null ? "" : $( 'input#contractDatesView' ).val().split("~")[1],
           name: vm.search
         }
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.status === 200) {
           vm.responseData = response;
           vm.data = response.data.content;
@@ -294,8 +310,13 @@ export default {
       this.$refs.assetCreate.clearData();
       $('#asset-create-modal').modal("show");
     },
+    showUpdateModal() {
+      $('#asset-update-modal').modal("show");
+    },
     clickTrTag(data) {
       console.log(data);
+      this.$refs.assetUpdate.setData(data);
+      this.showUpdateModal();
     },
     getStartAndEndPage() {
       this.pages = [];
