@@ -478,7 +478,6 @@ export default {
             spec.assetCode = response.data.code;
           })
 
-
           if(response.status === 200) {
             axios.post('http://localhost:8080/api/asset-specifications', specs
             ).then(response2 => {

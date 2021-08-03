@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchDto {
+    String code;
     String name;
     Boolean useYn;
     String type;

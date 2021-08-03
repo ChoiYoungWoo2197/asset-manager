@@ -9,11 +9,11 @@ import lombok.*;
 @NoArgsConstructor
 public class AssetSpecificationDto {
     String assetCode;
-    String categorySpecificationId;
+    Long categorySpecificationId;
     String content;
 
     @Builder
-    public AssetSpecificationDto(String assetCode, String categorySpecificationId, String content) {
+    public AssetSpecificationDto(String assetCode, Long categorySpecificationId, String content) {
         this.assetCode = assetCode;
         this.categorySpecificationId = categorySpecificationId;
         this.content = content;
@@ -21,9 +21,9 @@ public class AssetSpecificationDto {
 
     public static AssetSpecificationDto convertEntityToDto(AssetSpecification assetSpecification) {
         AssetSpecificationDto assetSpecificationDto = new AssetSpecificationDto();
-        assetSpecificationDto.assetCode = assetSpecification.getAsset() == null ? null : assetSpecificationDto.getAssetCode();
-        assetSpecificationDto.categorySpecificationId = assetSpecification.getCategorySpecification() == null ? null : assetSpecificationDto.getCategorySpecificationId();
-        assetSpecificationDto.content = assetSpecificationDto.getContent();
+        assetSpecificationDto.assetCode = assetSpecification.getAsset() == null ? null : assetSpecification.getAsset().getCode();
+        assetSpecificationDto.categorySpecificationId = assetSpecification.getCategorySpecification() == null ? null : assetSpecification.getCategorySpecification().getId();
+        assetSpecificationDto.content = assetSpecification.getContent();
         return assetSpecificationDto;
     }
 }

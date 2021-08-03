@@ -306,7 +306,7 @@ export default {
       $('#asset-update-modal').modal("show");
     },
     clickTrTag(data) {
-      console.log(data);
+      // console.log(data);
       this.$refs.assetUpdate.setData(data);
       this.showUpdateModal();
     },

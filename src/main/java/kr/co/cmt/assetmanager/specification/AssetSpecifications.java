@@ -23,8 +23,8 @@ public class AssetSpecifications {
             if(searchKeyword.get(key)  == null || searchKeyword.get(key)  == "") continue;
             if("remark".equals(key) || "name".equals(key)){
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
-            } else if("assetCode".equals(key)) {
-                predicate.add(builder.equal(root.get("asset"), searchKeyword.get(key)));
+            } else if("code".equals(key)) {
+                predicate.add(builder.equal(root.get("assetCode"), searchKeyword.get(key)));
             } else if("categorySpecificationId".equals(key)) {
                 predicate.add(builder.equal(root.get("categorySpecification"), searchKeyword.get(key)));
             }

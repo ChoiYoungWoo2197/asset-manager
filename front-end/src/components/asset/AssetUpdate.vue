@@ -104,11 +104,10 @@
                 </div>
               </div>
             </div>
-
-
             <div class="col-lg">
               <div class="card card-primary card-outline">
-                <div class="card-body">
+                <AssetSpecification ref="assetSpecificationEdit"></AssetSpecification>
+<!--                <div class="card-body">
                   <form>
                     <div class="form-group">
                       <label for="label2999934">모델명<span class="text-danger"></span></label>
@@ -131,7 +130,7 @@
                       <input type="text" class="form-control " id="label23435" placeholder="">
                     </div>
                   </form>
-                </div>
+                </div>-->
               </div>
             </div>
 
@@ -152,9 +151,13 @@
 import $ from "jquery";
 import axios from "axios";
 import moment from "moment";
+import AssetSpecification from "@/components/asset/AssetSpecification.vue";
 
 export default {
   name: "AssetUpdate",
+  components: {
+    AssetSpecification
+  },
   data() {
     return {
       name : null,
@@ -199,7 +202,7 @@ export default {
       this.department = data.departmentId;
       this.type = data.type;
       this.partnerCompany = data.partnerCompanyId;
-      this.contractDate = data.contractDateAt + " ~ " + data.expireDateAt;
+      this.contractDate = data.contractDateAt === null ? "" : data.contractDateAt + " ~ " + data.expireDateAt;
       this.remark = data.remark;
       this.useYn = data.useYn;
 

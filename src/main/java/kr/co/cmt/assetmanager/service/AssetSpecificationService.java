@@ -33,6 +33,12 @@ public class AssetSpecificationService {
         ));
     }
 
+    public List<AssetSpecification> findAllAssetSpecificationByCode(String code) {
+        SearchDto searchDto = new SearchDto();
+        searchDto.setCode(code);
+        return findAllAssetSpecification(searchDto);
+    }
+
     public List<AssetSpecification> findAllAssetSpecification() {
         return assetSpecificationRepository.findAll();
     }

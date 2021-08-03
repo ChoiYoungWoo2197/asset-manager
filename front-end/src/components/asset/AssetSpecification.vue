@@ -45,10 +45,13 @@ export default {
 
       axios.get('http://localhost:8080/api/categorys/' + vm.category.id + '/get-child')
           .then(response => {
-            vm.datas = response.data;
+            vm.datas = response.data.filter(categorySpecification => categorySpecification.useYn === true);
           }).catch(e => {
         alert(e);
       });
+    },
+    findChildByAssetCode() {
+
     },
     getSpecificationDatas() {
       let specifications = [];

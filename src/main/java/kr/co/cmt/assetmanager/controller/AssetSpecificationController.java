@@ -53,8 +53,7 @@ public class AssetSpecificationController {
 
                 AssetSpecification assetSpecification = AssetSpecification.builder()
                         .asset(assetService.findAssetByCode(assetSpecificationDto.getAssetCode()).get())
-                        .categorySpecification(categorySpecificationService.findCategorySpecificationById(
-                                Long.parseLong(assetSpecificationDto.getCategorySpecificationId())).get())
+                        .categorySpecification(categorySpecificationService.findCategorySpecificationById(assetSpecificationDto.getCategorySpecificationId()).get())
                         .content(assetSpecificationDto.getContent())
                         .register("1")
                         .registedDateAt(LocalDate.now())
@@ -80,5 +79,22 @@ public class AssetSpecificationController {
         }
     }
 
+    @GetMapping(value = "/{code}")
+    public Collection<AssetSpecificationDto> show(@PathVariable("code") String assetCode) {
+        if(assetCode == null) return null;
+
+        Collection<AssetSpecification> selectAssetSpecifications = new ArrayList<>();
+        Collection<AssetSpecification> assetSpecifications = assetSpecificationService.findAllAssetSpecification();
+
+        if(assetSpecifications.size() > 0) {
+            for (AssetSpecification assetSpecification : assetSpecifications) {
+                if(assetSpecification.getAsset().getCode().equals(assetCode) == true) {
+                    selectAssetSpecifications.add(assetSpecification);
+                }
+            }
+        }
+        return selectAssetSpecifications.stream().map(assetSpecification ->
+                AssetSpecificationDto.convertEntityToDto(assetSpecification)).collect(Collectors.toList());
+    }
 
 }
