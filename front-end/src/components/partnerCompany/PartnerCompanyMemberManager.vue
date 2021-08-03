@@ -94,7 +94,7 @@ export default {
         }
       });
       this.removeDatas.push(data);
-      console.log(this.removeDatas, '222222222')
+      // console.log(this.removeDatas, '222222222')
       this.datas.splice(index, 1);
     },
     handleChangedPartnerCompanyMemberData(data) {

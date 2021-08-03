@@ -10,6 +10,7 @@ import lombok.*;
 public class AssetSpecificationDto {
     String assetCode;
     Long categorySpecificationId;
+    String categorySpecificationName;
     String content;
 
     @Builder
@@ -23,6 +24,7 @@ public class AssetSpecificationDto {
         AssetSpecificationDto assetSpecificationDto = new AssetSpecificationDto();
         assetSpecificationDto.assetCode = assetSpecification.getAsset() == null ? null : assetSpecification.getAsset().getCode();
         assetSpecificationDto.categorySpecificationId = assetSpecification.getCategorySpecification() == null ? null : assetSpecification.getCategorySpecification().getId();
+        assetSpecificationDto.categorySpecificationName = assetSpecification.getCategorySpecification() == null ? null : assetSpecification.getCategorySpecification().getName();
         assetSpecificationDto.content = assetSpecification.getContent();
         return assetSpecificationDto;
     }

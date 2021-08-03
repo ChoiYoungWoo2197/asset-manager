@@ -34,19 +34,9 @@
                       <label for="password">비밀번호<span class="text-danger">*</span></label>
                       <input type="password" class="form-control " id="password" placeholder="">
                     </div>
-                    <!--            <div class="form-group">
-                                  <label for="passwordCheck">비밀번호 재설정<span class="text-danger">*</span></label>
-                                  <input type="password" class="form-control " id="passwordCheck" placeholder="">
-                                </div>-->
                     <div class="form-group">
                       <label for="birthday">생년월일<span class="text-danger"></span></label>
                       <input class="form-control" type="text" id="birthday" placeholder="생년월일을 입력하세요.">
-                      <!--              <div class="input-group date" id="birthday" data-target-input="nearest">
-                                      <input type="text" class="form-control datetimepicker-input" data-target="#birthday"/>
-                                      <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                      </div>
-                                    </div>-->
                     </div>
                     <div class="form-group">
                       <label for="phone">전화번호<span class="text-danger"></span></label>

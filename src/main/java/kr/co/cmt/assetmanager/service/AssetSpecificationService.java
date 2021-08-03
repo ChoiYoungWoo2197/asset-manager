@@ -43,10 +43,19 @@ public class AssetSpecificationService {
         return assetSpecificationRepository.findAll();
     }
 
-//    public Optional<AssetSpecification> findAssetSpecificationById(String assetCode, String categorySpecificatoinId) {
-////        AssetSpecificationId assetSpecificationId = new AssetSpecificationId(assetCode, categorySpecificatoinId);
-//        return assetSpecificationRepository.findById(new AssetSpecificationId());
-//    }
+    public AssetSpecification findAssetSpecificationByCodeAndId(String code, Long id) {
+        Collection<AssetSpecification> assetSpecifications = assetSpecificationRepository.findAll();
+        if(assetSpecifications.size() > 0) {
+            for(AssetSpecification assetSpecification : assetSpecifications) {
+                if(assetSpecification.getAsset().getCode().equals(code) == true && assetSpecification.getCategorySpecification().getId() == id) {
+                    return assetSpecification;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
 
     public AssetSpecification createAssetSpecification(AssetSpecification assetSpecification) {
         return assetSpecificationRepository.save(assetSpecification);

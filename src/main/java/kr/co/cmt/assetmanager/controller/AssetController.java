@@ -2,6 +2,7 @@ package kr.co.cmt.assetmanager.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.cmt.assetmanager.dto.AssetDto;
+import kr.co.cmt.assetmanager.dto.AssetSpecificationDto;
 import kr.co.cmt.assetmanager.dto.AuthorityDto;
 import kr.co.cmt.assetmanager.dto.SearchDto;
 import kr.co.cmt.assetmanager.model.*;
@@ -17,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,6 +45,9 @@ public class AssetController {
 
     @Autowired
     private AssetRentalLogService assetRentalLogService;
+
+    @Autowired
+    private AssetSpecificationService assetSpecificationService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -144,9 +146,24 @@ public class AssetController {
         assetService.updateAsset(asset);
     }
 
-    @GetMapping(value = "/{code}/exists-child")
-    public ResponseEntity<Boolean> isExistChild(@PathVariable("code") String code) {
-//        return ResponseEntity.ok(assetService.isExistByCode(code));
-        return ResponseEntity.ok(false);
+    @GetMapping(value = "/{code}/get-specs-child")
+    public Collection<AssetSpecificationDto> getSpecsChild(@PathVariable("code") String assetCode) {
+        if(assetCode == null) return null;
+
+        Collection<AssetSpecification> selectAssetSpecifications = new ArrayList<>();
+        Collection<AssetSpecification> assetSpecifications = assetSpecificationService.findAllAssetSpecification();
+
+        if(assetSpecifications.size() > 0) {
+            for (AssetSpecification assetSpecification : assetSpecifications) {
+                if(assetSpecification.getAsset().getCode().equals(assetCode) == true) {
+                    selectAssetSpecifications.add(assetSpecification);
+                }
+            }
+        }
+        return selectAssetSpecifications.stream().map(assetSpecification ->
+                AssetSpecificationDto.convertEntityToDto(assetSpecification)).collect(Collectors.toList());
     }
+
+
+
 }

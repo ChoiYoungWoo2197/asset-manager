@@ -72,13 +72,30 @@ public class AssetSpecificationController {
     @PutMapping
     public Collection<AssetSpecificationDto> update(@RequestBody Collection<AssetSpecificationDto> assetSpecificationDtos) {
         if(assetSpecificationDtos.size() > 0) {
+            Collection<AssetSpecification> assetSpecifications = new ArrayList<>();
+            for (AssetSpecificationDto assetSpecificationDto : assetSpecificationDtos) {
+                if(assetSpecificationDto.getAssetCode() == null || assetSpecificationDto.getCategorySpecificationId() == null) {
+                    continue;
+                }
 
-            return null;
+                AssetSpecification assetSpecification = assetSpecificationService.findAssetSpecificationByCodeAndId(
+                        assetSpecificationDto.getAssetCode(),assetSpecificationDto.getCategorySpecificationId()
+                );
+
+                if(assetSpecification != null) {
+                    assetSpecification.setContent(assetSpecification.getContent());
+                    assetSpecifications.add(assetSpecification);
+                }
+            }
+
+            assetSpecificationService.updateAssetSpecificationByList(assetSpecifications);
+            return assetSpecifications.stream().map(assetSpecification ->
+                    AssetSpecificationDto.convertEntityToDto(assetSpecification)).collect(Collectors.toList());
         } else {
             return null;
         }
     }
-
+/*
     @GetMapping(value = "/{code}")
     public Collection<AssetSpecificationDto> show(@PathVariable("code") String assetCode) {
         if(assetCode == null) return null;
@@ -95,6 +112,6 @@ public class AssetSpecificationController {
         }
         return selectAssetSpecifications.stream().map(assetSpecification ->
                 AssetSpecificationDto.convertEntityToDto(assetSpecification)).collect(Collectors.toList());
-    }
+    }*/
 
 }

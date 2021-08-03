@@ -27,6 +27,7 @@ import java.util.*;
 public class AssetRentalLogService {
     private final AssetRentalLogRepository assetRentalLogRepository;
 
+
     public Page<AssetRentalLog> findAll(SearchDto searchDto, Pageable pageable) {
         return assetRentalLogRepository.findAll(AssetRentalLogSpecification.searchWith(new ObjectMapper().convertValue(searchDto, Map.class)), pageable);
     }
@@ -35,4 +36,13 @@ public class AssetRentalLogService {
     {
         return assetRentalLogRepository.save(assetRentalLog);
     }
+
+/*    public AssetRentalLog findLastAssetRentalLogByCode(String code) {
+        SearchDto searchDto = new SearchDto();
+        searchDto.set(code);
+        Collection<AssetRentalLog> assetRentalLogs = assetRentalLogRepository.findAll(AssetRentalLogSpecification.searchWith(new ObjectMapper().convertValue(searchDto, Map.class)));
+        assetRentalLogs.stream().sorted();
+
+        return null;
+    }*/
 }

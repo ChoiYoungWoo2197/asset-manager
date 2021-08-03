@@ -207,6 +207,7 @@ export default {
       this.useYn = data.useYn;
 
 
+
       $("#asset-update-modal select#categorys").val(this.category);
       $("#asset-update-modal select#members").val(this.member);
       $("#asset-update-modal select#departments").val(this.department);
@@ -218,6 +219,10 @@ export default {
         $('#asset-update-modal #useYnTrueEdit').prop("checked", true);
       } else {
         $('#asset-update-modal #useYnFalseEdit').prop("checked", true);
+      }
+
+      if(this.$refs.assetSpecificationEdit !== null) {
+        this.$refs.assetSpecificationEdit.findChildByAssetCode(this.code);
       }
     },
     updateBtnClick() {
@@ -235,9 +240,22 @@ export default {
       }).then(response => {
         // console.log(response);
         if(response.status === 200) {
-          // this.$router.push('Authority');
-          vm.$emit("updateData", response.data);
-          $('#asset-update-modal').modal("hide");
+          let specs = this.$refs.assetSpecificationEdit.getSpecificationDatas();
+          specs.forEach(spec => {
+            spec.assetCode = response.data.code;
+          })
+
+          console.log(specs, 'ddddddddddd')
+
+          axios.put('http://localhost:8080/api/asset-specifications', specs
+          ).then(response2 => {
+            if(response2.status === 200) {
+              vm.$emit("updateData", response.data);
+              $('#asset-update-modal').modal("hide");
+            }
+          }).catch(e2 =>{
+            alert(e2);
+          });
         }
       }).catch(e => {
         alert(e);

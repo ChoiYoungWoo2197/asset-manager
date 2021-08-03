@@ -9,7 +9,7 @@
       <template v-else>
         <div class="form-group callout callout-info" v-for="data in datas" :key="data">
           <label :for="data.id">{{data.name}}<span class="text-danger"></span></label>
-          <input type="text" class="form-control specs-value" :data-specs-key="data.id" :id="data.id" placeholder="">
+          <input type="text" class="form-control specs-value" :data-specs-key="data.id" :id="data.id" placeholder="" :value="data.content">
         </div>
       </template>
     </form>
@@ -43,15 +43,30 @@ export default {
       const vm = this;
       if(this.category === null) return false;
 
-      axios.get('http://localhost:8080/api/categorys/' + vm.category.id + '/get-child')
-          .then(response => {
-            vm.datas = response.data.filter(categorySpecification => categorySpecification.useYn === true);
-          }).catch(e => {
+      axios.get('http://localhost:8080/api/categorys/' + vm.category.id + '/get-child'
+      ).then(response => {
+        vm.datas = response.data.filter(categorySpecification => categorySpecification.useYn === true);
+      }).catch(e => {
         alert(e);
       });
     },
-    findChildByAssetCode() {
-
+    findChildByAssetCode(assetCode) {
+      const vm = this;
+      axios.get('http://localhost:8080/api/assets/' + assetCode + '/get-specs-child'
+      ).then(response => {
+        // console.log(response, 'ddddddddddddd')
+        vm.datas = [];
+        response.data.forEach(data => {
+          vm.datas.push({
+            id : data.categorySpecificationId,
+            name : data.categorySpecificationName,
+            content : data.content,
+          })
+        })
+        // vm.datas = response.data.filter(categorySpecification => categorySpecification.useYn === true);
+      }).catch(e => {
+        alert(e);
+      });
     },
     getSpecificationDatas() {
       let specifications = [];
