@@ -67,7 +67,6 @@ public class PartnerCompanyMemberController {
 
     @PostMapping
     public Collection<PartnerCompanyMemberDto> store(@RequestBody Collection<PartnerCompanyMemberDto> partnerCompanyMemberDtos) {
-
         if(partnerCompanyMemberDtos.size() > 0) {
             Collection<PartnerCompanyMember> partnerCompanyMembers = new ArrayList<>();
             for(PartnerCompanyMemberDto partnerCompanyMemberDto: partnerCompanyMemberDtos) {

@@ -1,0 +1,71 @@
+<template>
+  <div class="card-body specifications">
+    <form>
+      <template v-if="datas.length === 0">
+        <div>
+          <i class="fas fa-info-circle pr-1"></i>정보가 없습니다.
+        </div>
+      </template>
+      <template v-else>
+        <div class="form-group callout callout-info" v-for="data in datas" :key="data">
+          <label :for="data.id">{{data.name}}<span class="text-danger"></span></label>
+          <input type="text" class="form-control specs-value" :data-specs-key="data.id" :id="data.id" placeholder="">
+        </div>
+      </template>
+    </form>
+  </div>
+</template>
+
+<script>
+import $ from "jquery";
+import axios from "axios";
+
+export default {
+  name: "AssetSpecification",
+  props: {
+  },
+  data() {
+    return {
+      assetCode : null,
+      category : null,
+      datas : [],
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    findChild(data) {
+      this.category = data;
+      this.findChildByCategoryId();
+    },
+    findChildByCategoryId() {
+      const vm = this;
+      if(this.category === null) return false;
+
+      axios.get('http://localhost:8080/api/categorys/' + vm.category.id + '/get-child')
+          .then(response => {
+            vm.datas = response.data;
+          }).catch(e => {
+        alert(e);
+      });
+    },
+    getSpecificationDatas() {
+      let specifications = [];
+      $('.specifications .specs-value').each((index, input) => {
+        specifications.push({
+          categorySpecificationId :$(input).data("specs-key"),
+          content : $(input).val()
+        })
+      })
+      return specifications;
+    }
+  },
+
+
+}
+</script>
+
+<style scoped>
+
+</style>

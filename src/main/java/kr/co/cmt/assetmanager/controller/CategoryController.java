@@ -1,10 +1,13 @@
 package kr.co.cmt.assetmanager.controller;
 
 import kr.co.cmt.assetmanager.dto.CategoryDto;
+import kr.co.cmt.assetmanager.dto.CategorySpecificationDto;
 import kr.co.cmt.assetmanager.dto.SearchDto;
 import kr.co.cmt.assetmanager.model.Category;
+import kr.co.cmt.assetmanager.model.CategorySpecification;
 import kr.co.cmt.assetmanager.model.Department;
 import kr.co.cmt.assetmanager.service.CategoryService;
+import kr.co.cmt.assetmanager.service.CategorySpecificationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +28,9 @@ import java.util.stream.Collectors;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CategorySpecificationService categorySpecificationService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -134,4 +141,18 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
     }
 
+    @GetMapping(value = "/{id}/get-child")
+    public List<CategorySpecificationDto> getChild(@PathVariable("id") long categoryId) {
+        if(categoryId == 0L) {
+            return null;
+        }
+
+        SearchDto searchDto = new SearchDto();
+        searchDto.setCategoryId(categoryId);
+
+        List<CategorySpecification> categorySpecifications = categorySpecificationService.findAllCategorySpecification(searchDto);
+        List<CategorySpecificationDto> categorySpecificationDtos = categorySpecifications.stream().map(categorySpecification ->
+                CategorySpecificationDto.convertEntityToDto(categorySpecification)).collect(Collectors.toList());
+        return categorySpecificationDtos;
+    }
 }

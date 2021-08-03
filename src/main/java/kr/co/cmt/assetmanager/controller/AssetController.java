@@ -125,7 +125,12 @@ public class AssetController {
 
     @PutMapping(value = "/{code}")
     public AssetDto update(@PathVariable("code") String assetCode, @RequestBody AssetDto assetDto) {
+        if(assetCode == null) {
+            return null;
+        }
+
         Asset asset = assetService.findAssetByCode(assetCode).get();
+        asset.setName(assetDto.getName());
         asset.setRemark(assetDto.getRemark());
         asset.setUseYn(assetDto.getUseYn());
         assetService.updateAsset(asset);
@@ -137,5 +142,11 @@ public class AssetController {
         Asset asset = assetService.findAssetByCode(assetCode).get();
         asset.setUseYn(false);
         assetService.updateAsset(asset);
+    }
+
+    @GetMapping(value = "/{code}/exists-child")
+    public ResponseEntity<Boolean> isExistChild(@PathVariable("code") String code) {
+//        return ResponseEntity.ok(assetService.isExistByCode(code));
+        return ResponseEntity.ok(false);
     }
 }

@@ -26,6 +26,10 @@ public class CategorySpecificationService {
                 new ObjectMapper().convertValue(searchDto, Map.class)), pageable);
     }
 
+    public List<CategorySpecification> findAllCategorySpecification(SearchDto searchDto) {
+        return categorySpecificationRepository.findAll(CategorySpecifications.searchWith( new ObjectMapper().convertValue(searchDto, Map.class)));
+    }
+
     public List<CategorySpecification> findAllCategorySpecification() {
         return categorySpecificationRepository.findAll();
     }

@@ -107,34 +107,10 @@
                 </div>
               </div>
             </div>
-
-
             <div class="col-lg">
               <div class="card card-primary card-outline">
-                <div class="card-body">
-                  <form>
-                    <div class="form-group">
-                      <label for="label2999934">모델명<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label2999934" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label2656334">시리얼넘버<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label2656334" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label234">CPU<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label234" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label2343">Memory<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label2343" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label23435">Memory<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label23435" placeholder="">
-                    </div>
-                  </form>
-                </div>
+                <AssetSpecification ref="assetSpecification">
+                </AssetSpecification>
               </div>
             </div>
 
@@ -144,7 +120,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-window-close pr-1"></i>취소</button>
           <button id="createBtn" type="button" class="btn btn-secondary" @click="createBtnClick"><i class="far fa-edit pr-1"></i>등록</button>
-
         </div>
       </div>
     </div>
@@ -153,16 +128,15 @@
 
 <script>
 import $ from "jquery";
-// import "select2";
-import "select2/dist/css/select2.min.css";
-import "select2/dist/js/select2.js";
 import axios from "axios";
 import moment from 'moment';
-import "daterangepicker/daterangepicker.js";
-import "daterangepicker/daterangepicker.css";
+import AssetSpecification from "@/components/asset/AssetSpecification.vue";
 
 export default {
   name: "AssetCreate",
+  components: {
+    AssetSpecification
+  },
   data() {
     return {
       isExistCode : null,
@@ -176,6 +150,14 @@ export default {
       members : [],
       departments : [],
       partnerCompanys : [],
+      activeCategory : null,
+    }
+  },
+  watch: {
+    activeCategory() {
+      if(this.$refs.assetSpecification !== null) {
+        this.$refs.assetSpecification.findChild(this.activeCategory);
+      }
     }
   },
   mounted() {
@@ -271,7 +253,12 @@ export default {
         vm.getCategoryInstance().select2({
           dropdownParent: $('#asset-create-modal'),
           data : categorysNewDatas,
+        }).on("select2:select", function (e) {
+          var data = e.params.data;
+          // console.log(data);
+          vm.activeCategory = data;
         });
+
 
         let departmentsNewDatas = [];
         vm.departments = resDepartments.data.filter(department => {
@@ -480,18 +467,39 @@ export default {
         receivedDateAt : $( '#asset-create-modal #receiveDate' ).val(),
         contractDateAt : $( '#asset-create-modal #contractDates' ).val().split("~")[0].trim(),
         expireDateAt : $( '#asset-create-modal #contractDates' ).val().split("~")[1].trim(),
-        remark : $( 'textarea#remark' ).val(),
+        remark : $( '#asset-create-modal textarea#remark' ).val(),
         useYn : this.useYn,
         register : "1"
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.status === 200) {
-          vm.$emit("updateData", response.data);
-          $('#asset-create-modal').modal("hide");
+          let specs = this.$refs.assetSpecification.getSpecificationDatas();
+          specs.forEach(spec => {
+            spec.assetCode = response.data.code;
+          })
+
+
+          if(response.status === 200) {
+            axios.post('http://localhost:8080/api/asset-specifications', specs
+            ).then(response2 => {
+              if(response2.status === 200) {
+                // console.log(response2, '2222');
+                vm.$emit("updateData", response.data);
+                $('#asset-create-modal').modal("hide");
+              }
+            }).catch(e2 =>{
+              alert(e2);
+            });
+          }
         }
       }).catch(e => {
         alert(e);
       })
+    },
+    testClick() {
+      console.log(
+          this.$refs.assetSpecification.getSpecificationDatas()
+      );
     }
   }
 }

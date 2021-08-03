@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 //자산상세규격
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @IdClass(AssetSpecificationId.class)
 @Entity
 public class AssetSpecification {
@@ -33,4 +33,16 @@ public class AssetSpecification {
         this.registedDateAt = LocalDate.now();
         this.updatedDateAt = LocalDate.now();
     }
+
+    @Builder
+    public AssetSpecification(Asset asset, CategorySpecification categorySpecification, String content, String register,
+                              LocalDate registedDateAt, LocalDate updatedDateAt) {
+        this.asset = asset;
+        this.categorySpecification = categorySpecification;
+        this.content = content;
+        this.register = register;
+        this.registedDateAt = registedDateAt;
+        this.updatedDateAt = updatedDateAt;
+    }
+
 }

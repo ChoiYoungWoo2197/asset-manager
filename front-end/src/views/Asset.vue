@@ -266,14 +266,6 @@ export default {
   methods: {
     searchData() {
       const vm = this;
-      console.log(
-          $( 'input#contractDatesView' ).val().split("~")[0],
-          $( 'input#contractDatesView' ).val().split("~")[1],
-          $( 'input#receiveDateView' ).val()
-      )
-
-      console.log($("#departmentsViews").val())
-
       axios.get('http://localhost:8080/api/assets', {
         params: {
           page : vm.currentPage,
