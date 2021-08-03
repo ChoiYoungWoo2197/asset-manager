@@ -198,4 +198,25 @@ public class MemberController {
         }
         return null;
     }
+
+    /**
+     * PUT
+     * 회원 비밀번호 초기화
+     **/
+    @PutMapping(value = "/{id}/password-init")
+    public MemberDto passwordInits(@PathVariable("id") long memberId) {
+        if(memberId == 0) {
+            return null;
+        }
+
+/*        Member member = memberService.findMemberById(memberId).get();
+        String[] birthdays = member.getBirthday().toString().split("-");
+
+        member.setPassword(birthdays[0]+"/"+birthdays[1]+"/"+birthdays[2]);
+        memberService.createMember(member);*/
+
+        Member member = memberService.passwordInit(memberId);
+        return MemberDto.convertEntityToDto(member);
+
+    }
 }

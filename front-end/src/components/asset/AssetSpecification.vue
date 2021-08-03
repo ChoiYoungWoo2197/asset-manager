@@ -7,7 +7,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="form-group callout callout-info" v-for="data in datas" :key="data">
+        <div class="form-group callout callout-info test" v-for="data in datas" :key="data">
           <label :for="data.id">{{data.name}}<span class="text-danger"></span></label>
           <input type="text" class="form-control specs-value" :data-specs-key="data.id" :id="data.id" placeholder="" :value="data.content">
         </div>
@@ -35,6 +35,12 @@ export default {
 
   },
   methods: {
+    clearData() {
+      this.assetCode = null;
+      this.category = null;
+      this.datas = [];
+      $('.specifications .test').remove();
+    },
     findChild(data) {
       this.category = data;
       this.findChildByCategoryId();

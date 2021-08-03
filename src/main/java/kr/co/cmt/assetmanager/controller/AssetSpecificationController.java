@@ -83,7 +83,7 @@ public class AssetSpecificationController {
                 );
 
                 if(assetSpecification != null) {
-                    assetSpecification.setContent(assetSpecification.getContent());
+                    assetSpecification.setContent(assetSpecificationDto.getContent());
                     assetSpecifications.add(assetSpecification);
                 }
             }

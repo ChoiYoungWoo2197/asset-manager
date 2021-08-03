@@ -28,6 +28,15 @@
                       </div>
                     </div>
                     <div class="form-group">
+                      <label for="passwordInit">비밀번호 초기화<span class="text-danger"></span></label>
+                      <div class="form-group row">
+                        <div class="col-sm">
+                          <input type="button" class="form-control btn btn-primary btn-sm" value="초기화" @click="clickPasswordInitBtn">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <label for="birthdayEdit">생년월일<span class="text-danger"></span></label>
                       <input class="form-control" type="text" id="birthdayEdit" placeholder="생년월일을 입력하세요." :value="birthday">
                     </div>
@@ -184,11 +193,20 @@ export default {
         showDropdowns: true,
         minYear: 1901,
         maxYear: parseInt(moment().format('YYYY'),10),
+        autoUpdateInput: false,
         locale : {
           format: 'YYYY-MM-DD',
           applyLabel: "적용",
-          cancelLabel: "닫기"
+          cancelLabel: "닫기",
+          daysOfWeek: ["일", "월", "화", "수", "목", "금", "토"],
+          monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
         }
+      }).on('apply.daterangepicker', function(ev, picker) {
+        console.log(picker)
+        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+      }).on('cancel.daterangepicker', function(ev, picker) {
+        console.log(ev, picker)
+        $(this).val('');
       });
     },
     clickRadioBtn(flag){
@@ -268,6 +286,30 @@ export default {
         alert(e);
       });
     },
+    clickPasswordInitBtn() {
+      const vm = this;
+      if(!confirm("생년월일로 초기화 됩니다(YYYY/MM/DD). 초기화 하시겠습니까?")) {
+        return false;
+      }
+
+/*      if($( 'input#birthdayEdit' ).val() ==="") {
+        alert("생년월일을 입력해주세요.");
+        return false;
+      }*/
+
+      axios.put('http://localhost:8080/api/members/' + this.id + "/password-init", {
+        // birthday : $('#member-update-modal input#birthdayEdit').val(),
+      }).then(response => {
+        console.log(response);
+        if(response.status === 200) {
+          // this.$router.push('Authority');
+          vm.$emit("updateData", response.data);
+          $('#member-update-modal').modal("hide");
+        }
+      }).catch(e => {
+        alert(e);
+      })
+    }
   }
 }
 </script>

@@ -194,6 +194,10 @@ export default {
 
       this.isExistCode = null;
       this.useYn = true;
+
+      if(this.$refs.assetSpecification !== null) {
+        this.$refs.assetSpecification.clearData();
+      }
     },
     getCategoryInstance() {
       return $("#asset-create-modal #" + "categorys");
@@ -354,14 +358,20 @@ export default {
         showDropdowns: true,
         minYear: 1901,
         maxYear: parseInt(moment().format('YYYY'),10),
+        autoUpdateInput: false,
         locale : {
-          separator: " ~ ",
           format: 'YYYY-MM-DD',
           applyLabel: "적용",
           cancelLabel: "닫기",
           daysOfWeek: ["일", "월", "화", "수", "목", "금", "토"],
           monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
         }
+      }).on('apply.daterangepicker', function(ev, picker) {
+        console.log(picker)
+        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+      }).on('cancel.daterangepicker', function(ev, picker) {
+        console.log(ev, picker)
+        $(this).val('');
       });
     },
     initReceiveDatePicker() {
@@ -370,6 +380,7 @@ export default {
         showDropdowns: true,
         minYear: 1901,
         maxYear: parseInt(moment().format('YYYY'),10),
+        autoUpdateInput: false,
         locale : {
           format: 'YYYY-MM-DD',
           applyLabel: "적용",
@@ -377,6 +388,12 @@ export default {
           daysOfWeek: ["일", "월", "화", "수", "목", "금", "토"],
           monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
         }
+      }).on('apply.daterangepicker', function(ev, picker) {
+        console.log(picker)
+        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+      }).on('cancel.daterangepicker', function(ev, picker) {
+        console.log(ev, picker)
+        $(this).val('');
       });
     },
     initContractDatePicker() {

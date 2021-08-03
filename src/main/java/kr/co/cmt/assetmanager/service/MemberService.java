@@ -108,6 +108,15 @@ public class MemberService {
         }
         return members;
     }
+
+    public Member passwordInit(Long id) {
+        Member member = findMemberById(id).get();
+        String[] birthdays = member.getBirthday().toString().split("-");
+
+        member.setPassword(birthdays[0]+"/"+birthdays[1]+"/"+birthdays[2]);
+        return createMember(member);
+    }
+
     public boolean isValidEmail(String email) {
         boolean err = false;
         String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";

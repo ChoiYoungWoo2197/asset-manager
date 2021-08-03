@@ -303,6 +303,7 @@ export default {
       $('#asset-create-modal').modal("show");
     },
     showUpdateModal() {
+      this.$refs.assetCreate.clearData();
       $('#asset-update-modal').modal("show");
     },
     clickTrTag(data) {

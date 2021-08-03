@@ -35,7 +35,7 @@
                       <input type="password" class="form-control " id="password" placeholder="">
                     </div>
                     <div class="form-group">
-                      <label for="birthday">생년월일<span class="text-danger"></span></label>
+                      <label for="birthday">생년월일<span class="text-danger">*</span></label>
                       <input class="form-control" type="text" id="birthday" placeholder="생년월일을 입력하세요.">
                     </div>
                     <div class="form-group">
@@ -171,11 +171,20 @@ export default {
         showDropdowns: true,
         minYear: 1901,
         maxYear: parseInt(moment().format('YYYY'),10),
+        autoUpdateInput: false,
         locale : {
           format: 'YYYY-MM-DD',
           applyLabel: "적용",
-          cancelLabel: "닫기"
+          cancelLabel: "닫기",
+          daysOfWeek: ["일", "월", "화", "수", "목", "금", "토"],
+          monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
         }
+      }).on('apply.daterangepicker', function(ev, picker) {
+        console.log(picker)
+        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+      }).on('cancel.daterangepicker', function(ev, picker) {
+        console.log(ev, picker)
+        $(this).val('');
       });
     },
     findAuthoritys() {
@@ -210,7 +219,7 @@ export default {
       if($( 'input#name' ).val() ==="" || $( 'input#email' ).val() === "" || $( 'input#password' ).val() === ""
           || this.getDepartments === null || this.getDepartments.length === 0
           || this.getAuthoritys === null || this.getAuthoritys.length === 0
-          || this.isExistEmail !== false) {
+          || $('input#birthday').val() === "" || this.isExistEmail !== false) {
         if($( 'input#name' ).val() === '') {
           alert("이름을 입력해주세요.");
           return false;
@@ -219,6 +228,9 @@ export default {
           return false;
         } else if($( 'input#password' ).val() === "") {
           alert("패스워드를 입력해주세요.");
+          return false;
+        } else if($( 'input#birthday' ).val() === "") {
+          alert("생년월일을 입력해주세요.");
           return false;
         } else if(this.getDepartments === null || this.getDepartments.length === 0) {
           alert("부서를 생성해주세요.");
