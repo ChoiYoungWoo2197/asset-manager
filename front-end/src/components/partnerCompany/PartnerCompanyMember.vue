@@ -1,5 +1,5 @@
 <template>
-  <div class="form-row mt-1">
+  <div class="form-row mt-1 callout callout-info">
     <div class="col-md-1 text-center">
       <input type="button" class="btn btn-sm font-weight-bold" value="-" @click.prevent="clickMinusBtn">
     </div>

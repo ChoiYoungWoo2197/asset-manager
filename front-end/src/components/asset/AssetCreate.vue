@@ -158,7 +158,8 @@ export default {
       if(this.$refs.assetSpecification !== null) {
         this.$refs.assetSpecification.findChild(this.activeCategory);
       }
-    }
+    },
+
   },
   mounted() {
     // this.initCategorysSelect2();

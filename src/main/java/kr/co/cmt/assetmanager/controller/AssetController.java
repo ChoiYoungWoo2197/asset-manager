@@ -164,6 +164,10 @@ public class AssetController {
                 AssetSpecificationDto.convertEntityToDto(assetSpecification)).collect(Collectors.toList());
     }
 
+    @PutMapping(value = "/{code}/retry-rental")
+    public AssetDto retryRental(@PathVariable("code") String assetCode, @RequestBody AssetDto assetDto) {
+        return null;
+    }
 
 
 }

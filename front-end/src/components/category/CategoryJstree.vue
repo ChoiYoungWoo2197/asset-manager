@@ -42,10 +42,10 @@ export default {
         },
         "types" : {
           "root" : {
-            "icon" : "uil uil-folder-lock",
+            // "icon" : "uil uil-folder-lock",
           },
           "Dept" : {
-            "icon" : "uil uil-folder-lock",
+            // "icon" : "uil uil-folder-lock",
             "valid_children" : ["Dept"]
           }
         },

@@ -41,7 +41,6 @@
                       <input type="text" class="form-control" id="priceEdit" placeholder="" :value="price" disabled readonly="readonly">
                     </div>
                     <div class="form-group">
-
                       <div class="form-group row">
                         <div class="col-sm">
                           <label for="buyDateEdit">구매일자<span class="text-danger"></span></label>
@@ -84,6 +83,11 @@
                       <label for="contractDatesEdit">계약기간(시작일자, 종료일자)<span class="text-danger"></span></label>
                       <input class="form-control" type="text" id="contractDatesEdit" name="contractDatesEdit" placeholder="" :value="contractDate" disabled readonly="readonly">
                     </div>
+                    <AssetRetryRental ref="assetRetryRental" style="display: none;" class="assetRetryRental"
+                                      :p-asset-code="code"
+                                      :p-before-contract-dates="contractDate"
+                                      @updateData="handleUpdateData">
+                    </AssetRetryRental>
                     <div class="form-group">
                       <label for="remarkEdit">비고<code></code></label>
                       <textarea class="form-control" id="remarkEdit" :value="remark"></textarea>
@@ -107,40 +111,17 @@
             <div class="col-lg">
               <div class="card card-primary card-outline">
                 <AssetSpecification ref="assetSpecificationEdit"></AssetSpecification>
-<!--                <div class="card-body">
-                  <form>
-                    <div class="form-group">
-                      <label for="label2999934">모델명<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label2999934" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label2656334">시리얼넘버<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label2656334" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label234">CPU<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label234" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label2343">Memory<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label2343" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="label23435">Memory<span class="text-danger"></span></label>
-                      <input type="text" class="form-control " id="label23435" placeholder="">
-                    </div>
-                  </form>
-                </div>-->
               </div>
             </div>
-
           </div>
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">  <i class="far fa-window-close pr-1"></i>취소</button>
           <button type="button" class="btn btn-primary" @click="updateBtnClick"> <i class="far fa-edit pr-1"></i>수정</button>
           <button type="button" class="btn btn-danger" @click="deleteBtnClick"><i class="far fa-trash-alt pr-1"></i>삭제</button>
+          <template v-if="type==='rental'">
+            <button type="button" class="btn btn-info" @click="retryRentalBtnClick"><i class="fas fa-recycle pr-1"></i>재연장 신청</button>
+          </template>
         </div>
       </div>
     </div>
@@ -152,11 +133,13 @@ import $ from "jquery";
 import axios from "axios";
 import moment from "moment";
 import AssetSpecification from "@/components/asset/AssetSpecification.vue";
+import AssetRetryRental from "@/components/asset/AssetRetryRental.vue";
 
 export default {
   name: "AssetUpdate",
   components: {
-    AssetSpecification
+    AssetSpecification,
+    AssetRetryRental
   },
   data() {
     return {
@@ -178,6 +161,16 @@ export default {
         {code : 'buy', name : '구매'},
         {code : 'rental', name : '렌탈'},
       ],
+      hiddenReTryRentalComponent : true,
+    }
+  },
+  watch: {
+    hiddenReTryRentalComponent() {
+      if(this.hiddenReTryRentalComponent === true) {
+        document.querySelector('.assetRetryRental').style.display = 'none';
+      } else {
+        document.querySelector('.assetRetryRental').style.display = 'block';
+      }
     }
   },
   mounted() {
@@ -205,16 +198,15 @@ export default {
       this.contractDate = data.contractDateAt === null ? "" : data.contractDateAt + " ~ " + data.expireDateAt;
       this.remark = data.remark;
       this.useYn = data.useYn;
-
-
-
-      $("#asset-update-modal select#categorys").val(this.category);
-      $("#asset-update-modal select#members").val(this.member);
-      $("#asset-update-modal select#departments").val(this.department);
-      $("#asset-update-modal select#partnerCompanys").val(this.partnerCompany);
-      $( "#asset-update-modal input#buyDate" ).val(this.buyDate);
-      $( "#asset-update-modal input#receiveDate" ).val(this.receiveDate);
-      $("#asset-update-modal input#contractDates").val(this.contractDate);
+      this.hiddenReTryRentalComponent = true;
+      $("#asset-update-modal select#typeEdit").val(this.type);
+      $("#asset-update-modal select#categorysEdit").val(this.category);
+      $("#asset-update-modal select#membersEdit").val(this.member);
+      $("#asset-update-modal select#departmentsEdit").val(this.department);
+      $("#asset-update-modal select#partnerCompanysEdit").val(this.partnerCompany);
+      $( "#asset-update-modal input#buyDateEdit" ).val(this.buyDate);
+      $( "#asset-update-modal input#receiveDateEdit" ).val(this.receiveDate);
+      $("#asset-update-modal input#contractDatesEdit").val(this.contractDate);
       if(this.useYn === true) {
         $('#asset-update-modal #useYnTrueEdit').prop("checked", true);
       } else {
@@ -244,8 +236,6 @@ export default {
           specs.forEach(spec => {
             spec.assetCode = response.data.code;
           })
-
-          console.log(specs, 'ddddddddddd')
 
           axios.put('http://localhost:8080/api/asset-specifications', specs
           ).then(response2 => {
@@ -439,6 +429,12 @@ export default {
         }
       });
     },
+    retryRentalBtnClick() {
+      this.hiddenReTryRentalComponent = false;
+    },
+    handleUpdateData(data) {
+      this.$emit("updateData", data);
+    }
   }
 }
 </script>
